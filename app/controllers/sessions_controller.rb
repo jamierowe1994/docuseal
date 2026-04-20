@@ -31,7 +31,7 @@ class SessionsController < Devise::SessionsController
       return params[:redir]
     end
 
-    super
+    contracts_path
   end
 
   def configure_permitted_parameters
