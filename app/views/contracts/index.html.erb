@@ -52,6 +52,15 @@
     border-radius: 0; transition: background 0.15s; white-space: nowrap;
   }
   .bsc-btn-green:hover { background: #7fe83d; color: #0a0a0a; }
+  .bsc-btn-logout {
+    background: transparent; color: rgba(255,255,255,0.5); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 0.6rem 1.1rem;
+    border: 1px solid rgba(255,255,255,0.18); border-radius: 0;
+    cursor: pointer; transition: color 0.15s, border-color 0.15s; white-space: nowrap;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .bsc-btn-logout:hover { color: #fff; border-color: rgba(255,255,255,0.45); }
+  .bsc-nav-actions { display: flex; align-items: center; gap: 0.5rem; }
 
   /* ── PAGE INNER ── */
   .bsc-inner {
@@ -288,14 +297,19 @@
     <div class="bsc-nav-inner">
       <a href="<%= root_path %>" class="bsc-wordmark">Backed<span class="bsc-g">.</span>sign</a>
       <div class="bsc-nav-group">
-        <a href="<%= root_path %>#product">Product</a>
-        <a href="<%= root_path %>#integrations">Integrations</a>
-        <a href="<%= root_path %>#templates">Templates</a>
+        <a href="<%= settings_api_index_path %>">Integrations</a>
+        <a href="<%= templates_path %>">Templates</a>
         <a href="<%= contracts_path %>" class="active">Contracts</a>
+        <a href="<%= settings_users_path %>">Admin</a>
       </div>
-      <%= link_to new_template_path, class: 'bsc-btn-green', data: { turbo_frame: :modal } do %>
-        New Contract &#8594;
-      <% end %>
+      <div class="bsc-nav-actions">
+        <%= link_to new_template_path, class: 'bsc-btn-green', data: { turbo_frame: :modal } do %>
+          New Contract &#8594;
+        <% end %>
+        <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false }, class: 'bsc-btn-logout' do %>
+          Sign Out
+        <% end %>
+      </div>
     </div>
   </nav>
 
