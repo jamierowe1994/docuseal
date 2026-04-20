@@ -57,7 +57,10 @@
     display: flex; flex-direction: column; justify-content: center;
   }
   .bs-hero-r {
-    background: #141414; display: flex;
+    background: #141414
+      radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px);
+    background-size: 24px 24px;
+    display: flex;
     align-items: center; justify-content: center; padding: 3rem 3rem 3rem 2rem;
   }
   .bs-mono-label {
@@ -92,7 +95,7 @@
     border: 1px solid rgba(255,255,255,0.1);
   }
   .bs-stat {
-    padding: 1.25rem 1.5rem; border-right: 1px solid rgba(255,255,255,0.1);
+    padding: 1.75rem 1.5rem; border-right: 1px solid rgba(255,255,255,0.1);
     display: flex; flex-direction: column; gap: 0.3rem;
   }
   .bs-stat:last-child { border-right: none; }
@@ -140,15 +143,21 @@
     display: inline-block; background: #6bde2c; color: #0a0a0a;
     font-family: 'Space Mono', monospace; font-size: 0.55rem; font-weight: 700;
     letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.5rem;
-    border-radius: 2px; margin-bottom: 0.25rem;
+    border-radius: 2px; white-space: nowrap;
   }
+  .bs-doc-comp-row { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
   .bs-doc-photo {
     width: 100%; height: 90px; border-radius: 3px; margin-bottom: 1rem;
-    background: #2a2a2a; position: relative; overflow: hidden;
+    background: #252525; position: relative; overflow: hidden;
+  }
+  .bs-doc-photo::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 18px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 18px);
   }
   .bs-doc-photo::after {
     content: ''; position: absolute; inset: 0;
-    background: repeating-linear-gradient(-45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 6px);
+    background: linear-gradient(135deg, rgba(50,50,50,0.6) 0%, rgba(30,30,30,0.2) 50%, rgba(50,50,50,0.6) 100%);
   }
   .bs-doc-sigline {
     border-top: 2px solid #6bde2c; padding-top: 0.5rem;
@@ -208,7 +217,7 @@
   .bs-tpl-card {
     border-right: 1px solid rgba(255,255,255,0.1);
     border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding: 1.5rem; display: flex; flex-direction: column;
+    padding: 1.5rem; display: flex; flex-direction: column; min-height: 460px;
   }
   .bs-tpl-lbl {
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
@@ -216,9 +225,9 @@
   }
   .bs-tpl-name {
     font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
-    font-size: 1.4rem; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 1rem;
+    font-size: 1.6rem; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 1rem;
   }
-  .bs-tpl-preview { height: 180px; border-radius: 2px; margin-bottom: 1rem; }
+  .bs-tpl-preview { flex: 1; min-height: 200px; border-radius: 2px; margin-bottom: 1rem; }
   .bs-tpl-desc { font-size: 0.82rem; line-height: 1.55; margin-bottom: 0.75rem; flex: 1; }
   .bs-tpl-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 1rem; }
   .bs-tpl-tag {
@@ -321,7 +330,7 @@
   <%# ── HERO ── %>
   <section class="bs-hero" id="product">
     <div class="bs-hero-l">
-      <p class="bs-mono-label">V2.0 &mdash; E-Signature Platform</p>
+      <p class="bs-mono-label">V2.0 &mdash; E-SIGNATURE PLATFORM</p>
       <h1 class="bs-title">
         SIGNED<br>
         BY<br>
@@ -350,26 +359,28 @@
     <div class="bs-hero-r">
       <div class="bs-doc">
         <div class="bs-doc-head">
-          <span class="bs-doc-reflbl">Document Ref</span>
-          <span class="bs-doc-badge">Pending Signature</span>
+          <span class="bs-doc-reflbl">DOCUMENT REF</span>
+          <span class="bs-doc-badge">PENDING SIGNATURE</span>
         </div>
         <div class="bs-doc-refnum">BS-2026-04-0147</div>
-        <p class="bs-doc-typelbl">Offer Letter</p>
+        <p class="bs-doc-typelbl">OFFER LETTER</p>
         <h3 class="bs-doc-title">Senior Product Designer</h3>
         <p class="bs-doc-co">Acme Recruitment Ltd.</p>
         <div class="bs-doc-fields">
           <div>
-            <p class="bs-doc-flbl">Start Date</p>
+            <p class="bs-doc-flbl">START DATE</p>
             <p class="bs-doc-fval">2026-05-01</p>
           </div>
           <div>
-            <p class="bs-doc-flbl">Compensation</p>
-            <span class="bs-doc-signbtn">&#8594; Sign Here</span>
-            <p class="bs-doc-fval">&pound;85,000/yr</p>
+            <p class="bs-doc-flbl">COMPENSATION</p>
+            <div class="bs-doc-comp-row">
+              <p class="bs-doc-fval">&pound;85,000/yr</p>
+              <span class="bs-doc-signbtn">&#8594; Sign Here</span>
+            </div>
           </div>
         </div>
         <div class="bs-doc-photo"></div>
-        <div class="bs-doc-sigline">Candidate Signature &mdash; 2026-04-20</div>
+        <div class="bs-doc-sigline">CANDIDATE SIGNATURE &mdash; 2026-04-20</div>
       </div>
     </div>
   </section>
@@ -377,7 +388,7 @@
   <%# ── INTEGRATIONS ── %>
   <section class="bs-section" id="integrations">
     <div class="bs-section-inner">
-      <p class="bs-seclbl"><span class="bs-g">002</span> &mdash; Integrations</p>
+      <p class="bs-seclbl"><span class="bs-g">002</span> &mdash; INTEGRATIONS</p>
       <h2 class="bs-sectitle">PLUGS INTO<br>YOUR CRM.</h2>
       <p class="bs-secsub">No migration. No disruption. Backed.sign connects directly to the tools your team already lives in.</p>
       <div class="bs-int-grid">
@@ -419,7 +430,7 @@
   <%# ── TEMPLATES ── %>
   <section class="bs-section" id="templates">
     <div class="bs-section-inner">
-      <p class="bs-seclbl"><span class="bs-g">003</span> &mdash; Templates</p>
+      <p class="bs-seclbl"><span class="bs-g">003</span> &mdash; TEMPLATES</p>
       <h2 class="bs-sectitle">YOUR BRAND.<br>NOT OURS.</h2>
       <p class="bs-secsub">Every template is fully customizable. Your logo, your colors, your typography. Backed.sign disappears &mdash; your brand takes center stage.</p>
       <div class="bs-tpl-grid">
@@ -478,7 +489,7 @@
   <%# ── CAPABILITIES ── %>
   <section class="bs-section" id="capabilities">
     <div class="bs-section-inner">
-      <p class="bs-seclbl"><span class="bs-g">004</span> &mdash; Capabilities</p>
+      <p class="bs-seclbl"><span class="bs-g">004</span> &mdash; CAPABILITIES</p>
       <h2 class="bs-sectitle">BUILT FOR<br>RECRUITMENT.</h2>
       <div class="bs-cap-grid">
         <div class="bs-cap-item">
