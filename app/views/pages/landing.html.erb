@@ -117,58 +117,53 @@
 
   /* ── DOCUMENT MOCK CARD ── */
   .bs-doc {
-    width: 100%; max-width: 340px; background: #1f1f1f;
-    border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 1.25rem;
+    width: 100%; max-width: 500px; background: #1f1f1f;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 2rem;
   }
-  .bs-doc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+  .bs-doc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
   .bs-doc-reflbl {
-    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
     letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35);
   }
   .bs-doc-badge {
     background: #6bde2c; color: #0a0a0a; font-family: 'Space Mono', monospace;
-    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 0.2rem 0.5rem; border-radius: 2px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.3rem 0.75rem; border-radius: 2px;
   }
   .bs-doc-refnum {
-    font-family: 'Space Mono', monospace; font-size: 0.95rem; color: #fff;
-    padding-bottom: 1rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: 'Space Mono', monospace; font-size: 1.15rem; color: #fff;
+    padding-bottom: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08);
   }
   .bs-doc-typelbl {
-    font-family: 'Space Mono', monospace; font-size: 0.55rem;
-    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.3rem;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.4rem;
   }
-  .bs-doc-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.05rem; color: #fff; margin-bottom: 0.2rem; }
-  .bs-doc-co { font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-bottom: 1rem; }
-  .bs-doc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+  .bs-doc-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.35rem; color: #fff; margin-bottom: 0.3rem; }
+  .bs-doc-co { font-size: 0.95rem; color: rgba(255,255,255,0.45); margin-bottom: 1.5rem; }
+  .bs-doc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
   .bs-doc-flbl {
-    font-family: 'Space Mono', monospace; font-size: 0.5rem;
-    letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 0.25rem;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 0.3rem;
   }
-  .bs-doc-fval { font-size: 0.85rem; color: #fff; font-weight: 600; }
+  .bs-doc-fval { font-size: 1rem; color: #fff; font-weight: 600; }
   .bs-doc-signbtn {
     display: inline-block; background: #6bde2c; color: #0a0a0a;
-    font-family: 'Space Mono', monospace; font-size: 0.55rem; font-weight: 700;
-    letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.5rem;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 0.4rem 0.85rem;
     border-radius: 2px; white-space: nowrap;
   }
-  .bs-doc-comp-row { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+  .bs-doc-comp-row { display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap; }
   .bs-doc-photo {
-    width: 100%; height: 90px; border-radius: 3px; margin-bottom: 1rem;
+    width: 100%; height: 185px; border-radius: 3px; margin-bottom: 1.5rem;
     background: #252525; position: relative; overflow: hidden;
   }
-  .bs-doc-photo::before {
-    content: ''; position: absolute; inset: 0;
-    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 18px),
-                repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 18px);
-  }
-  .bs-doc-photo::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(50,50,50,0.6) 0%, rgba(30,30,30,0.2) 50%, rgba(50,50,50,0.6) 100%);
+  .bs-doc-photo img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    border-radius: 3px;
   }
   .bs-doc-sigline {
-    border-top: 2px solid #6bde2c; padding-top: 0.5rem;
-    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    border-top: 2px solid #6bde2c; padding-top: 0.65rem;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
     letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3);
   }
 
@@ -489,7 +484,9 @@
             </div>
           </div>
         </div>
-        <div class="bs-doc-photo"></div>
+        <div class="bs-doc-photo">
+          <img src="https://github.com/user-attachments/assets/c9e415fc-1603-400a-abda-f4e38cabd14d" alt="Fountain pen signing" loading="lazy">
+        </div>
         <div class="bs-doc-sigline">CANDIDATE SIGNATURE &mdash; 2026-04-20</div>
       </div>
     </div>
