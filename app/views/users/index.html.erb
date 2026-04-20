@@ -165,8 +165,8 @@
       <p class="bsc-sidebar-label">Admin Centre</p>
       <%= link_to 'Users', settings_users_path, class: "bsc-sidebar-item #{'bsc-active' if request.path == settings_users_path && params[:status].blank?}" %>
       <% if can?(:read, User) %>
-        <%= link_to 'Profile', settings_profile_index_path, class: "bsc-sidebar-item #{'bsc-active' if request.path.start_with?(settings_profile_index_path)}" %>
-        <%= link_to 'Account', settings_account_path, class: "bsc-sidebar-item #{'bsc-active' if request.path == settings_account_path}" %>
+        <%= link_to 'Profile', "#{settings_profile_index_path}#profile", class: "bsc-sidebar-item #{'bsc-active' if request.path.start_with?(settings_profile_index_path) && !request.path.start_with?(settings_account_path)}" %>
+        <%= link_to 'Account', "#{settings_profile_index_path}#business", class: "bsc-sidebar-item #{'bsc-active' if request.path == settings_account_path}" %>
       <% end %>
       <% if can?(:read, AccountConfig) %>
         <%= link_to 'Notifications', settings_notifications_path, class: "bsc-sidebar-item #{'bsc-active' if request.path == settings_notifications_path}" %>
@@ -198,16 +198,7 @@
             <% end %>
           </h1>
         </div>
-        <% if params[:status].blank? && can?(:create, User.new(account: current_account)) %>
-          <%= render 'users/extra_buttons' %>
-          <% if content_for(:add_user_button) %>
-            <%= content_for(:add_user_button) %>
-          <% else %>
-            <%= link_to new_user_path, class: 'bsc-btn-green', data: { turbo_frame: 'modal' } do %>
-              + <%= t('new_user') %>
-            <% end %>
-          <% end %>
-        <% end %>
+
       </div>
 
       <%# ── USERS TABLE ── %>

@@ -20,6 +20,11 @@ class AccountsController < ApplicationController
   def update
     current_account.update!(account_params)
 
+    if params[:account_config].present?
+      save_account_config(AccountConfig::BUSINESS_ADDRESS_KEY, params[:account_config][:business_address])
+      save_account_config(AccountConfig::SUPPORT_EMAIL_KEY, params[:account_config][:support_email])
+    end
+
     unless Docuseal.multitenant?
       @encrypted_config = EncryptedConfig.find_or_initialize_by(account: current_account,
                                                                 key: EncryptedConfig::APP_URL_KEY)
@@ -74,5 +79,15 @@ class AccountsController < ApplicationController
     return {} if params[:encrypted_config].blank?
 
     params.require(:encrypted_config).permit(:value)
+  end
+
+  def save_account_config(key, value)
+    config = current_account.account_configs.find_or_initialize_by(key: key)
+    if value.blank?
+      config.destroy if config.persisted?
+    else
+      config.value = value
+      config.save!
+    end
   end
 end
