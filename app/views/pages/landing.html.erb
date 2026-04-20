@@ -7,12 +7,14 @@
   /* ── BASE ── */
   .bs {
     font-family: 'Space Grotesk', sans-serif;
-    background: #0a0a0a;
+    background: #141414;
     color: #fff;
     margin: -2rem calc(50% - 50vw) 0;
     padding: 0;
     min-height: 100vh;
   }
+  /* hide any attribution widget below .bs */
+  .bs ~ * { display: none !important; }
   .bs *, .bs *::before, .bs *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .bs a { text-decoration: none; }
   .bs-g { color: #6bde2c; }
@@ -20,7 +22,7 @@
   /* ── NAV ── */
   .bs-nav {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(10,10,10,0.96);
+    background: rgba(20,20,20,0.97);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid rgba(255,255,255,0.07);
   }
@@ -53,13 +55,18 @@
   /* ── HERO ── */
   .bs-hero { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 52px); }
   .bs-hero-l {
-    background: #0a0a0a; padding: 5rem 3rem 5rem 5rem;
+    background-color: #141414;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    padding: 5rem 3rem 5rem 5rem;
     display: flex; flex-direction: column; justify-content: center;
   }
   .bs-hero-r {
-    background: #141414
-      radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-color: #333333;
+    background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+    background-size: 22px 22px;
     display: flex;
     align-items: center; justify-content: center; padding: 3rem 3rem 3rem 2rem;
   }
@@ -110,7 +117,7 @@
 
   /* ── DOCUMENT MOCK CARD ── */
   .bs-doc {
-    width: 100%; max-width: 340px; background: #1c1c1c;
+    width: 100%; max-width: 340px; background: #1f1f1f;
     border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 1.25rem;
   }
   .bs-doc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
@@ -180,7 +187,7 @@
   .bs-secsub { color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.6; max-width: 28rem; }
 
   /* ── INTEGRATIONS ── */
-  .bs-int-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; padding-top: 4rem; align-items: start; }
+  .bs-int-grid { display: grid; grid-template-columns: 3fr 2fr; padding-top: 4rem; align-items: stretch; }
   .bs-crm-list { list-style: none; }
   .bs-crm-row {
     display: flex; align-items: center; justify-content: space-between;
@@ -202,9 +209,44 @@
   .bs-crm-row:hover .bs-crm-name { color: #6bde2c; }
   .bs-crm-arrow { color: rgba(255,255,255,0.3); font-size: 1.1rem; transition: color 0.15s, transform 0.15s; }
   .bs-crm-row:hover .bs-crm-arrow { color: #6bde2c; transform: translateX(4px); }
-  .bs-crm-hint {
-    font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: rgba(255,255,255,0.2); text-align: center; line-height: 2; margin-top: 3rem;
+
+  /* ── LIVE FEED PANEL ── */
+  .bs-int-feed-wrap {
+    border-left: 1px solid rgba(255,255,255,0.08);
+    padding: 2rem 2.5rem;
+    min-height: 280px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+  }
+  .bs-int-feed-idle {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.18); text-align: center; line-height: 2.2;
+  }
+  #bs-live-feed { width: 100%; }
+  .bs-lf-label {
+    font-family: 'Space Mono', monospace; font-size: 0.58rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.35); margin-bottom: 1rem;
+  }
+  .bs-lf-desc {
+    font-size: 0.875rem; color: rgba(255,255,255,0.5);
+    line-height: 1.6; margin-bottom: 1.75rem;
+  }
+  .bs-lf-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.85rem 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .bs-lf-row:first-of-type { border-top: 1px solid rgba(255,255,255,0.07); }
+  .bs-lf-name { font-weight: 600; font-size: 0.9rem; color: #fff; display: block; }
+  .bs-lf-status {
+    font-family: 'Space Mono', monospace; font-size: 0.48rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.38); margin-top: 0.12rem; display: block;
+  }
+  .bs-lf-time {
+    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    color: rgba(255,255,255,0.28); white-space: nowrap;
   }
 
   /* ── TEMPLATES ── */
@@ -218,16 +260,17 @@
     border-right: 1px solid rgba(255,255,255,0.1);
     border-bottom: 1px solid rgba(255,255,255,0.1);
     padding: 1.5rem; display: flex; flex-direction: column; min-height: 460px;
+    position: relative; z-index: 0; cursor: default;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
   }
-  .bs-tpl-lbl {
-    font-family: 'Space Mono', monospace; font-size: 0.55rem;
-    letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.4rem;
+  .bs-tpl-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.7);
+    border-color: rgba(107,222,44,0.35);
+    z-index: 2;
   }
-  .bs-tpl-name {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
-    font-size: 1.6rem; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 1rem;
-  }
-  .bs-tpl-preview { flex: 1; min-height: 200px; border-radius: 2px; margin-bottom: 1rem; }
+  .bs-tpl-preview { flex: 1; min-height: 200px; border-radius: 2px; margin-bottom: 1rem; transition: filter 0.24s ease; }
+  .bs-tpl-card:hover .bs-tpl-preview { filter: brightness(1.18) saturate(1.12); }
   .bs-tpl-desc { font-size: 0.82rem; line-height: 1.55; margin-bottom: 0.75rem; flex: 1; }
   .bs-tpl-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 1rem; }
   .bs-tpl-tag {
@@ -284,6 +327,68 @@
   }
   .bs-cap-desc { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
 
+  /* ── FOOTER CTA ── */
+  .bs-footer-cta {
+    background: #000;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .bs-footer-inner { padding: 8rem 5rem 5rem; }
+  .bs-footer-headline {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(5rem, 11vw, 11rem); line-height: 0.88;
+    text-transform: uppercase; letter-spacing: -0.03em;
+    color: #fff; margin-bottom: 5rem;
+  }
+  .bs-footer-formlbl {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 0.75rem;
+  }
+  .bs-footer-form {
+    display: flex; max-width: 490px; margin-bottom: 1.25rem;
+  }
+  .bs-footer-input {
+    flex: 1; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.18);
+    border-right: none; color: #fff; font-size: 0.875rem; padding: 0.9rem 1.25rem;
+    outline: none; font-family: 'Space Grotesk', sans-serif; border-radius: 0;
+  }
+  .bs-footer-input::placeholder { color: rgba(255,255,255,0.3); }
+  .bs-footer-input:focus { border-color: rgba(107,222,44,0.5); }
+  .bs-footer-btn {
+    background: #6bde2c; color: #0a0a0a;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.9rem 1.5rem; white-space: nowrap;
+    border: none; cursor: pointer; transition: background 0.15s; display: inline-block;
+  }
+  .bs-footer-btn:hover { background: #7fe83d; color: #0a0a0a; }
+  .bs-footer-signline {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 0.5rem; display: inline-block; min-width: 490px;
+  }
+  .bs-footer-nav {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 8rem;
+  }
+  .bs-footer-nav-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 5rem;
+  }
+  .bs-footer-copy {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.8rem; color: rgba(255,255,255,0.4);
+  }
+  .bs-footer-links { display: flex; gap: 2.5rem; }
+  .bs-footer-links a {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); transition: color 0.15s;
+  }
+  .bs-footer-links a:hover { color: #fff; }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 1200px) {
     .bs-section-inner { padding: 5rem 3rem; }
@@ -295,9 +400,14 @@
     .bs-hero { grid-template-columns: 1fr; min-height: auto; }
     .bs-hero-r { display: none; }
     .bs-hero-l { padding: 4rem 2rem; }
-    .bs-int-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .bs-int-grid { grid-template-columns: 1fr; }
+    .bs-int-feed-wrap { display: none; }
     .bs-cap-grid { grid-template-columns: 1fr; }
     .bs-nav-inner { padding: 0.9rem 1.5rem; }
+    .bs-footer-inner { padding: 5rem 2rem 4rem; }
+    .bs-footer-nav-inner { padding: 1.5rem 2rem; }
+    .bs-footer-signline { min-width: 0; width: 100%; }
+    .bs-footer-form { max-width: 100%; }
   }
   @media (max-width: 640px) {
     .bs-nav-group { display: none; }
@@ -393,28 +503,28 @@
       <p class="bs-secsub">No migration. No disruption. Backed.sign connects directly to the tools your team already lives in.</p>
       <div class="bs-int-grid">
         <ul class="bs-crm-list">
-          <li class="bs-crm-row">
+          <li class="bs-crm-row" data-crm="bullhorn">
             <div class="bs-crm-left">
               <span class="bs-crm-idx">01</span>
               <span class="bs-crm-name">BULLHORN</span>
             </div>
             <span class="bs-crm-arrow">&#8594;</span>
           </li>
-          <li class="bs-crm-row">
+          <li class="bs-crm-row" data-crm="greenhouse">
             <div class="bs-crm-left">
               <span class="bs-crm-idx">02</span>
               <span class="bs-crm-name">GREENHOUSE</span>
             </div>
             <span class="bs-crm-arrow">&#8594;</span>
           </li>
-          <li class="bs-crm-row">
+          <li class="bs-crm-row" data-crm="lever">
             <div class="bs-crm-left">
               <span class="bs-crm-idx">03</span>
               <span class="bs-crm-name">LEVER</span>
             </div>
             <span class="bs-crm-arrow">&#8594;</span>
           </li>
-          <li class="bs-crm-row">
+          <li class="bs-crm-row" data-crm="jobadder">
             <div class="bs-crm-left">
               <span class="bs-crm-idx">04</span>
               <span class="bs-crm-name">JOBADDER</span>
@@ -422,7 +532,11 @@
             <span class="bs-crm-arrow">&#8594;</span>
           </li>
         </ul>
-        <div class="bs-crm-hint">Hover a CRM<br>to see live feed</div>
+        <div class="bs-int-feed-wrap">
+          <div id="bs-live-feed">
+            <p class="bs-int-feed-idle">&#8592; Hover a CRM<br>to see live feed</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -523,6 +637,102 @@
     </div>
   </section>
 
+  <%# ── FOOTER CTA ── %>
+  <section class="bs-footer-cta">
+    <div class="bs-footer-inner">
+      <h2 class="bs-footer-headline">START<br>SIGNING</h2>
+      <p class="bs-footer-formlbl">ENTER YOUR EMAIL TO GET STARTED</p>
+      <div class="bs-footer-form">
+        <input type="email" class="bs-footer-input" placeholder="you@agency.com">
+        <a href="<%= new_user_session_path %>" class="bs-footer-btn">SIGN UP &#8594;</a>
+      </div>
+      <p class="bs-footer-signline">&#215; SIGN HERE</p>
+    </div>
+    <div class="bs-footer-nav">
+      <div class="bs-footer-nav-inner">
+        <span class="bs-footer-copy">
+          <span class="bs-wordmark">Backed<span class="bs-g">.</span>sign</span>
+          &copy; 2026
+        </span>
+        <nav class="bs-footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Security</a>
+          <a href="#">Status</a>
+        </nav>
+      </div>
+    </div>
+  </section>
+
 </div>
 
-<%= render 'shared/attribution', with_counter: true %>
+<script>
+(function () {
+  var feeds = {
+    bullhorn: {
+      label: 'LIVE FEED \u2014 BULLHORN',
+      desc: 'Push offer letters directly from Bullhorn placements. Auto-populate candidate data, track signing status in real-time.',
+      items: [
+        { name: 'Sarah Chen',   status: 'OFFER SENT', time: '2m ago'  },
+        { name: 'James Okafor', status: 'SIGNED',     time: '8m ago'  },
+        { name: 'Priya Patel',  status: 'VIEWED',     time: '14m ago' }
+      ]
+    },
+    greenhouse: {
+      label: 'LIVE FEED \u2014 GREENHOUSE',
+      desc: 'Sync offer letters with Greenhouse stages. Trigger signing workflows automatically when candidates reach the offer stage.',
+      items: [
+        { name: 'Marcus Webb',   status: 'SIGNED',     time: '1m ago'  },
+        { name: 'Lena Fischer',  status: 'OFFER SENT', time: '11m ago' },
+        { name: 'Tom Bradley',   status: 'VIEWED',     time: '22m ago' }
+      ]
+    },
+    lever: {
+      label: 'LIVE FEED \u2014 LEVER',
+      desc: 'Connect Lever opportunities to signed documents. Close faster with one-click offer sending from your Lever pipeline.',
+      items: [
+        { name: 'Amy Liu',     status: 'SIGNED',     time: '5m ago'  },
+        { name: 'Raj Sharma',  status: 'OFFER SENT', time: '18m ago' },
+        { name: 'Clara Watts', status: 'VIEWED',     time: '31m ago' }
+      ]
+    },
+    jobadder: {
+      label: 'LIVE FEED \u2014 JOBADDER',
+      desc: 'Integrate with Jobadder placements for seamless e-signing. Candidate records update automatically on signature.',
+      items: [
+        { name: 'Noah Brown',    status: 'OFFER SENT', time: '3m ago'  },
+        { name: 'Sophia Evans',  status: 'SIGNED',     time: '9m ago'  },
+        { name: 'Ethan Cole',    status: 'VIEWED',     time: '27m ago' }
+      ]
+    }
+  };
+
+  var panel = document.getElementById('bs-live-feed');
+  if (!panel) return;
+
+  var idleHTML = '<p class="bs-int-feed-idle">&#8592; Hover a CRM<br>to see live feed</p>';
+
+  document.querySelectorAll('.bs-crm-row[data-crm]').forEach(function (row) {
+    row.addEventListener('mouseenter', function () {
+      var key  = this.dataset.crm;
+      var feed = feeds[key];
+      if (!feed) return;
+      var rows = feed.items.map(function (item) {
+        return '<div class="bs-lf-row">' +
+          '<div><span class="bs-lf-name">' + item.name + '</span>' +
+          '<span class="bs-lf-status">' + item.status + '</span></div>' +
+          '<span class="bs-lf-time">' + item.time + '</span>' +
+          '</div>';
+      }).join('');
+      panel.innerHTML =
+        '<p class="bs-lf-label">' + feed.label + '</p>' +
+        '<p class="bs-lf-desc">'  + feed.desc  + '</p>' +
+        rows;
+    });
+  });
+
+  document.querySelector('.bs-int-grid').addEventListener('mouseleave', function () {
+    panel.innerHTML = idleHTML;
+  });
+}());
+</script>
