@@ -6,166 +6,259 @@
   <title>Sign In &mdash; backed.sign</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Space Grotesk', sans-serif;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #000000;
-      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #141414;
+      color: #fff;
     }
 
-    /* faint radial green glow behind the card */
-    body::before {
+    /* ── LEFT PANEL ── */
+    .bsc-login-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3.5rem 4rem;
+      background: #0e0e0e;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bsc-login-left::before {
       content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse 60% 50% at 50% 55%, rgba(109,191,84,0.07) 0%, transparent 70%);
+      position: absolute;
+      bottom: -120px;
+      left: -120px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(107,222,44,0.07) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .login-wrap {
-      width: 100%;
-      max-width: 520px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .tagline {
-      text-align: center;
-      color: #ffffff;
+    .bsc-logo {
+      font-family: 'Barlow Condensed', sans-serif;
       font-weight: 900;
-      font-size: clamp(1.9rem, 5vw, 3rem);
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin-bottom: 2.25rem;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #fff;
     }
 
-    .login-card {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 1.25rem;
-      padding: 3rem 3.5rem;
-      box-shadow:
-        0 0 40px 6px rgba(109, 191, 84, 0.09),
-        inset 0 1px 0 rgba(255, 255, 255, 0.07);
-    }
+    .bsc-logo span { color: #6bde2c; }
 
-    .login-card h2 {
-      color: #ffffff;
-      font-weight: 800;
-      font-size: 1.75rem;
-      margin-bottom: 0.4rem;
-      letter-spacing: -0.02em;
-    }
+    .bsc-login-hero { position: relative; z-index: 1; }
 
-    .login-card .subtitle {
-      color: #7d8674;
-      font-size: 0.95rem;
-      margin-bottom: 2.25rem;
-    }
-
-    .field-group {
+    .bsc-login-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
       margin-bottom: 1.25rem;
     }
 
-    .field-group label {
-      display: block;
-      color: #a3ad9a;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
+    .bsc-login-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      line-height: 0.9;
       text-transform: uppercase;
-      margin-bottom: 0.45rem;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 1.5rem;
     }
 
-    .field-group input {
+    .bsc-login-title span { color: #6bde2c; }
+
+    .bsc-login-sub {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.65;
+      max-width: 26rem;
+    }
+
+    .bsc-login-footer-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.18);
+    }
+
+    /* ── RIGHT PANEL ── */
+    .bsc-login-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3.5rem 4rem;
+    }
+
+    .bsc-login-form-wrap {
       width: 100%;
-      padding: 0.85rem 1rem;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 0.65rem;
-      color: #ffffff;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      max-width: 400px;
     }
 
-    .field-group input::placeholder { color: #4a5248; }
+    .bsc-login-form-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.75rem;
+    }
 
-    .field-group input:focus {
+    .bsc-login-form-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .bsc-login-form-sub {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 2.5rem;
+    }
+
+    /* flash / alert */
+    .bsc-alert {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #e84444;
+      border: 1px solid rgba(232,68,68,0.3);
+      background: rgba(232,68,68,0.06);
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .bsc-field { margin-bottom: 1.25rem; }
+
+    .bsc-label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.52rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 0.5rem;
+    }
+
+    .bsc-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.8rem 1rem;
       outline: none;
-      border-color: rgba(109, 191, 84, 0.5);
-      box-shadow: 0 0 0 3px rgba(109, 191, 84, 0.1);
+      transition: border-color 0.15s;
     }
 
-    .forgot-link {
+    .bsc-input::placeholder { color: rgba(255,255,255,0.2); }
+    .bsc-input:focus { border-color: rgba(107,222,44,0.5); }
+
+    .bsc-forgot {
       display: block;
       text-align: right;
-      color: #6dbf54;
-      font-size: 0.85rem;
-      font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6bde2c;
       text-decoration: none;
       margin-top: -0.75rem;
       margin-bottom: 2rem;
+      transition: opacity 0.15s;
     }
-    .forgot-link:hover { text-decoration: underline; }
+    .bsc-forgot:hover { opacity: 0.7; }
 
-    .submit-btn {
+    .bsc-submit {
       width: 100%;
-      padding: 0.95rem 1.5rem;
-      background: #4a9e3a;
-      color: #ffffff;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 800;
+      background: #6bde2c;
+      color: #0a0a0a;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
       border: none;
-      border-radius: 9999px;
+      padding: 1rem 1.5rem;
       cursor: pointer;
-      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-      letter-spacing: 0.01em;
+      transition: background 0.15s, transform 0.1s;
     }
+    .bsc-submit:hover { background: #7fe83d; }
+    .bsc-submit:active { transform: scale(0.99); }
 
-    .submit-btn:hover {
-      background: #56b544;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(109, 191, 84, 0.25);
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      body { grid-template-columns: 1fr; }
+      .bsc-login-left { display: none; }
+      .bsc-login-right { padding: 3rem 2rem; align-items: center; }
+      .bsc-login-form-wrap { max-width: 100%; }
     }
-
-    .submit-btn:active { transform: translateY(0); }
   </style>
 </head>
 <body>
-  <div class="login-wrap">
-    <p class="tagline">"Built for recruiters,<br>by recruiters."</p>
-    <div class="login-card">
-      <h2>Welcome back</h2>
-      <p class="subtitle">Sign in to your account to continue</p>
+
+  <%# ── LEFT PANEL ── %>
+  <div class="bsc-login-left">
+    <div class="bsc-logo">backed<span>.</span>sign</div>
+
+    <div class="bsc-login-hero">
+      <p class="bsc-login-eyebrow"><span style="color:#6bde2c">001</span> &mdash; Portal</p>
+      <h1 class="bsc-login-title">Built for<br>recruiters,<br><span>by</span><br>recruiters.</h1>
+      <p class="bsc-login-sub">Send, sign, and track every contract in real time. Your complete document workflow, in one place.</p>
+    </div>
+
+    <p class="bsc-login-footer-label">&copy; <%= Date.current.year %> backed.sign &mdash; All rights reserved</p>
+  </div>
+
+  <%# ── RIGHT PANEL ── %>
+  <div class="bsc-login-right">
+    <div class="bsc-login-form-wrap">
+      <p class="bsc-login-form-eyebrow">Secure access</p>
+      <h2 class="bsc-login-form-title">Welcome<br>back.</h2>
+      <p class="bsc-login-form-sub">Sign in to your account to continue</p>
+
+      <% if flash[:alert].present? %>
+        <div class="bsc-alert"><%= flash[:alert] %></div>
+      <% end %>
 
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-        <div class="field-group">
-          <label for="user_email">Email address</label>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com", id: "user_email" %>
+        <%= render 'hidden_fields' %>
+
+        <div class="bsc-field">
+          <label class="bsc-label" for="user_email">Email address</label>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email",
+                placeholder: "you@example.com", id: "user_email", class: "bsc-input" %>
         </div>
 
-        <div class="field-group">
-          <label for="user_password">Password</label>
-          <%= f.password_field :password, autocomplete: "current-password", placeholder: "••••••••", id: "user_password" %>
+        <div class="bsc-field">
+          <label class="bsc-label" for="user_password">Password</label>
+          <%= f.password_field :password, autocomplete: "current-password",
+                placeholder: "••••••••", id: "user_password", class: "bsc-input" %>
         </div>
 
-        <%= link_to "Forgot your password?", new_password_path(resource_name), class: "forgot-link" %>
+        <%= link_to "Forgot password?", new_password_path(resource_name), class: "bsc-forgot" %>
 
-        <%= f.submit "Sign in", class: "submit-btn" %>
+        <%= f.submit "Sign in →", class: "bsc-submit" %>
       <% end %>
     </div>
   </div>
+
 </body>
 </html>
