@@ -33,7 +33,7 @@
   <% if @templates.present? %>
     <div class="grid gap-4 md:grid-cols-3">
       <%= render partial: 'templates/template', collection: @templates %>
-      <% if current_user.created_at > 2.weeks.ago && current_user == true_user && params[:tour] != 'true' %>
+      <% if (current_user.created_at > 2.weeks.ago && current_user == true_user) || params[:tour] == 'true' %>
         <% user_config = current_user.user_configs.find_or_initialize_by(key: UserConfig::SHOW_APP_TOUR) %>
         <% if user_config.new_record? || user_config.value %>
           <div class="hidden md:block">
