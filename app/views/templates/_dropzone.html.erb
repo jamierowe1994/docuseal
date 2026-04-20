@@ -1,31 +1,31 @@
-<%= form_for '', url: templates_upload_path, id: form_id = SecureRandom.uuid, method: :post, class: 'mt-8 block', html: { enctype: 'multipart/form-data' } do %>
+<%= form_for '', url: templates_upload_path, id: form_id = SecureRandom.uuid, method: :post, class: 'block', html: { enctype: 'multipart/form-data' } do %>
   <input type="hidden" name="form_id" value="<%= form_id %>">
   <button type="submit" class="hidden"></button>
   <file-dropzone data-submit-on-upload="true" class="w-full">
-    <label for="file_dropzone_input" class="w-full block h-52 relative hover:bg-base-200/30 rounded-xl border-2 border-base-300 border-dashed" data-target="file-dropzone.area">
+    <label for="file_dropzone_input" class="w-full block h-52 relative rounded-xl border border-base-300 border-dashed cursor-pointer hover:border-primary/50 transition-colors" data-target="file-dropzone.area">
       <div class="absolute top-0 right-0 left-0 bottom-0 flex items-center justify-center p-2 pointer-events-none">
-        <div class="flex flex-col items-center text-center">
-          <span data-target="file-dropzone.icon" class="flex flex-col items-center <%= 'mb-5' if Docuseal.multitenant? %>">
+        <div class="flex flex-col items-center text-center gap-3">
+          <span data-target="file-dropzone.icon" class="flex flex-col items-center gap-3">
             <span>
-              <%= svg_icon('cloud_upload', class: 'w-10 h-10') %>
+              <%= svg_icon('upload', class: 'w-10 h-10 text-primary') %>
             </span>
-            <div class="font-medium mb-1">
-              <%= t('upload_a_new_document') %>
+            <div class="font-semibold">
+              <%= t('drop_templates_here') %>
             </div>
-            <div class="text-sm">
-              <%= t('click_to_upload_or_drag_and_drop_html') %>
-            </div>
+            <label for="file_dropzone_input" class="border border-primary/60 text-xs tracking-widest uppercase px-5 py-1.5 cursor-pointer pointer-events-auto hover:bg-primary/10 transition-colors">
+              <%= t('select_file') %>
+            </label>
             <% if Docuseal.multitenant? %>
-              <a class="flex absolute bottom-4 items-center text-sm mt-2 pointer-events-auto" href="<%= new_template_path(modal_tab: 'google_drive') %>" data-turbo-frame="modal">
+              <a class="flex items-center text-sm pointer-events-auto" href="<%= new_template_path(modal_tab: 'google_drive') %>" data-turbo-frame="modal">
                 <span><%= t('or_add_from') %></span>
                 <%= svg_icon('brand_gdrive', class: 'w-4 h-4 ml-1') %>
                 <span class="ml-1 font-medium hover:underline">Google Drive</span>
               </a>
             <% end %>
           </span>
-          <span data-target="file-dropzone.loading" class="flex flex-col items-center hidden">
+          <span data-target="file-dropzone.loading" class="flex flex-col items-center hidden gap-3">
             <%= svg_icon('loader', class: 'w-10 h-10 animate-spin') %>
-            <div class="font-medium mb-1">
+            <div class="font-semibold">
               <%= t('uploading') %>...
             </div>
           </span>
