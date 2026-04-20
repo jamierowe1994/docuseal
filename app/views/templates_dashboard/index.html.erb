@@ -17,7 +17,7 @@
   <%= render 'templates/dropzone' %>
   <div class="flex items-center justify-between mt-6 mb-4 gap-4">
     <div class="flex-1 max-w-sm">
-      <%= render 'shared/search_input', placeholder: t('search_templates') %>
+      <%= render 'shared/search_input', placeholder: t('search_templates'), boxed: true %>
     </div>
     <div class="flex items-center gap-2">
       <% if params[:q].blank? && @pagy.pages > 1 %>
