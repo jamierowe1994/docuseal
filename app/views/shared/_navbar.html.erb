@@ -1,103 +1,95 @@
 <%= render 'shared/navbar_warning' %>
-<div class="max-w-6xl mb-4 mx-auto px-4 md:px-2 py-3 flex items-center justify-between">
-  <div class="flex items-center space-x-4">
-    <a href="<%= root_path %>" class="text-2xl font-bold items-center flex space-x-2">
-      <%= render 'shared/title' %>
-    </a>
-    <span class="hidden sm:inline">
-      <%= render 'shared/github' if request.path.starts_with?('/settings') %>
-    </span>
-  </div>
-  <% if signed_in? %>
-    <div class="space-x-4 flex items-center">
-      <% if Docuseal.demo? %>
-        <a href="https://docuseal.com/sign_up" class="btn btn-neutral btn-sm btn-outline inline-flex items-center justify-center" style="height: 37px">
-          <%= t('sign_up') %>
-        </a>
-        <span class="hidden sm:inline">
-          <%= render 'shared/github_button' %>
-        </span>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .bsc-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(20,20,20,0.97);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .bsc-nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem 3rem;
+  }
+  .bsc-wordmark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 1.2rem; color: #fff; letter-spacing: -0.03em;
+    text-decoration: none;
+  }
+  .bsc-wordmark-g { color: #6bde2c; }
+  .bsc-nav-group {
+    display: flex; border: 1px solid rgba(255,255,255,0.18);
+  }
+  .bsc-nav-group a {
+    color: rgba(255,255,255,0.6); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 0.55rem 1.25rem;
+    border-right: 1px solid rgba(255,255,255,0.18);
+    transition: color 0.15s, background 0.15s; white-space: nowrap;
+    text-decoration: none;
+  }
+  .bsc-nav-group a:last-child { border-right: none; }
+  .bsc-nav-group a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .bsc-nav-group a.bsc-active { color: #6bde2c; background: rgba(255,255,255,0.05); }
+  .bsc-btn-green {
+    background: #6bde2c; color: #0a0a0a; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 0.6rem 1.25rem;
+    border-radius: 0; transition: background 0.15s; white-space: nowrap;
+    text-decoration: none;
+  }
+  .bsc-btn-green:hover { background: #7fe83d; color: #0a0a0a; }
+  .bsc-btn-logout {
+    background: transparent; color: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.18); border-radius: 0;
+    width: 2.45rem; height: 2.45rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: color 0.15s, border-color 0.15s, background 0.15s;
+    flex-shrink: 0;
+  }
+  .bsc-btn-logout:hover { color: #fff; border-color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.05); }
+  .bsc-btn-logout svg { width: 1rem; height: 1rem; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .bsc-nav-actions { display: flex; align-items: center; gap: 0.5rem; }
+  @media (max-width: 860px) {
+    .bsc-nav-inner { padding: 0.9rem 1.5rem; }
+  }
+  @media (max-width: 640px) {
+    .bsc-nav-group { display: none; }
+  }
+</style>
+<nav class="bsc-nav">
+  <div class="bsc-nav-inner">
+    <a href="<%= root_path %>" class="bsc-wordmark">Backed<span class="bsc-wordmark-g">.</span>sign</a>
+    <% if signed_in? %>
+      <% if !Docuseal.demo? %>
+        <div class="bsc-nav-group">
+          <a href="<%= settings_api_index_path %>" class="<%= 'bsc-active' if request.path.start_with?('/settings/api') %>">Integrations</a>
+          <a href="<%= templates_path %>" class="<%= 'bsc-active' if request.path.start_with?('/templates') || request.path == '/' %>">Templates</a>
+          <a href="<%= contracts_path %>" class="<%= 'bsc-active' if request.path.start_with?('/contracts') %>">Contracts</a>
+          <a href="<%= settings_users_path %>" class="<%= 'bsc-active' if request.path.start_with?('/settings') && !request.path.start_with?('/settings/api') %>">Admin</a>
+        </div>
+        <div class="bsc-nav-actions">
+          <%= link_to new_template_path, class: 'bsc-btn-green', data: { turbo_frame: :modal } do %>
+            New Contract &#8594;
+          <% end %>
+          <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false }, class: 'bsc-btn-logout', title: t('sign_out') do %>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <% end %>
+        </div>
       <% else %>
-        <div class="flex items-center justify-center space-x-4 mr-1">
-          <%= render 'shared/navbar_buttons' %>
-          <%= link_to 'Contracts', contracts_path, class: "hidden md:inline-flex font-medium text-lg #{'text-success' if request.path.start_with?('/contracts')}", id: 'contracts_nav_button' %>
-          <%= link_to t('settings'), settings_profile_index_path, class: 'hidden md:inline-flex font-medium text-lg', id: 'account_settings_button' %>
+        <div class="bsc-nav-actions">
+          <a href="https://docuseal.com/sign_up" class="bsc-btn-green"><%= t('sign_up') %></a>
         </div>
       <% end %>
-      <div class="dropdown dropdown-end">
-        <label tabindex="0" class="cursor-pointer bg-base-content text-purple-300 rounded-full p-2 w-9 justify-center flex">
-          <span class="text-sm align-text-top"><%= current_user.initials %></span>
-        </label>
-        <ul tabindex="0" class="z-10 dropdown-content p-2 mt-2 shadow menu text-base bg-base-100 rounded-box min-w-[160px] text-right">
-          <li>
-            <%= link_to settings_profile_index_path, class: 'flex items-center' do %>
-              <%= svg_icon('adjustments', class: 'w-5 h-5 flex-shrink-0 stroke-2') %>
-              <span class="mr-1"><%= t('profile') %></span>
-            <% end %>
-          </li>
-          <% if !Docuseal.demo? && can?(:manage, EncryptedConfig) %>
-            <li>
-              <%= link_to Docuseal.multitenant? ? console_redirect_index_path : Docuseal::CONSOLE_URL, data: { prefetch: false }, class: 'flex items-center' do %>
-                <%= svg_icon('terminal', class: 'w-5 h-5 flex-shrink-0 stroke-2') %>
-                <%= t('console') %>
-              <% end %>
-            </li>
+    <% else %>
+      <div class="bsc-nav-actions">
+        <% if request.path != new_user_session_path && request.path != setup_index_path %>
+          <%= link_to new_user_session_path({ lang: params[:lang] }.compact_blank), class: 'bsc-btn-green' do %>
+            <%= t('sign_in') %>
           <% end %>
-          <% if can?(:read, EncryptedConfig.new(key: EncryptedConfig::ESIGN_CERTS_KEY, account: current_account)) %>
-            <li>
-              <%= link_to settings_esign_path, class: 'flex items-center' do %>
-                <%= svg_icon('zoom_check', class: 'w-5 h-5 flex-shrink-0 stroke-2') %>
-                <span class="mr-1 whitespace-nowrap"><%= t('verify_pdf') %></span>
-              <% end %>
-            </li>
-          <% end %>
-          <% if Docuseal.multitenant? || current_user.role == 'superadmin' %>
-            <li>
-              <%= link_to Docuseal::CHATGPT_URL, target: 'blank', class: 'flex items-center' do %>
-                <%= svg_icon('sparkles', class: 'w-5 h-5 flex-shrink-0 stroke-2') %>
-                <span class="mr-1 whitespace-nowrap"><%= t('ask_ai') %></span>
-              <% end %>
-            </li>
-          <% end %>
-          <% if (can?(:manage, EncryptedConfig) && current_user == true_user) || (current_user != true_user && current_account.testing?) %>
-            <%= form_for '', url: testing_account_path, method: current_account.testing? ? :delete : :get, html: { class: 'w-full py-1' } do |f| %>
-              <label class="flex items-center pl-6 pr-4 py-2 border-y border-base-300 -ml-2 -mr-2" for="testing_toggle">
-                <submit-form data-on="change" class="flex">
-                  <%= f.check_box :testing_toggle, class: 'toggle', checked: current_account.testing?, style: 'height: 0.885rem; width: 1.35rem; --handleoffset: 0.395rem; margin-left: -2px; margin-right: 8px' %>
-                </submit-form>
-                <span class="whitespace-nowrap">
-                  <%= t('test_mode') %>
-                </span>
-              </label>
-            <% end %>
-          <% end %>
-          <li>
-            <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false }, class: 'flex items-center' do %>
-              <%= svg_icon('logout', class: 'w-5 h-5 flex-shrink-0 stroke-2 mr-2 inline') %>
-              <span class="mr-1 whitespace-nowrap"><%= t('sign_out') %></span>
-            <% end %>
-          </li>
-        </ul>
+        <% end %>
       </div>
-    </div>
-  <% else %>
-    <div class="flex space-x-2">
-      <% if request.path != new_user_session_path && request.path != setup_index_path %>
-        <%= link_to new_user_session_path({ lang: params[:lang] }.compact_blank), class: 'font-medium text-lg' do %>
-          <span class="flex items-center justify-center space-x-1">
-            <%= svg_icon('login', class: 'w-6 h-6') %>
-            <span><%= t('sign_in') %></span>
-          </span>
-        <% end %>
-      <% end %>
-      <% if Docuseal.multitenant? && !request.path.in?([registration_path, new_registration_path]) %>
-        <%= link_to registration_path({ lang: params[:lang] }.compact_blank), class: 'btn btn-neutral btn-sm btn-outline' do %>
-          <span class="flex items-center justify-center space-x-1">
-            <span class="hidden sm:block capitalize"><%= t('create_free_account') %></span>
-            <span class="md:hidden"><%= t('sign_up') %></span>
-          </span>
-        <% end %>
-      <% end %>
-    </div>
-  <% end %>
-</div>
+    <% end %>
+  </div>
+</nav>
+
