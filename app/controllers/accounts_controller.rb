@@ -87,7 +87,7 @@ class AccountsController < ApplicationController
       config.destroy if config.persisted?
     else
       config.value = value
-      config.save!
+      config.save
     end
   end
 end
