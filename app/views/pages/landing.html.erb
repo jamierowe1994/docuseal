@@ -1,3 +1,4 @@
+<% content_for :hide_navbar, true %>
 <%# Scoped styles + font loading for the landing page only %>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -7,9 +8,7 @@
   .backed-landing {
     font-family: 'Nunito', sans-serif;
     color: #f5f7f2;
-    background:
-      radial-gradient(ellipse at 50% 30%, rgba(74, 158, 58, 0.18) 0%, rgba(10, 15, 8, 0) 55%),
-      #0a0f08;
+    background: #000000;
     margin: -2rem calc(50% - 50vw) 0;
     padding: 4rem 1.5rem 6rem;
     min-height: calc(100vh - 4rem);
@@ -125,8 +124,8 @@
         Fast, secure digital document signing built for agencies. Every placement, contract, and offer &mdash; backed<span style="color:#6dbf54">.</span> by us.
       </p>
       <div class="cta-row">
-        <a href="/users/sign_up" class="cta-primary">Get Started</a>
-        <a href="/users/sign_in" class="cta-secondary">Sign In</a>
+        <a href="<%= new_user_session_path %>" class="cta-primary">Get Started</a>
+        <a href="<%= new_user_session_path %>" class="cta-secondary">Sign In</a>
       </div>
       <% if Docuseal.version.present? %>
         <a href="https://github.com/docusealco/docuseal/releases" target="_blank" class="version-link">
