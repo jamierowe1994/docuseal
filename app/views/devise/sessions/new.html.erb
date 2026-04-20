@@ -1,41 +1,82 @@
-<%= content_for(:canonical_url, new_user_session_url) %>
-<div class="max-w-lg mx-auto px-2">
-  <%= render 'devise/shared/select_server' if Docuseal.multitenant? %>
-  <h1 class="text-4xl font-bold text-center mt-8"><%= t('sign_in') %></h1>
-  <%= form_for(resource, as: resource_name, html: { class: 'space-y-6' }, data: { turbo: params[:redir].blank? }, url: session_path(resource_name)) do |f| %>
-    <%= render 'hidden_fields' %>
-    <div class="space-y-2" dir="auto">
-      <div class="form-control">
-        <%= f.label :email, t(:email), class: 'label' %>
-        <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'base-input' %>
-      </div>
-      <div class="form-control">
-        <%= f.label :password, t(:password), class: 'label' %>
-        <%= f.password_field :password, autocomplete: 'current-password', class: 'base-input' %>
-      </div>
-    </div>
-    <div class="form-control">
-      <%= f.button button_title(title: t(:sign_in), disabled_with: t(:signing_in)), class: 'base-button' %>
-    </div>
-  <% end %>
-  <% if devise_mapping.omniauthable? %>
-    <div class="space-y-4">
-      <% if User.omniauth_providers.include?(:google_oauth2) %>
-        <%= form_for '', url: omniauth_authorize_path(resource_name, :google_oauth2), data: { turbo: false }, method: :post do |f| %>
-          <set-timezone data-input-id="state" data-params="true"></set-timezone>
-          <%= hidden_field_tag :state, { redir: params[:redir].to_s }.compact_blank.to_query %>
-          <%= f.button button_title(title: t('sign_in_with_google'), icon: svg_icon('brand_google', class: 'w-6 h-6')), class: 'white-button w-full mt-4' %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Backed.sign</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(#0a0a0a, #1a1a1a);
+        }
+        .login-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 2rem;
+            width: 300px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin: 0 0 1rem;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #333;
+            color: white;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #6bac36;
+            outline: none;
+        }
+        .submit-button {
+            background: linear-gradient(#6bac36, #8ac754);
+            color: white;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .oauth-button {
+            background-color: #333;
+            color: white;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .oauth-button:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1>Backed.sign</h1>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+            <%= f.text_field :email, autofocus: true,autocomplete:"email", placeholder:"Email" %>
+            <%= f.password_field :password, autocomplete:"current-password", placeholder:"Password" %>
+            <%= f.submit "Log in", class: "submit-button" %>
         <% end %>
-      <% end %>
-      <% if User.omniauth_providers.include?(:microsoft_office365) %>
-        <%= form_for '', url: omniauth_authorize_path(resource_name, :microsoft_office365), data: { turbo: false }, method: :post do |f| %>
-          <set-timezone data-input-id="state_microsoft" data-params="true"></set-timezone>
-          <%= hidden_field_tag :state, { redir: params[:redir].to_s }.compact_blank.to_query, id: 'state_microsoft' %>
-          <%= f.button button_title(title: t('sign_in_with_microsoft'), icon: svg_icon('brand_microsoft', class: 'w-6 h-6')), class: 'white-button w-full' %>
-        <% end %>
-      <% end %>
+        <div>
+            <%= link_to "Forgot your password?", new_password_path(resource_name), class: "oauth-button" %>
+        </div>
+        <div>
+            <%= link_to "Sign in with Google", "#", class: "oauth-button" %>
+            <%= link_to "Sign in with Facebook", "#", class: "oauth-button" %>
+        </div>
     </div>
-  <% end %>
-  <%= render 'extra_links' %>
-  <%= render 'devise/shared/links' %>
-</div>
+</body>
+</html>
