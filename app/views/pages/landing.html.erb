@@ -94,34 +94,50 @@
     text-align: center; color: #7d8674;
     font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase;
   }
+  .backed-landing .feature-grid {
+    display: grid; gap: 2rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  @media (min-width: 768px) {
+    .backed-landing .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .backed-landing .feature-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  .backed-landing .hero-block { text-align: center; margin-bottom: 4rem; }
+  .backed-landing .cta-row { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+  .backed-landing .version-link {
+    display: inline-block; margin-top: 2rem;
+    color: #7d8674; font-size: 0.75rem; text-decoration: none;
+  }
+  .backed-landing .version-link:hover { color: #6dbf54; }
+  .backed-landing .container { max-width: 72rem; margin: 0 auto; }
 </style>
 
 <section class="backed-landing">
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-16">
-      <div class="wordmark mb-10">backed<span class="dot">.</span><span class="sign">sign</span></div>
-      <h1 class="hero">
+  <div class="container">
+    <div class="hero-block">
+      <div class="wordmark">backed<span class="dot">.</span><span class="sign">sign</span></div>
+      <h1 class="hero" style="margin-top:2.5rem;">
         Signing Made<br>For Recruiters<span class="accent-dot">.</span>
       </h1>
       <p class="hero-sub">
         Fast, secure digital document signing built for agencies. Every placement, contract, and offer &mdash; backed<span style="color:#6dbf54">.</span> by us.
       </p>
-      <div class="flex flex-wrap gap-4 justify-center">
-        <%= link_to 'Get Started', new_user_registration_path, class: 'cta-primary' %>
-        <%= link_to 'Sign In', new_user_session_path, class: 'cta-secondary' %>
+      <div class="cta-row">
+        <a href="/users/sign_up" class="cta-primary">Get Started</a>
+        <a href="/users/sign_in" class="cta-secondary">Sign In</a>
       </div>
       <% if Docuseal.version.present? %>
-        <div class="mt-8">
-          <a href="https://github.com/docusealco/docuseal/releases" target="_blank" class="text-xs text-[#7d8674] hover:text-[#6dbf54]">
-            v<%= Docuseal.version %>
-          </a>
-        </div>
+        <a href="https://github.com/docusealco/docuseal/releases" target="_blank" class="version-link">
+          v<%= Docuseal.version %>
+        </a>
       <% end %>
     </div>
 
-    <div class="grid grid-cols-1 gap-8 md:gap-6 md:grid-cols-2 lg:grid-cols-4 mt-24">
+    <div class="feature-grid" style="margin-top: 6rem;">
       <div class="feature-card">
-        <div class="feature-icon"><%= svg_icon('brand_docker', class: 'stroke-1') %></div>
+        <div class="feature-icon"><%= svg_icon('brand_docker') %></div>
         <h3>Easy to Start</h3>
         <p>Run on your own host with Docker, or deploy to your favorite managed PaaS with a single <a href="https://www.docuseal.com/install">click</a>.</p>
       </div>
