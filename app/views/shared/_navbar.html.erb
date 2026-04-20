@@ -20,6 +20,7 @@
       <% else %>
         <div class="flex items-center justify-center space-x-4 mr-1">
           <%= render 'shared/navbar_buttons' %>
+          <%= link_to 'Contracts', contracts_path, class: "hidden md:inline-flex font-medium text-lg #{'text-success' if request.path.start_with?('/contracts')}", id: 'contracts_nav_button' %>
           <%= link_to t('settings'), settings_profile_index_path, class: 'hidden md:inline-flex font-medium text-lg', id: 'account_settings_button' %>
         </div>
       <% end %>

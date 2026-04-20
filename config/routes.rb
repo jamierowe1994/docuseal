@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   end
   resource :user_signature, only: %i[edit update destroy]
   resource :user_initials, only: %i[edit update destroy]
+  resources :contracts, only: %i[index]
   resources :submissions_archived, only: %i[index], path: 'submissions/archived'
   resources :submissions, only: %i[index], controller: 'submissions_dashboard'
   resources :submissions, only: %i[show destroy] do

@@ -1,0 +1,464 @@
+<% content_for :hide_navbar, true %>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ── BASE ── */
+  .bsc {
+    font-family: 'Space Grotesk', sans-serif;
+    background: #141414;
+    color: #fff;
+    margin: -2rem calc(50% - 50vw) 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+  .bsc ~ * { display: none !important; }
+  .bsc *, .bsc *::before, .bsc *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .bsc a { text-decoration: none; }
+  .bsc-g { color: #6bde2c; }
+
+  /* ── NAV ── */
+  .bsc-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(20,20,20,0.97);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .bsc-nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem 3rem;
+  }
+  .bsc-wordmark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 1.2rem; color: #fff; letter-spacing: -0.03em;
+  }
+  .bsc-nav-group {
+    display: flex; border: 1px solid rgba(255,255,255,0.18); border-radius: 0;
+  }
+  .bsc-nav-group a {
+    color: rgba(255,255,255,0.6); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 0.55rem 1.25rem;
+    border-right: 1px solid rgba(255,255,255,0.18);
+    transition: color 0.15s, background 0.15s; white-space: nowrap;
+  }
+  .bsc-nav-group a:last-child { border-right: none; }
+  .bsc-nav-group a:hover,
+  .bsc-nav-group a.active { color: #fff; background: rgba(255,255,255,0.05); }
+  .bsc-nav-group a.active { color: #6bde2c; }
+  .bsc-btn-green {
+    background: #6bde2c; color: #0a0a0a; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 0.6rem 1.25rem;
+    border-radius: 0; transition: background 0.15s; white-space: nowrap;
+  }
+  .bsc-btn-green:hover { background: #7fe83d; color: #0a0a0a; }
+
+  /* ── PAGE INNER ── */
+  .bsc-inner {
+    padding: 5rem 5rem 6rem;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .bsc-seclbl {
+    font-family: 'Space Mono', monospace; font-size: 0.85rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin-bottom: 1.5rem;
+  }
+  .bsc-sectitle {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(3rem, 5.5vw, 5.5rem); line-height: 0.92;
+    text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 1.25rem;
+  }
+  .bsc-secsub {
+    color: rgba(255,255,255,0.5); font-size: 1rem;
+    line-height: 1.6; max-width: 30rem; margin-bottom: 3rem;
+  }
+
+  /* ── STATS ── */
+  .bsc-stats {
+    display: grid; grid-template-columns: repeat(3, auto) 1fr;
+    border: 1px solid rgba(255,255,255,0.1); margin-bottom: 3.5rem; width: fit-content;
+  }
+  .bsc-stat {
+    padding: 1.5rem 2.5rem; border-right: 1px solid rgba(255,255,255,0.1);
+    display: flex; flex-direction: column; gap: 0.3rem; min-width: 140px;
+  }
+  .bsc-stat:last-child { border-right: none; }
+  .bsc-stat-n {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 2.2rem; line-height: 1; color: #fff;
+  }
+  .bsc-stat-n.green { color: #6bde2c; }
+  .bsc-stat-l {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+
+  /* ── CONTROLS ── */
+  .bsc-controls {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 1.25rem 0; margin-bottom: 0;
+  }
+  .bsc-tabs { display: flex; gap: 0; }
+  .bsc-tab {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); padding: 0.5rem 1.25rem;
+    border: 1px solid rgba(255,255,255,0.14); border-right: none;
+    transition: color 0.15s, background 0.15s; white-space: nowrap;
+  }
+  .bsc-tab:last-child { border-right: 1px solid rgba(255,255,255,0.14); }
+  .bsc-tab:hover { color: #fff; background: rgba(255,255,255,0.04); }
+  .bsc-tab.active { color: #6bde2c; border-color: rgba(107,222,44,0.4); background: rgba(107,222,44,0.05); }
+  .bsc-search {
+    display: flex;
+  }
+  .bsc-search input {
+    background: #1a1a1a; border: 1px solid rgba(255,255,255,0.18); border-right: none;
+    color: #fff; font-size: 0.8rem; padding: 0.5rem 1rem;
+    outline: none; font-family: 'Space Grotesk', sans-serif; min-width: 220px;
+  }
+  .bsc-search input::placeholder { color: rgba(255,255,255,0.28); }
+  .bsc-search input:focus { border-color: rgba(107,222,44,0.4); }
+  .bsc-search button {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.5); font-family: 'Space Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.5rem 1rem; cursor: pointer; transition: background 0.15s;
+  }
+  .bsc-search button:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+  /* ── TABLE HEADER ── */
+  .bsc-table-head {
+    display: grid;
+    grid-template-columns: 3rem 1fr 1fr 8rem 7rem 7rem 6rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .bsc-th {
+    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.25); padding: 0 0.75rem;
+  }
+  .bsc-th:first-child { padding-left: 0; }
+
+  /* ── CONTRACT ROWS ── */
+  .bsc-contract-list { }
+  .bsc-contract-row {
+    display: grid;
+    grid-template-columns: 3rem 1fr 1fr 8rem 7rem 7rem 6rem;
+    align-items: center;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .bsc-contract-row:hover { background: rgba(255,255,255,0.025); }
+  .bsc-contract-idx {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    color: rgba(255,255,255,0.22); letter-spacing: 0.05em;
+  }
+  .bsc-contract-cell { padding: 0 0.75rem; }
+  .bsc-contract-name {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 1.25rem; text-transform: uppercase; letter-spacing: -0.01em;
+    color: #fff; line-height: 1.1;
+    overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1;
+    transition: color 0.15s;
+  }
+  .bsc-contract-row:hover .bsc-contract-name { color: #6bde2c; }
+  .bsc-contract-signer {
+    font-size: 0.875rem; color: rgba(255,255,255,0.55);
+    overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1;
+  }
+  .bsc-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.25rem 0.55rem; border: 1px solid;
+  }
+  .bsc-badge-signed   { color: #6bde2c; border-color: rgba(107,222,44,0.5); background: rgba(107,222,44,0.06); }
+  .bsc-badge-pending  { color: #f5c842; border-color: rgba(245,200,66,0.4); background: rgba(245,200,66,0.06); }
+  .bsc-badge-declined { color: #e84444; border-color: rgba(232,68,68,0.4);  background: rgba(232,68,68,0.06); }
+  .bsc-badge-expired  { color: rgba(255,255,255,0.35); border-color: rgba(255,255,255,0.2); background: transparent; }
+  .bsc-badge-sent     { color: #6bbfde; border-color: rgba(107,191,222,0.4); background: rgba(107,191,222,0.06); }
+
+  .bsc-contract-date {
+    font-family: 'Space Mono', monospace; font-size: 0.58rem;
+    color: rgba(255,255,255,0.28); letter-spacing: 0.04em;
+  }
+  .bsc-action-link {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.18);
+    padding: 0.3rem 0.65rem; transition: color 0.15s, border-color 0.15s;
+    position: relative; z-index: 1;
+  }
+  .bsc-action-link:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+  .bsc-action-dl {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #6bde2c; border: 1px solid rgba(107,222,44,0.35);
+    padding: 0.3rem 0.65rem; transition: background 0.15s;
+    position: relative; z-index: 1;
+  }
+  .bsc-action-dl:hover { background: rgba(107,222,44,0.08); }
+  .bsc-actions { display: flex; gap: 0.4rem; align-items: center; position: relative; z-index: 1; }
+  .bsc-row-link { position: absolute; inset: 0; z-index: 0; }
+
+  /* ── EMPTY STATE ── */
+  .bsc-empty {
+    padding: 5rem 0; text-align: center;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.18); line-height: 2.2;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* ── PAGINATION ── */
+  .bsc-pagination {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.75rem 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 0;
+  }
+  .bsc-page-info {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+  }
+  .bsc-page-links { display: flex; gap: 0; }
+  .bsc-page-link {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.14);
+    border-right: none; padding: 0.4rem 0.85rem;
+    transition: color 0.15s, background 0.15s;
+  }
+  .bsc-page-link:last-child { border-right: 1px solid rgba(255,255,255,0.14); }
+  .bsc-page-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .bsc-page-link.current { color: #6bde2c; background: rgba(107,222,44,0.05); border-color: rgba(107,222,44,0.3); }
+  .bsc-page-link.disabled { opacity: 0.3; pointer-events: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1100px) {
+    .bsc-inner { padding: 4rem 3rem 5rem; }
+    .bsc-table-head,
+    .bsc-contract-row {
+      grid-template-columns: 3rem 1fr 1fr 8rem 7rem 6rem;
+    }
+    .bsc-th:nth-child(5),
+    .bsc-contract-row > *:nth-child(5) { display: none; }
+  }
+  @media (max-width: 860px) {
+    .bsc-nav-inner { padding: 0.9rem 1.5rem; }
+    .bsc-inner { padding: 3rem 1.5rem 4rem; }
+    .bsc-table-head { display: none; }
+    .bsc-contract-row {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      gap: 0.25rem 0.5rem;
+      padding: 1rem 0;
+    }
+    .bsc-contract-row > *:nth-child(1),
+    .bsc-contract-row > *:nth-child(3),
+    .bsc-contract-row > *:nth-child(5),
+    .bsc-contract-row > *:nth-child(6) { display: none; }
+    .bsc-contract-row > *:nth-child(2) { grid-column: 1; grid-row: 1; padding-left: 0; }
+    .bsc-contract-row > *:nth-child(4) { grid-column: 2; grid-row: 1; }
+    .bsc-contract-row > *:nth-child(7) { grid-column: 1 / -1; grid-row: 2; padding-left: 0; }
+    .bsc-stats { grid-template-columns: 1fr 1fr; width: 100%; }
+    .bsc-controls { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 640px) {
+    .bsc-nav-group { display: none; }
+  }
+</style>
+
+<div class="bsc">
+
+  <%# ── NAV ── %>
+  <nav class="bsc-nav">
+    <div class="bsc-nav-inner">
+      <a href="<%= root_path %>" class="bsc-wordmark">Backed<span class="bsc-g">.</span>sign</a>
+      <div class="bsc-nav-group">
+        <a href="<%= root_path %>#product">Product</a>
+        <a href="<%= root_path %>#integrations">Integrations</a>
+        <a href="<%= root_path %>#templates">Templates</a>
+        <a href="<%= contracts_path %>" class="active">Contracts</a>
+      </div>
+      <%= link_to new_template_path, class: 'bsc-btn-green', data: { turbo_frame: :modal } do %>
+        New Contract &#8594;
+      <% end %>
+    </div>
+  </nav>
+
+  <%# ── PAGE CONTENT ── %>
+  <div class="bsc-inner">
+
+    <%# ── HEADER ── %>
+    <p class="bsc-seclbl"><span class="bsc-g">003</span> &mdash; CONTRACTS</p>
+    <h1 class="bsc-sectitle">CONTRACTS.</h1>
+    <p class="bsc-secsub">Your signed documents, tracked in real time. Every send, every signature.</p>
+
+    <%# ── STATS ── %>
+    <div class="bsc-stats">
+      <div class="bsc-stat">
+        <span class="bsc-stat-n"><%= @total_count %></span>
+        <span class="bsc-stat-l">Total Sent</span>
+      </div>
+      <div class="bsc-stat">
+        <span class="bsc-stat-n green"><%= @completed_count %></span>
+        <span class="bsc-stat-l">Signed</span>
+      </div>
+      <div class="bsc-stat">
+        <span class="bsc-stat-n"><%= @pending_count %></span>
+        <span class="bsc-stat-l">Pending</span>
+      </div>
+    </div>
+
+    <%# ── CONTROLS ── %>
+    <div class="bsc-controls">
+      <div class="bsc-tabs">
+        <a href="<%= contracts_path(request.query_parameters.except('status', 'page')) %>"
+           class="bsc-tab <%= params[:status].blank? ? 'active' : '' %>">All</a>
+        <a href="<%= contracts_path(request.query_parameters.merge('status' => 'pending').except('page')) %>"
+           class="bsc-tab <%= params[:status] == 'pending' ? 'active' : '' %>">Pending</a>
+        <a href="<%= contracts_path(request.query_parameters.merge('status' => 'completed').except('page')) %>"
+           class="bsc-tab <%= params[:status] == 'completed' ? 'active' : '' %>">Signed</a>
+      </div>
+
+      <%= form_with url: contracts_path, method: :get, class: 'bsc-search' do |f| %>
+        <% request.query_parameters.except('q', 'page').each do |k, v| %>
+          <%= hidden_field_tag k, v %>
+        <% end %>
+        <%= f.text_field :q, placeholder: 'Search contracts…', value: params[:q], class: '' %>
+        <%= f.submit 'Search' %>
+      <% end %>
+    </div>
+
+    <%# ── TABLE ── %>
+    <div class="bsc-table-head">
+      <span class="bsc-th">#</span>
+      <span class="bsc-th">Contract</span>
+      <span class="bsc-th">Signer</span>
+      <span class="bsc-th">Status</span>
+      <span class="bsc-th">Sent</span>
+      <span class="bsc-th">Author</span>
+      <span class="bsc-th">Actions</span>
+    </div>
+
+    <div class="bsc-contract-list">
+      <% if @submissions.empty? %>
+        <div class="bsc-empty">
+          No contracts found<br>
+          <span style="color:rgba(255,255,255,0.1)">Send your first contract to get started</span>
+        </div>
+      <% else %>
+        <% @submissions.each_with_index do |submission, idx| %>
+          <%
+            submitters = submission.submitters
+            all_completed = submitters.all?(&:completed_at?) && submitters.size.positive?
+            any_declined  = submitters.any?(&:declined_at?)
+            is_expired    = submission.expired? && !all_completed
+
+            # determine primary status
+            contract_status =
+              if any_declined   then :declined
+              elsif is_expired  then :expired
+              elsif all_completed then :signed
+              elsif submitters.any? { |s| s.opened_at? } then :sent
+              else :pending
+              end
+
+            badge_class = {
+              signed: 'bsc-badge-signed', pending: 'bsc-badge-pending',
+              declined: 'bsc-badge-declined', expired: 'bsc-badge-expired',
+              sent: 'bsc-badge-sent'
+            }[contract_status]
+
+            badge_label = { signed: 'Signed', pending: 'Pending',
+                            declined: 'Declined', expired: 'Expired', sent: 'Sent' }[contract_status]
+
+            primary_submitter = submitters.first
+            signer_name = primary_submitter&.name || primary_submitter&.email || primary_submitter&.phone || '—'
+            if submitters.size > 1
+              extra = submitters.size - 1
+              signer_name += " +#{extra}"
+            end
+
+            template_name = (submission.name || submission.template&.name || 'Untitled').upcase
+            sent_date = l(submission.created_at.in_time_zone(current_account.timezone), format: :short, locale: current_account.locale)
+            author = submission.created_by_user || submission.template&.author
+            author_label = author ? (author.full_name.presence || author.email.to_s.sub(/\+\w+@/, '@')) : '—'
+
+            row_idx = (@pagy.page - 1) * @pagy.vars[:items] + idx + 1
+          %>
+          <div class="bsc-contract-row">
+            <a href="<%= submission_path(submission) %>" class="bsc-row-link"></a>
+            <span class="bsc-contract-idx"><%= row_idx.to_s.rjust(2, '0') %></span>
+            <div class="bsc-contract-cell">
+              <div class="bsc-contract-name"><%= template_name %></div>
+            </div>
+            <div class="bsc-contract-cell">
+              <span class="bsc-contract-signer"><%= signer_name %></span>
+            </div>
+            <div class="bsc-contract-cell">
+              <span class="bsc-badge <%= badge_class %>"><%= badge_label %></span>
+            </div>
+            <div class="bsc-contract-cell">
+              <span class="bsc-contract-date"><%= sent_date %></span>
+            </div>
+            <div class="bsc-contract-cell">
+              <span class="bsc-contract-signer" style="font-size:0.8rem"><%= author_label %></span>
+            </div>
+            <div class="bsc-contract-cell">
+              <div class="bsc-actions">
+                <a href="<%= submission_path(submission) %>" class="bsc-action-link">View</a>
+                <% if all_completed %>
+                  <a href="<%= submission_download_index_path(submission) %>" class="bsc-action-dl">&#8595;</a>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# ── PAGINATION ── %>
+    <% if @pagy.pages > 1 %>
+      <div class="bsc-pagination">
+        <span class="bsc-page-info">
+          Showing <%= @pagy.from %>–<%= @pagy.to %> of <%= @pagy.count %> contracts
+        </span>
+        <div class="bsc-page-links">
+          <% if @pagy.prev %>
+            <a href="<%= contracts_path(request.query_parameters.merge('page' => @pagy.prev)) %>" class="bsc-page-link">&#8592; Prev</a>
+          <% else %>
+            <span class="bsc-page-link disabled">&#8592; Prev</span>
+          <% end %>
+          <% (@pagy.series rescue []).each do |item| %>
+            <% if item.is_a?(Integer) %>
+              <a href="<%= contracts_path(request.query_parameters.merge('page' => item)) %>"
+                 class="bsc-page-link <%= 'current' if item == @pagy.page %>"><%= item %></a>
+            <% elsif item == :gap %>
+              <span class="bsc-page-link disabled">&hellip;</span>
+            <% end %>
+          <% end %>
+          <% if @pagy.next %>
+            <a href="<%= contracts_path(request.query_parameters.merge('page' => @pagy.next)) %>" class="bsc-page-link">Next &#8594;</a>
+          <% else %>
+            <span class="bsc-page-link disabled">Next &#8594;</span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>
