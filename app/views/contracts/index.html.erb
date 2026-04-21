@@ -342,7 +342,7 @@
             author = submission.created_by_user || submission.template&.author
             author_label = author ? (author.full_name.presence || author.email.to_s.sub(/\+\w+@/, '@')) : '—'
 
-            row_idx = (@pagy.page - 1) * @pagy.vars[:limit] + idx + 1
+            row_idx = (@pagy.page - 1) * @pagy.limit + idx + 1
           %>
           <div class="bsc-contract-row">
             <a href="<%= submission_path(submission) %>" class="bsc-row-link"></a>
