@@ -192,6 +192,21 @@
   }
   template-builder [class*="dropzone"] a { color: #6bde2c !important; }
   template-builder [class*="dropzone"] span { color: rgba(255,255,255,0.2) !important; }
+
+  /* ── Placed field list items (top-right panel boxes) ── */
+  template-builder .fields-list-item {
+    background: #000 !important;
+    border: 1px solid #fff !important;
+    border-radius: 0 !important;
+    color: #fff !important;
+  }
+  template-builder .fields-list-item * {
+    color: #fff !important;
+  }
+  template-builder .fields-list-item input,
+  template-builder .fields-list-item [contenteditable] {
+    color: #fff !important;
+  }
 </style>
 
 <% if current_user.created_at > 2.weeks.ago || params[:tour] == 'true' %>
