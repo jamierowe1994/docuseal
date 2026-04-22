@@ -105,9 +105,23 @@
 
   /* ── Submitter/roles dropdown ── */
   template-builder .roles-dropdown {
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    background: rgba(255,255,255,0.04) !important;
-    color: rgba(255,255,255,0.7) !important; border-radius: 0 !important;
+    display: none !important;
+  }
+
+  /* ── Add signer "+" button ── */
+  template-builder .add-signer-btn {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border: 1px solid rgba(107,222,44,0.4) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #6bde2c !important;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  template-builder .add-signer-btn:hover {
+    background: rgba(107,222,44,0.08) !important;
+    border-color: #6bde2c !important;
   }
 
   /* ── Field types list (replacing 3-col grid) ── */

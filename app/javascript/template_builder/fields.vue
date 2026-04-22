@@ -5,6 +5,7 @@
     class="flex items-center gap-1"
   >
     <FieldSubmitter
+      ref="submitterDropdown"
       :model-value="selectedSubmitter.uuid"
       class="roles-dropdown w-full rounded-lg roles-dropdown"
       :submitters="submitters"
@@ -15,6 +16,18 @@
       @name-change="save"
       @update:model-value="[$emit('change-submitter', submitters.find((s) => s.uuid === $event)), isShowVariables = false]"
     />
+    <button
+      v-if="editable && !defaultSubmitters.length"
+      class="add-signer-btn flex-shrink-0 flex items-center justify-center"
+      :title="t('add') + ' signer'"
+      @click.prevent="$refs.submitterDropdown.addSubmitter()"
+    >
+      <IconCirclePlus
+        :width="20"
+        :height="20"
+        :stroke-width="1.6"
+      />
+    </button>
     <button
       v-if="hasDynamicDocuments"
       class="flex-shrink-0 rounded-md border hover:border-content flex items-center justify-center self-stretch"
