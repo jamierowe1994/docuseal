@@ -1,0 +1,490 @@
+<style>
+  @media print {
+    .no-print { display: none !important; }
+    body { background: white !important; }
+    .docs-page { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+    .endpoint-block { break-inside: avoid; page-break-inside: avoid; }
+    pre { white-space: pre-wrap !important; word-break: break-all !important; }
+  }
+  @media screen {
+    .docs-page { max-width: 900px; margin: 0 auto; }
+  }
+  .method-get    { background: #1d4ed8; color: white; }
+  .method-post   { background: #b45309; color: white; }
+  .method-put    { background: #6d28d9; color: white; }
+  .method-patch  { background: #6d28d9; color: white; }
+  .method-delete { background: #b91c1c; color: white; }
+  .param-required { color: #dc2626; font-weight: bold; }
+  .param-optional { color: #6b7280; }
+  .endpoint-block { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 1.5rem; overflow: hidden; }
+  .endpoint-header { padding: 1rem 1.25rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+  .endpoint-body   { padding: 1.25rem; }
+  .method-badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-family: monospace; font-size: 0.8rem; font-weight: 700; margin-right: 8px; }
+  .path-badge { font-family: monospace; font-size: 0.95rem; font-weight: 600; }
+  .section-divider { border-top: 2px solid #e5e7eb; margin: 2rem 0 1.5rem; padding-top: 1.5rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 0.75rem 0; }
+  th, td { text-align: left; padding: 0.5rem 0.75rem; border: 1px solid #e5e7eb; }
+  th { background: #f3f4f6; font-weight: 600; }
+  code.inline { background: #f3f4f6; border-radius: 3px; padding: 1px 5px; font-family: monospace; font-size: 0.85em; }
+  pre.code-block { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.82rem; line-height: 1.5; }
+  .response-block { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 0.75rem 1rem; margin-top: 0.75rem; }
+  .response-block pre { background: #1e293b; color: #e2e8f0; padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem; font-size: 0.8rem; }
+  .new-badge { background: #f59e0b; color: white; padding: 1px 7px; border-radius: 3px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-left: 8px; vertical-align: middle; }
+  h1 { font-size: 2rem; font-weight: 800; }
+  h2 { font-size: 1.4rem; font-weight: 700; }
+  h3 { font-size: 1.1rem; font-weight: 600; }
+</style>
+
+<div class="no-print flex flex-wrap space-y-4 md:flex-nowrap md:space-y-0 md:space-x-10 mb-6">
+  <%= render 'shared/settings_nav' %>
+  <div class="flex-grow">
+    <div class="flex flex-col gap-2 md:flex-row md:justify-between md:items-end mb-4">
+      <h1 class="text-4xl font-bold">API Documentation</h1>
+      <button onclick="window.print()" class="btn btn-primary gap-2">
+        <%= svg_icon('download', class: 'w-5 h-5') %>
+        Download as PDF
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="docs-page px-4 pb-12">
+  <%# ─── Cover ─────────────────────────────────────────────────── %>
+  <div style="text-align:center; padding: 2rem 0 1rem;">
+    <h1 style="font-size:2.4rem; font-weight:800; margin-bottom:0.4rem;"><%= current_account.name %> API Reference</h1>
+    <p style="color:#6b7280; font-size:1rem;">CRM Integration &amp; Document Signing API</p>
+    <p style="color:#9ca3af; font-size:0.85rem; margin-top:0.3rem;">Generated <%= Date.current.strftime('%B %-d, %Y') %> &bull; Base URL: <code class="inline"><%= root_url(Docuseal.default_url_options).chomp('/') %>/api</code></p>
+  </div>
+
+  <%# ─── Authentication ─────────────────────────────────────────── %>
+  <div class="section-divider">
+    <h2>Authentication</h2>
+    <p style="margin: 0.5rem 0 0.75rem;">All API requests must include your API token in the <code class="inline">X-Auth-Token</code> request header.</p>
+    <pre class="code-block">curl 'https://your-domain.com/api/templates' \
+  --header 'X-Auth-Token: YOUR_API_TOKEN'</pre>
+    <p style="margin-top:0.75rem; color:#6b7280; font-size:0.9rem;">Obtain your token at <strong>Settings → API</strong>. Keep it secret — it grants full access to your account.</p>
+    <table>
+      <thead><tr><th>Response Code</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>200 / 201</td><td>Success</td></tr>
+        <tr><td>401 Unauthorized</td><td>Missing or invalid API token</td></tr>
+        <tr><td>403 Forbidden</td><td>Token valid but not permitted for this action</td></tr>
+        <tr><td>404 Not Found</td><td>Resource does not exist in this account</td></tr>
+        <tr><td>422 Unprocessable Content</td><td>Validation error — check the <code class="inline">error</code> field in the response</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <%# ─── TEMPLATES ────────────────────────────────────────────────── %>
+  <div class="section-divider">
+    <h2>Templates</h2>
+    <p style="margin-bottom:1rem; color:#6b7280; font-size:0.9rem;">Templates define the document layout, fields, and signing roles.</p>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="path-badge"><%= api_templates_path %></span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">List Templates</h3>
+        <p style="color:#374151; margin-bottom:0.75rem;">Returns a paginated list of all templates in your account.</p>
+        <table>
+          <thead><tr><th>Query Param</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code class="inline">q</code></td><td>String</td><td>Search by template name</td></tr>
+            <tr><td><code class="inline">folder</code></td><td>String</td><td>Filter by folder name</td></tr>
+            <tr><td><code class="inline">external_id</code></td><td>String</td><td>Filter by your own external ID</td></tr>
+            <tr><td><code class="inline">after</code></td><td>Integer</td><td>Cursor for pagination (last seen ID)</td></tr>
+            <tr><td><code class="inline">limit</code></td><td>Integer</td><td>Number of results (max 100, default 10)</td></tr>
+          </tbody>
+        </table>
+        <div class="response-block">
+          <strong>Response</strong>
+          <pre>{ "data": [ { "id": 1, "name": "...", ... } ], "pagination": { "count": 10, "next": 10, "prev": 1 } }</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="path-badge"><%= api_template_path(':id') %></span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">Get Template</h3>
+        <p style="color:#374151;">Returns full details for a single template, including fields and submitter roles.</p>
+      </div>
+    </div>
+  </div>
+
+  <%# ─── SUBMISSIONS ────────────────────────────────────────────────── %>
+  <div class="section-divider">
+    <h2>Submissions</h2>
+    <p style="margin-bottom:1rem; color:#6b7280; font-size:0.9rem;">A submission is a request for one or more people to sign a specific template.</p>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-post">POST</span>
+        <span class="path-badge"><%= api_template_submissions_path(':template_id') %></span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">Create Submission</h3>
+        <p style="color:#374151; margin-bottom:0.75rem;">Create a new submission and invite signers by email.</p>
+        <table>
+          <thead><tr><th>Body Param</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code class="inline">submitters</code></td><td>Array</td><td class="param-required">Yes</td><td>List of signer objects</td></tr>
+            <tr><td><code class="inline">submitters[].email</code></td><td>String</td><td class="param-required">Yes*</td><td>Signer's email address</td></tr>
+            <tr><td><code class="inline">submitters[].name</code></td><td>String</td><td class="param-optional">No</td><td>Signer's full name</td></tr>
+            <tr><td><code class="inline">submitters[].role</code></td><td>String</td><td class="param-optional">No</td><td>Role name matching template (e.g. "First Party")</td></tr>
+            <tr><td><code class="inline">submitters[].phone</code></td><td>String</td><td class="param-optional">No</td><td>E.164 format, e.g. <code class="inline">+441234567890</code></td></tr>
+            <tr><td><code class="inline">submitters[].external_id</code></td><td>String</td><td class="param-optional">No</td><td>Your CRM contact/deal ID for two-way lookup</td></tr>
+            <tr><td><code class="inline">submitters[].values</code></td><td>Object</td><td class="param-optional">No</td><td>Pre-fill field values keyed by field name or UUID</td></tr>
+            <tr><td><code class="inline">submitters[].metadata</code></td><td>Object</td><td class="param-optional">No</td><td>Arbitrary data stored with the submitter</td></tr>
+            <tr><td><code class="inline">send_email</code></td><td>Boolean</td><td class="param-optional">No</td><td>Send signing invitation email (default: true)</td></tr>
+            <tr><td><code class="inline">submitters_order</code></td><td>String</td><td class="param-optional">No</td><td><code class="inline">preserved</code> (sequential) or <code class="inline">random</code> (parallel). Default: <code class="inline">preserved</code></td></tr>
+          </tbody>
+        </table>
+        <pre class="code-block">curl --location '<%= api_template_submissions_url(current_account.templates.last || 1) %>' \
+  --header 'X-Auth-Token: API_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "submitters": [
+      {
+        "name": "Jane Smith",
+        "email": "jane@example.com",
+        "role": "First Party",
+        "external_id": "crm_contact_123",
+        "values": { "Company Name": "Acme Ltd" }
+      }
+    ],
+    "send_email": true
+  }'</pre>
+        <div class="response-block">
+          <strong>Response 201</strong>
+          <pre>{ "id": 42, "status": "pending", "submitters": [ { "id": 99, "email": "jane@example.com", "status": "sent", "embed_src": "https://..." } ] }</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-post">POST</span>
+        <span class="path-badge">/api/templates/:template_id/submissions/bulk</span>
+        <span class="new-badge">New</span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">Bulk Send <span class="new-badge">New</span></h3>
+        <p style="color:#374151; margin-bottom:0.75rem;">
+          Create one submission per contact in a single API call. Returns an array of submitter objects with signing URLs.
+          Ideal for CRM workflows where you need to invite multiple contacts at once.
+        </p>
+        <table>
+          <thead><tr><th>Body Param</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code class="inline">submitters</code></td><td>Array</td><td class="param-required">Yes</td><td>Array of submitter objects (same shape as single submission submitters)</td></tr>
+            <tr><td><code class="inline">send_email</code></td><td>Boolean</td><td class="param-optional">No</td><td>Default send_email for all submitters (default: true). Can be overridden per-submitter.</td></tr>
+          </tbody>
+        </table>
+        <pre class="code-block">curl --location '<%= root_url(Docuseal.default_url_options).chomp('/') %>/api/templates/<%= current_account.templates.last&.id || 1 %>/submissions/bulk' \
+  --header 'X-Auth-Token: API_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "send_email": true,
+    "submitters": [
+      { "name": "Alice", "email": "alice@example.com", "external_id": "crm_001" },
+      { "name": "Bob",   "email": "bob@example.com",   "external_id": "crm_002" }
+    ]
+  }'</pre>
+        <div class="response-block">
+          <strong>Response 201</strong> — array of submitters, one per contact
+          <pre>[
+  { "id": 100, "email": "alice@example.com", "status": "sent", "external_id": "crm_001", "embed_src": "https://..." },
+  { "id": 101, "email": "bob@example.com",   "status": "sent", "external_id": "crm_002", "embed_src": "https://..." }
+]</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="path-badge"><%= api_submissions_path %></span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">List Submissions</h3>
+        <table>
+          <thead><tr><th>Query Param</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code class="inline">template_id</code></td><td>Integer</td><td>Filter by template</td></tr>
+            <tr><td><code class="inline">status</code></td><td>String</td><td><code class="inline">pending</code>, <code class="inline">completed</code>, <code class="inline">declined</code>, <code class="inline">expired</code></td></tr>
+            <tr><td><code class="inline">after</code></td><td>Integer</td><td>Pagination cursor</td></tr>
+            <tr><td><code class="inline">limit</code></td><td>Integer</td><td>Results per page (max 100)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="path-badge"><%= api_submission_path(':id') %></span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">Get Submission</h3>
+        <p style="color:#374151;">Returns full submission details including all submitters, status, and signed document URLs when completed.</p>
+      </div>
+    </div>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="path-badge">/api/submissions/:id/documents</span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">Download Signed Documents</h3>
+        <p style="color:#374151; margin-bottom:0.5rem;">Returns signed PDF download URLs for a completed submission.</p>
+        <div class="response-block">
+          <strong>Response 200</strong>
+          <pre>[{ "id": 1, "name": "contract.pdf", "url": "https://..." }]</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-delete">DELETE</span>
+        <span class="path-badge"><%= api_submission_path(':id') %></span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">Archive Submission</h3>
+        <p style="color:#374151;">Archives a submission. Archived submissions are no longer visible in the dashboard but can be retrieved via the API with <code class="inline">?archived=true</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <%# ─── SUBMITTERS ────────────────────────────────────────────────── %>
+  <div class="section-divider">
+    <h2>Submitters</h2>
+    <p style="margin-bottom:1rem; color:#6b7280; font-size:0.9rem;">A submitter is a signer within a specific submission.</p>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="path-badge"><%= api_submitters_path %></span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">List Submitters</h3>
+        <p style="color:#374151; margin-bottom:0.75rem;">Supports filtering by your CRM's external ID — the key lookup for two-way sync.</p>
+        <table>
+          <thead><tr><th>Query Param</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code class="inline">external_id</code></td><td>String</td><td>Look up by your CRM contact/deal ID</td></tr>
+            <tr><td><code class="inline">submission_id</code></td><td>Integer</td><td>Filter by submission</td></tr>
+            <tr><td><code class="inline">email</code></td><td>String</td><td>Filter by email address</td></tr>
+            <tr><td><code class="inline">completed_after</code></td><td>DateTime</td><td>Only submitters who completed after this timestamp</td></tr>
+            <tr><td><code class="inline">after</code></td><td>Integer</td><td>Pagination cursor</td></tr>
+            <tr><td><code class="inline">limit</code></td><td>Integer</td><td>Results per page (max 100)</td></tr>
+          </tbody>
+        </table>
+        <pre class="code-block"># Find all signing records for a specific CRM contact
+curl '<%= api_submitters_url %>?external_id=crm_contact_123' \
+  --header 'X-Auth-Token: API_TOKEN'</pre>
+      </div>
+    </div>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="path-badge"><%= api_submitter_path(':id') %></span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">Get Submitter</h3>
+        <p style="color:#374151;">Returns full submitter details including status, completed documents, and field values.</p>
+      </div>
+    </div>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-put">PUT/PATCH</span>
+        <span class="path-badge"><%= api_submitter_path(':id') %></span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">Update Submitter</h3>
+        <p style="color:#374151; margin-bottom:0.75rem;">Update a submitter's details before they sign. Can be used to change email, pre-fill field values, or update the external_id.</p>
+        <table>
+          <thead><tr><th>Body Param</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code class="inline">email</code></td><td>String</td><td>New email address</td></tr>
+            <tr><td><code class="inline">name</code></td><td>String</td><td>Updated full name</td></tr>
+            <tr><td><code class="inline">phone</code></td><td>String</td><td>E.164 phone number</td></tr>
+            <tr><td><code class="inline">external_id</code></td><td>String</td><td>Link to your CRM record</td></tr>
+            <tr><td><code class="inline">values</code></td><td>Object</td><td>Pre-fill field values</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <%# ─── CONTACTS ────────────────────────────────────────────────── %>
+  <div class="section-divider">
+    <h2>Contacts <span class="new-badge">New</span></h2>
+    <p style="margin-bottom:1rem; color:#6b7280; font-size:0.9rem;">Sync a CRM contact into <%= current_account.name %> and optionally trigger document signing in a single call.</p>
+
+    <div class="endpoint-block">
+      <div class="endpoint-header">
+        <span class="method-badge method-post">POST</span>
+        <span class="path-badge"><%= api_contacts_path %></span>
+        <span class="new-badge">New</span>
+      </div>
+      <div class="endpoint-body">
+        <h3 style="margin-bottom:0.5rem;">Sync CRM Contact</h3>
+        <p style="color:#374151; margin-bottom:0.75rem;">
+          Accepts a CRM contact and optionally creates a signing submission for them.
+          If <code class="inline">template_id</code> is provided, a submission is created immediately and the signing URL is returned.
+          If no <code class="inline">template_id</code>, the contact is acknowledged and can be enrolled later.
+        </p>
+        <table>
+          <thead><tr><th>Body Param</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code class="inline">name</code></td><td>String</td><td class="param-required">At least one required</td><td>Contact's full name</td></tr>
+            <tr><td><code class="inline">email</code></td><td>String</td><td class="param-required">At least one required</td><td>Contact's email address</td></tr>
+            <tr><td><code class="inline">phone</code></td><td>String</td><td class="param-required">At least one required</td><td>E.164 format, e.g. <code class="inline">+441234567890</code></td></tr>
+            <tr><td><code class="inline">external_id</code></td><td>String</td><td class="param-optional">No</td><td>Your CRM contact/deal ID — stored for lookup via <code class="inline">GET /api/submitters?external_id=</code></td></tr>
+            <tr><td><code class="inline">template_id</code></td><td>Integer</td><td class="param-optional">No</td><td>Template to send for signing. Omit to register the contact without starting a workflow.</td></tr>
+            <tr><td><code class="inline">send_email</code></td><td>Boolean</td><td class="param-optional">No</td><td>Send the signing invitation email (default: true)</td></tr>
+            <tr><td><code class="inline">metadata</code></td><td>Object</td><td class="param-optional">No</td><td>Arbitrary key/value data stored with the submitter</td></tr>
+          </tbody>
+        </table>
+
+        <p style="font-weight:600; margin-top:1rem; margin-bottom:0.4rem;">Example — Enrol contact in a signing workflow:</p>
+        <pre class="code-block">curl --location '<%= api_contacts_url %>' \
+  --header 'X-Auth-Token: API_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "phone": "+441234567890",
+    "external_id": "crm_contact_456",
+    "template_id": <%= current_account.templates.last&.id || 1 %>,
+    "send_email": true,
+    "metadata": { "deal_id": "deal_789" }
+  }'</pre>
+
+        <div class="response-block">
+          <strong>Response 201</strong> — submission created
+          <pre>{
+  "external_id": "crm_contact_456",
+  "submitter_id": 99,
+  "submission_id": 55,
+  "status": "sent",
+  "embed_src": "https://your-domain.com/s/abc123xyz"
+}</pre>
+        </div>
+
+        <div class="response-block" style="background:#fffbeb; border-color:#fde68a; margin-top:0.75rem;">
+          <strong>Response 200</strong> — no template_id provided
+          <pre>{
+  "external_id": "crm_contact_456",
+  "submitter_id": null,
+  "submission_id": null,
+  "status": "pending",
+  "message": "Contact stored; provide template_id to initiate signing"
+}</pre>
+        </div>
+
+        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; padding:0.75rem 1rem; margin-top:0.75rem; font-size:0.88rem;">
+          <strong>CRM Integration Tip:</strong> Store the returned <code class="inline">submitter_id</code> and <code class="inline">embed_src</code> in your CRM record.
+          Use the <code class="inline">external_id</code> to look up the submitter at any time via
+          <code class="inline">GET /api/submitters?external_id=crm_contact_456</code>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%# ─── WEBHOOKS ────────────────────────────────────────────────── %>
+  <div class="section-divider">
+    <h2>Webhooks</h2>
+    <p style="margin-bottom:1rem; color:#6b7280; font-size:0.9rem;">
+      <%= current_account.name %> fires webhook events to your configured URL in real time. No additional endpoint is needed — configure your CRM's inbound webhook URL at
+      <strong>Settings → Webhooks</strong>.
+    </p>
+    <table>
+      <thead><tr><th>Event</th><th>When it fires</th></tr></thead>
+      <tbody>
+        <tr><td><code class="inline">submission.created</code></td><td>A new submission is created</td></tr>
+        <tr><td><code class="inline">submission.completed</code></td><td>All signers in the submission have signed</td></tr>
+        <tr><td><code class="inline">submission.archived</code></td><td>Submission is archived</td></tr>
+        <tr><td><code class="inline">submitter.completed</code></td><td>An individual signer completes their form</td></tr>
+        <tr><td><code class="inline">template.created</code></td><td>A new template is created</td></tr>
+        <tr><td><code class="inline">template.updated</code></td><td>A template is updated</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:0.75rem; font-size:0.9rem;">The webhook payload includes the full submission or submitter object.
+    The <code class="inline">submitter.external_id</code> field lets your CRM identify which CRM contact the event relates to.</p>
+    <pre class="code-block"># Example submitter.completed payload (simplified)
+{
+  "event_type": "submitter.completed",
+  "timestamp": "2025-01-15T10:30:00Z",
+  "data": {
+    "id": 99,
+    "email": "jane@example.com",
+    "external_id": "crm_contact_456",
+    "status": "completed",
+    "completed_at": "2025-01-15T10:29:55Z",
+    "submission_id": 55,
+    "documents": [ { "name": "contract.pdf", "url": "https://..." } ]
+  }
+}</pre>
+  </div>
+
+  <%# ─── PAGINATION ────────────────────────────────────────────────── %>
+  <div class="section-divider">
+    <h2>Pagination</h2>
+    <p style="margin-bottom:0.75rem;">All list endpoints use cursor-based pagination. The response includes a <code class="inline">pagination</code> object:</p>
+    <pre class="code-block">{
+  "data": [...],
+  "pagination": {
+    "count": 10,
+    "next": 120,
+    "prev": 111
+  }
+}
+# Pass pagination.next as ?after=120 to get the next page</pre>
+    <table>
+      <thead><tr><th>Param</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code class="inline">?after=&lt;id&gt;</code></td><td>Fetch the next page (use <code class="inline">pagination.next</code> from the previous response)</td></tr>
+        <tr><td><code class="inline">?before=&lt;id&gt;</code></td><td>Fetch the previous page</td></tr>
+        <tr><td><code class="inline">?limit=50</code></td><td>Number of results per page (max 100, default 10)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <%# ─── QUICK REFERENCE ────────────────────────────────────────────── %>
+  <div class="section-divider">
+    <h2>Quick Reference</h2>
+    <table>
+      <thead><tr><th>Method</th><th>Path</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code class="inline"><%= api_templates_path %></code></td><td>List templates</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code class="inline"><%= api_template_path(':id') %></code></td><td>Get template</td></tr>
+        <tr><td><span class="method-badge method-post">POST</span></td><td><code class="inline"><%= api_template_submissions_path(':template_id') %></code></td><td>Create submission</td></tr>
+        <tr><td><span class="method-badge method-post" style="background:#78350f;">POST</span></td><td><code class="inline">/api/templates/:template_id/submissions/bulk</code></td><td>Bulk send ✨</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code class="inline"><%= api_submissions_path %></code></td><td>List submissions</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code class="inline"><%= api_submission_path(':id') %></code></td><td>Get submission</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code class="inline">/api/submissions/:id/documents</code></td><td>Download signed documents</td></tr>
+        <tr><td><span class="method-badge method-delete">DELETE</span></td><td><code class="inline"><%= api_submission_path(':id') %></code></td><td>Archive submission</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code class="inline"><%= api_submitters_path %></code></td><td>List submitters</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code class="inline"><%= api_submitter_path(':id') %></code></td><td>Get submitter</td></tr>
+        <tr><td><span class="method-badge method-put">PATCH</span></td><td><code class="inline"><%= api_submitter_path(':id') %></code></td><td>Update submitter</td></tr>
+        <tr><td><span class="method-badge method-post" style="background:#78350f;">POST</span></td><td><code class="inline"><%= api_contacts_path %></code></td><td>Sync CRM contact ✨</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:0.75rem; font-size:0.85rem; color:#6b7280;">✨ = New CRM integration endpoint. All endpoints require <code class="inline">X-Auth-Token</code> header.</p>
+  </div>
+
+  <div style="text-align:center; margin-top:2rem; padding-top:1rem; border-top:1px solid #e5e7eb; color:#9ca3af; font-size:0.8rem;">
+    <%= current_account.name %> API Documentation &bull; <%= root_url(Docuseal.default_url_options).chomp('/') %>
+  </div>
+</div>

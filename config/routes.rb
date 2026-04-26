@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     resources :submitter_email_clicks, only: %i[create]
     resources :submitter_form_views, only: %i[create]
     resources :submitters, only: %i[index show update]
+    resources :contacts, only: %i[create]
     resources :submissions, only: %i[index show create destroy] do
       resources :documents, only: %i[index], controller: 'submission_documents'
       collection do
@@ -39,6 +40,7 @@ Rails.application.routes.draw do
     resources :templates, only: %i[update show index destroy] do
       resources :clone, only: %i[create], controller: 'templates_clone'
       resources :submissions, only: %i[index create]
+      resources :bulk_submissions, only: %i[create], path: 'submissions/bulk'
     end
     resources :tools, only: %i[] do
       post :merge, on: :collection
@@ -181,6 +183,7 @@ Rails.application.routes.draw do
     end
     if Docuseal.demo? || !Docuseal.multitenant?
       resources :api, only: %i[index create], controller: 'api_settings'
+      resource :api_docs, only: %i[show], controller: 'api_docs', path: 'api/docs'
       resource :reveal_access_token, only: %i[show create], controller: 'reveal_access_token'
     end
     resources :email, only: %i[index create], controller: 'email_smtp_settings'
