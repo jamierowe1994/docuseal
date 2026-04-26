@@ -5,6 +5,10 @@ ActiveSupport.on_load(:active_storage_attachment) do
 
   has_many_attached :preview_images
 
+  def url(**_opts)
+    ActiveStorage::Blob.proxy_path(blob)
+  end
+
   def signed_uuid
     @signed_uuid ||= ApplicationRecord.signed_id_verifier.generate(uuid, expires_in: 6.hours, purpose: :attachment)
   end
