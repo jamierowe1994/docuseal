@@ -2,49 +2,49 @@
 <style>
   .bsc-nav {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(20,20,20,0.97);
+    background: rgba(244,239,230,0.97);
     backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-bottom: 1px solid #E0D7C7;
   }
   .bsc-nav-inner {
     display: flex; align-items: center; justify-content: space-between;
     padding: 0.9rem 3rem;
   }
   .bsc-wordmark {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700; font-size: 1.2rem; color: #fff; letter-spacing: -0.03em;
+    font-family: 'Fraunces', serif;
+    font-weight: 700; font-size: 1.2rem; color: #1F1B14; letter-spacing: -0.03em;
     text-decoration: none;
   }
-  .bsc-wordmark-g { color: #6bde2c; }
+  .bsc-wordmark-g { color: #FF6A3D; }
   .bsc-nav-group {
-    display: flex; border: 1px solid rgba(255,255,255,0.18);
+    display: flex; border: 1px solid #E0D7C7;
   }
   .bsc-nav-group a {
-    color: rgba(255,255,255,0.6); font-size: 0.7rem; font-weight: 500;
+    color: rgba(31,27,20,0.55); font-size: 0.7rem; font-weight: 500;
     letter-spacing: 0.12em; text-transform: uppercase; padding: 0.55rem 1.25rem;
-    border-right: 1px solid rgba(255,255,255,0.18);
+    border-right: 1px solid #E0D7C7;
     transition: color 0.15s, background 0.15s; white-space: nowrap;
     text-decoration: none;
   }
   .bsc-nav-group a:last-child { border-right: none; }
-  .bsc-nav-group a:hover { color: #fff; background: rgba(255,255,255,0.05); }
-  .bsc-nav-group a.bsc-active { color: #6bde2c; background: rgba(255,255,255,0.05); }
+  .bsc-nav-group a:hover { color: #1F1B14; background: rgba(31,27,20,0.04); }
+  .bsc-nav-group a.bsc-active { color: #FF6A3D; background: rgba(255,106,61,0.05); }
   .bsc-btn-green {
-    background: #6bde2c; color: #0a0a0a; font-size: 0.7rem; font-weight: 700;
+    background: #FF6A3D; color: #FFFFFF; font-size: 0.7rem; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase; padding: 0.6rem 1.25rem;
     border-radius: 0; transition: background 0.15s; white-space: nowrap;
     text-decoration: none;
   }
-  .bsc-btn-green:hover { background: #7fe83d; color: #0a0a0a; }
+  .bsc-btn-green:hover { background: #FF8060; color: #FFFFFF; }
   .bsc-btn-logout {
-    background: transparent; color: rgba(255,255,255,0.5);
-    border: 1px solid rgba(255,255,255,0.18); border-radius: 0;
+    background: transparent; color: rgba(31,27,20,0.45);
+    border: 1px solid #E0D7C7; border-radius: 0;
     width: 2.45rem; height: 2.45rem;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; transition: color 0.15s, border-color 0.15s, background 0.15s;
     flex-shrink: 0;
   }
-  .bsc-btn-logout:hover { color: #fff; border-color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.05); }
+  .bsc-btn-logout:hover { color: #1F1B14; border-color: rgba(31,27,20,0.35); background: rgba(31,27,20,0.04); }
   .bsc-btn-logout svg { width: 1rem; height: 1rem; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .bsc-nav-actions { display: flex; align-items: center; gap: 0.5rem; }
   @media (max-width: 860px) {

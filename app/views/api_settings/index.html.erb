@@ -2,8 +2,8 @@
   /* ── BSC PAGE BASE ── */
   .bsc {
     font-family: 'Space Grotesk', sans-serif;
-    background: #141414;
-    color: #fff;
+    background: #F4EFE6;
+    color: #1F1B14;
     margin: -2rem calc(50% - 50vw) 0;
     padding: 0;
     min-height: 100vh;
@@ -11,7 +11,7 @@
   .bsc ~ * { display: none !important; }
   .bsc *, .bsc *::before, .bsc *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .bsc a { text-decoration: none; }
-  .bsc-g { color: #6bde2c; }
+  .bsc-g { color: #FF6A3D; }
   .bsc-inner {
     padding: 5rem 5rem 6rem;
     max-width: 1600px;
@@ -20,32 +20,32 @@
   .bsc-seclbl {
     font-family: 'Space Mono', monospace; font-size: 0.85rem;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(255,255,255,0.3); margin-bottom: 1.5rem;
+    color: rgba(31,27,20,0.3); margin-bottom: 1.5rem;
   }
   .bsc-sectitle {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-family: 'Fraunces', serif; font-weight: 900;
     font-size: clamp(3rem, 5.5vw, 5.5rem); line-height: 0.92;
     text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 1.25rem;
   }
   .bsc-secsub {
-    color: rgba(255,255,255,0.5); font-size: 1rem;
+    color: rgba(31,27,20,0.5); font-size: 1rem;
     line-height: 1.6; max-width: 36rem; margin-bottom: 3rem;
   }
 
   /* ── CARDS ── */
   .bsc-card {
-    border: 1px solid rgba(255,255,255,0.1);
-    background: #1a1a1a;
+    border: 1px solid rgba(31,27,20,0.1);
+    background: #FFFFFF;
     padding: 2rem;
     margin-bottom: 2rem;
   }
   .bsc-card-title {
     font-family: 'Space Mono', monospace; font-size: 0.65rem;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(255,255,255,0.35); margin-bottom: 1rem;
+    color: rgba(31,27,20,0.35); margin-bottom: 1rem;
   }
   .bsc-card-heading {
-    font-size: 1.1rem; font-weight: 600; color: #fff; margin-bottom: 1rem;
+    font-size: 1.1rem; font-weight: 600; color: #1F1B14; margin-bottom: 1rem;
   }
 
   /* ── API TOKEN ROW ── */
@@ -54,38 +54,38 @@
   }
   .bsc-token-input {
     flex: 1; min-width: 200px;
-    background: #111; border: 1px solid rgba(255,255,255,0.18);
-    color: #a3e85c; font-family: 'Space Mono', monospace; font-size: 0.8rem;
+    background: #F4EFE6; border: 1px solid #E0D7C7;
+    color: #FF6A3D; font-family: 'Space Mono', monospace; font-size: 0.8rem;
     padding: 0.7rem 1rem; outline: none;
   }
-  .bsc-token-input:focus { border-color: rgba(107,222,44,0.45); }
+  .bsc-token-input:focus { border-color: rgba(255,106,61,0.45); }
   .bsc-token-btn {
-    background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.7);
-    border: 1px solid rgba(255,255,255,0.18); font-family: 'Space Mono', monospace;
+    background: rgba(31,27,20,0.05); color: rgba(31,27,20,0.7);
+    border: 1px solid #E0D7C7; font-family: 'Space Mono', monospace;
     font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
     padding: 0.7rem 1.25rem; cursor: pointer; white-space: nowrap;
     transition: background 0.15s, color 0.15s;
   }
-  .bsc-token-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .bsc-token-btn:hover { background: rgba(31,27,20,0.1); color: #1F1B14; }
   .bsc-token-btn-green {
-    background: #6bde2c; color: #0a0a0a; font-family: 'Space Mono', monospace;
+    background: #FF6A3D; color: #FFFFFF; font-family: 'Space Mono', monospace;
     font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
     padding: 0.7rem 1.25rem; cursor: pointer; white-space: nowrap;
     border: none; transition: background 0.15s;
   }
-  .bsc-token-btn-green:hover { background: #7fe83d; }
+  .bsc-token-btn-green:hover { background: #FF8060; }
 
   /* ── CODE BLOCKS ── */
   .bsc-accordion {
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(31,27,20,0.1);
     margin-bottom: 0.75rem;
-    background: #1a1a1a;
+    background: #FFFFFF;
   }
   .bsc-accordion-head {
     padding: 1.25rem 1.5rem; cursor: pointer;
     display: flex; justify-content: space-between; align-items: center;
     list-style: none;
-    font-size: 0.95rem; font-weight: 500; color: rgba(255,255,255,0.85);
+    font-size: 0.95rem; font-weight: 500; color: rgba(31,27,20,0.85);
   }
   .bsc-accordion-head::-webkit-details-marker { display: none; }
   .bsc-accordion-meta {
@@ -100,34 +100,34 @@
   .bsc-badge-get  { color: #6bbfde; border-color: rgba(107,191,222,0.4); background: rgba(107,191,222,0.06); }
   .bsc-badge-endpoint {
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
-    color: rgba(255,255,255,0.4); letter-spacing: 0.04em;
+    color: rgba(31,27,20,0.4); letter-spacing: 0.04em;
   }
   .bsc-accordion-body {
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid rgba(31,27,20,0.08);
     padding: 0; overflow-x: auto; position: relative;
   }
   .bsc-accordion-body pre {
-    background: #111; color: #c9d1d9; font-family: 'Space Mono', monospace;
+    background: #F4EFE6; color: #1F1B14; font-family: 'Space Mono', monospace;
     font-size: 0.72rem; line-height: 1.75; padding: 1.5rem; margin: 0;
     overflow-x: auto; white-space: pre-wrap; word-break: break-all;
   }
   .bsc-copy-btn {
     position: absolute; top: 0.75rem; right: 0.75rem;
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
-    color: rgba(255,255,255,0.5); font-family: 'Space Mono', monospace;
+    background: rgba(224,215,199,0.5); border: 1px solid #E0D7C7;
+    color: rgba(31,27,20,0.5); font-family: 'Space Mono', monospace;
     font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 0.3rem 0.65rem; cursor: pointer; transition: background 0.15s;
   }
-  .bsc-copy-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .bsc-copy-btn:hover { background: rgba(31,27,20,0.1); color: #1F1B14; }
 
   /* ── DOCS LINK ── */
   .bsc-docs-link {
     display: inline-block; margin-top: 2rem;
-    background: #6bde2c; color: #0a0a0a; font-family: 'Space Mono', monospace;
+    background: #FF6A3D; color: #FFFFFF; font-family: 'Space Mono', monospace;
     font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
     padding: 0.85rem 2rem; transition: background 0.15s;
   }
-  .bsc-docs-link:hover { background: #7fe83d; color: #0a0a0a; }
+  .bsc-docs-link:hover { background: #FF8060; color: #FFFFFF; }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 860px) {

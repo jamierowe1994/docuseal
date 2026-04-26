@@ -6,7 +6,7 @@
   <title>Sign In &mdash; backed.sign</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -15,8 +15,8 @@
       min-height: 100vh;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      background: #141414;
-      color: #fff;
+      background: #F4EFE6;
+      color: #1F1B14;
     }
 
     /* ── LEFT PANEL ── */
@@ -26,8 +26,8 @@
       justify-content: center;
       align-items: center;
       padding: 3.5rem 4rem;
-      background: #0e0e0e;
-      border-right: 1px solid rgba(255,255,255,0.07);
+      background: #EAE4D9;
+      border-right: 1px solid #E0D7C7;
       position: relative;
       overflow: hidden;
     }
@@ -39,23 +39,23 @@
       left: -120px;
       width: 500px;
       height: 500px;
-      background: radial-gradient(circle, rgba(107,222,44,0.07) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255,106,61,0.07) 0%, transparent 70%);
       pointer-events: none;
     }
 
     .bsc-logo {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: 'Fraunces', serif;
       font-weight: 900;
       font-size: 1.5rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #fff;
+      color: #1F1B14;
       position: absolute;
       top: 3.5rem;
       left: 4rem;
     }
 
-    .bsc-logo span { color: #6bde2c; }
+    .bsc-logo span { color: #FF6A3D; }
 
     .bsc-login-hero { position: relative; z-index: 1; text-align: center; }
 
@@ -64,26 +64,26 @@
       font-size: 0.7rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
+      color: rgba(31,27,20,0.3);
       margin-bottom: 1.25rem;
     }
 
     .bsc-login-title {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: 'Fraunces', serif;
       font-weight: 900;
       font-size: clamp(3.5rem, 6vw, 6rem);
       line-height: 0.9;
       text-transform: uppercase;
       letter-spacing: -0.02em;
-      color: #fff;
+      color: #1F1B14;
       margin-bottom: 1.5rem;
     }
 
-    .bsc-login-title span { color: #6bde2c; }
+    .bsc-login-title span { color: #FF6A3D; }
 
     .bsc-login-sub {
       font-size: 0.95rem;
-      color: rgba(255,255,255,0.45);
+      color: rgba(31,27,20,0.45);
       line-height: 1.65;
       max-width: 26rem;
       text-align: center;
@@ -94,7 +94,7 @@
       font-size: 0.5rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.18);
+      color: #E0D7C7;
       position: absolute;
       bottom: 3.5rem;
       left: 4rem;
@@ -119,24 +119,24 @@
       font-size: 0.65rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
+      color: rgba(31,27,20,0.3);
       margin-bottom: 0.75rem;
     }
 
     .bsc-login-form-title {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: 'Fraunces', serif;
       font-weight: 900;
       font-size: 3rem;
       line-height: 0.95;
       text-transform: uppercase;
       letter-spacing: -0.01em;
-      color: #fff;
+      color: #1F1B14;
       margin-bottom: 0.5rem;
     }
 
     .bsc-login-form-sub {
       font-size: 0.875rem;
-      color: rgba(255,255,255,0.35);
+      color: rgba(31,27,20,0.35);
       margin-bottom: 2.5rem;
     }
 
@@ -161,12 +161,12 @@
       font-size: 0.6rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
+      color: rgba(31,27,20,0.35);
       text-decoration: none;
       margin-bottom: 2rem;
       transition: color 0.15s;
     }
-    .bsc-back:hover { color: rgba(255,255,255,0.7); }
+    .bsc-back:hover { color: rgba(31,27,20,0.7); }
 
     .bsc-field { margin-bottom: 1.25rem; }
 
@@ -176,15 +176,15 @@
       font-size: 0.52rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
+      color: rgba(31,27,20,0.35);
       margin-bottom: 0.5rem;
     }
 
     .bsc-input {
       width: 100%;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #fff;
+      background: rgba(31,27,20,0.04);
+      border: 1px solid #E0D7C7;
+      color: #1F1B14;
       font-family: 'Space Grotesk', sans-serif;
       font-size: 0.95rem;
       padding: 0.8rem 1rem;
@@ -192,8 +192,8 @@
       transition: border-color 0.15s;
     }
 
-    .bsc-input::placeholder { color: rgba(255,255,255,0.2); }
-    .bsc-input:focus { border-color: rgba(107,222,44,0.5); }
+    .bsc-input::placeholder { color: rgba(31,27,20,0.15); }
+    .bsc-input:focus { border-color: rgba(255,106,61,0.5); }
 
     .bsc-forgot {
       display: block;
@@ -202,7 +202,7 @@
       font-size: 0.55rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #6bde2c;
+      color: #FF6A3D;
       text-decoration: none;
       margin-top: -0.75rem;
       margin-bottom: 2rem;
@@ -212,8 +212,8 @@
 
     .bsc-submit {
       width: 100%;
-      background: #6bde2c;
-      color: #0a0a0a;
+      background: #FF6A3D;
+      color: #FFFFFF;
       font-family: 'Space Mono', monospace;
       font-size: 0.7rem;
       font-weight: 700;
@@ -224,7 +224,7 @@
       cursor: pointer;
       transition: background 0.15s, transform 0.1s;
     }
-    .bsc-submit:hover { background: #7fe83d; }
+    .bsc-submit:hover { background: #FF8060; }
     .bsc-submit:active { transform: scale(0.99); }
 
     /* ── RESPONSIVE ── */
@@ -243,7 +243,7 @@
     <div class="bsc-logo">backed<span>.</span>sign</div>
 
     <div class="bsc-login-hero">
-      <p class="bsc-login-eyebrow"><span style="color:#6bde2c">001</span> &mdash; Portal</p>
+      <p class="bsc-login-eyebrow"><span style="color:#FF6A3D">001</span> &mdash; Portal</p>
       <h1 class="bsc-login-title">Built for<br>recruiters,<br><span>by</span><br>recruiters.</h1>
       <p class="bsc-login-sub">Send, sign, and track every contract in real time. Your complete document workflow, in one place.</p>
     </div>

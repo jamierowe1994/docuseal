@@ -1,13 +1,13 @@
 <turbo-frame id="modal">
   <turbo-modal class="modal modal-open items-start !animate-none overflow-y-auto !justify-normal md:!justify-center" data-close-after-submit="<%= local_assigns.key?(:close_after_submit) ? local_assigns[:close_after_submit] : true %>">
     <div class="absolute top-0 bottom-0 right-0 left-0" data-action="click:turbo-modal#close"></div>
-    <div class="min-h-screen max-h-screen md:min-h-fit md:mt-3 relative w-full overflow-y-auto" style="background:#141414;border:1px solid rgba(255,255,255,0.12);font-family:'Space Grotesk',sans-serif;">
+    <div class="min-h-screen max-h-screen md:min-h-fit md:mt-3 relative w-full overflow-y-auto" style="background:#F4EFE6;border:1px solid #E0D7C7;font-family:'Space Grotesk',sans-serif;">
       <% if local_assigns[:title] %>
-        <div class="flex justify-between items-center px-6 py-4" style="border-bottom:1px solid rgba(255,255,255,0.1);">
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;text-transform:uppercase;letter-spacing:-0.01em;color:#fff;">
+        <div class="flex justify-between items-center px-6 py-4" style="border-bottom:1px solid rgba(31,27,20,0.1);">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;text-transform:uppercase;letter-spacing:-0.01em;color:#1F1B14;">
             <%= local_assigns[:title] %>
           </span>
-          <a href="#" class="flex items-center justify-center w-7 h-7" style="color:rgba(255,255,255,0.4);font-size:1.4rem;line-height:1;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'" data-action="click:turbo-modal#close">&times;</a>
+          <a href="#" class="flex items-center justify-center w-7 h-7" style="color:rgba(31,27,20,0.4);font-size:1.4rem;line-height:1;transition:color 0.15s;" onmouseover="this.style.color='#1F1B14'" onmouseout="this.style.color='rgba(31,27,20,0.4)'" data-action="click:turbo-modal#close">&times;</a>
         </div>
       <% end %>
       <div class="w-full md:w-[590px] overflow-y-auto" style="max-height: calc(100vh - 14px - 60px)">
