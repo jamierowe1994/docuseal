@@ -47,7 +47,7 @@
                 <% folder_name = template.folder&.full_name.presence || TemplateFolder::DEFAULT_NAME %>
                 <div class="text-xs text-base-content/50 truncate"><%= folder_name %></div>
               </div>
-              <%= svg_icon('chevron_right', class: 'w-4 h-4 text-base-content/30 group-hover:text-primary flex-shrink-0') %>
+              <%= svg_icon('arrow_right', class: 'w-4 h-4 text-base-content/30 group-hover:text-primary flex-shrink-0') %>
             <% end %>
           <% end %>
         </div>

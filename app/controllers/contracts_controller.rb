@@ -28,6 +28,7 @@ class ContractsController < ApplicationController
     @templates = Template.accessible_by(current_ability)
                          .where(archived_at: nil)
                          .where(account_id: current_account.id)
+                         .preload(folder: :parent_folder)
                          .order(id: :desc)
                          .limit(50)
   end
