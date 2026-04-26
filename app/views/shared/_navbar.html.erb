@@ -69,7 +69,7 @@
           <a href="<%= settings_users_path %>" class="<%= 'bsc-active' if request.path.start_with?('/settings') && !request.path.start_with?('/settings/api') %>">Admin</a>
         </div>
         <div class="bsc-nav-actions">
-          <%= link_to new_template_path, class: 'bsc-btn-green', data: { turbo_frame: :modal } do %>
+          <%= link_to new_contract_path, class: 'bsc-btn-green', data: { turbo_frame: :modal } do %>
             New Contract &#8594;
           <% end %>
           <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false }, class: 'bsc-btn-logout', title: t('sign_out') do %>

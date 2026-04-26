@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class ContractsController < ApplicationController
-  load_and_authorize_resource :submission, parent: false
+  load_and_authorize_resource :submission, parent: false, except: :new
+
+  skip_authorization_check only: :new
 
   def index
     base = @submissions.left_joins(:template)
@@ -20,5 +22,13 @@ class ContractsController < ApplicationController
     @submissions = @submissions.order(id: :desc)
 
     @pagy, @submissions = pagy_auto(@submissions.preload(submitters: :start_form_submission_events))
+  end
+
+  def new
+    @templates = Template.accessible_by(current_ability)
+                         .where(archived_at: nil)
+                         .where(account_id: current_account.id)
+                         .order(id: :desc)
+                         .limit(50)
   end
 end
