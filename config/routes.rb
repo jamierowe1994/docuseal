@@ -182,6 +182,7 @@ Rails.application.routes.draw do
     end
     if Docuseal.demo? || !Docuseal.multitenant?
       resources :api, only: %i[index create], controller: 'api_settings'
+      resource :api_docs, only: %i[show], controller: 'api_docs', path: 'api/docs'
       resource :reveal_access_token, only: %i[show create], controller: 'reveal_access_token'
     end
     resources :email, only: %i[index create], controller: 'email_smtp_settings'
