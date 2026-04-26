@@ -2,8 +2,8 @@
   /* ── BASE ── */
   .bsc {
     font-family: 'Space Grotesk', sans-serif;
-    background: #141414;
-    color: #fff;
+    background: #F4EFE6;
+    color: #1F1B14;
     margin: -2rem calc(50% - 50vw) 0;
     padding: 0;
     min-height: 100vh;
@@ -11,7 +11,7 @@
   .bsc ~ * { display: none !important; }
   .bsc *, .bsc *::before, .bsc *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .bsc a { text-decoration: none; }
-  .bsc-g { color: #6bde2c; }
+  .bsc-g { color: #FF6A3D; }
 
   /* ── PAGE INNER ── */
   .bsc-inner {
@@ -24,86 +24,86 @@
   .bsc-seclbl {
     font-family: 'Space Mono', monospace; font-size: 0.85rem;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(255,255,255,0.3); margin-bottom: 1.5rem;
+    color: rgba(31,27,20,0.3); margin-bottom: 1.5rem;
   }
   .bsc-sectitle {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-family: 'Fraunces', serif; font-weight: 900;
     font-size: clamp(3rem, 5.5vw, 5.5rem); line-height: 0.92;
     text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 1.25rem;
   }
   .bsc-secsub {
-    color: rgba(255,255,255,0.5); font-size: 1rem;
+    color: rgba(31,27,20,0.5); font-size: 1rem;
     line-height: 1.6; max-width: 30rem; margin-bottom: 3rem;
   }
 
   /* ── STATS ── */
   .bsc-stats {
     display: grid; grid-template-columns: repeat(3, auto) 1fr;
-    border: 1px solid rgba(255,255,255,0.1); margin-bottom: 3.5rem; width: fit-content;
+    border: 1px solid rgba(31,27,20,0.1); margin-bottom: 3.5rem; width: fit-content;
   }
   .bsc-stat {
-    padding: 1.5rem 2.5rem; border-right: 1px solid rgba(255,255,255,0.1);
+    padding: 1.5rem 2.5rem; border-right: 1px solid rgba(31,27,20,0.1);
     display: flex; flex-direction: column; gap: 0.3rem; min-width: 140px;
   }
   .bsc-stat:last-child { border-right: none; }
   .bsc-stat-n {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 2.2rem; line-height: 1; color: #fff;
+    font-family: 'Fraunces', serif;
+    font-weight: 900; font-size: 2.2rem; line-height: 1; color: #1F1B14;
   }
-  .bsc-stat-n.green { color: #6bde2c; }
+  .bsc-stat-n.green { color: #FF6A3D; }
   .bsc-stat-l {
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
-    letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+    letter-spacing: 0.12em; text-transform: uppercase; color: rgba(31,27,20,0.4);
   }
 
   /* ── CONTROLS ── */
   .bsc-controls {
     display: flex; align-items: center; justify-content: space-between;
     flex-wrap: wrap; gap: 1rem;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid rgba(31,27,20,0.08);
+    border-bottom: 1px solid rgba(31,27,20,0.08);
     padding: 1.25rem 0; margin-bottom: 0;
   }
   .bsc-tabs { display: flex; gap: 0; }
   .bsc-tab {
     font-family: 'Space Mono', monospace; font-size: 0.6rem;
     letter-spacing: 0.14em; text-transform: uppercase;
-    color: rgba(255,255,255,0.4); padding: 0.5rem 1.25rem;
-    border: 1px solid rgba(255,255,255,0.14); border-right: none;
+    color: rgba(31,27,20,0.4); padding: 0.5rem 1.25rem;
+    border: 1px solid #E0D7C7; border-right: none;
     transition: color 0.15s, background 0.15s; white-space: nowrap;
   }
-  .bsc-tab:last-child { border-right: 1px solid rgba(255,255,255,0.14); }
-  .bsc-tab:hover { color: #fff; background: rgba(255,255,255,0.04); }
-  .bsc-tab.active { color: #6bde2c; border-color: rgba(107,222,44,0.4); background: rgba(107,222,44,0.05); }
+  .bsc-tab:last-child { border-right: 1px solid #E0D7C7; }
+  .bsc-tab:hover { color: #1F1B14; background: rgba(31,27,20,0.04); }
+  .bsc-tab.active { color: #FF6A3D; border-color: rgba(255,106,61,0.4); background: rgba(255,106,61,0.05); }
   .bsc-search {
     display: flex;
   }
   .bsc-search input {
-    background: #1a1a1a; border: 1px solid rgba(255,255,255,0.18); border-right: none;
-    color: #fff; font-size: 0.8rem; padding: 0.5rem 1rem;
+    background: #1F1B14FFF; border: 1px solid #E0D7C7; border-right: none;
+    color: #1F1B14; font-size: 0.8rem; padding: 0.5rem 1rem;
     outline: none; font-family: 'Space Grotesk', sans-serif; min-width: 220px;
   }
-  .bsc-search input::placeholder { color: rgba(255,255,255,0.28); }
-  .bsc-search input:focus { border-color: rgba(107,222,44,0.4); }
+  .bsc-search input::placeholder { color: rgba(31,27,20,0.25); }
+  .bsc-search input:focus { border-color: rgba(255,106,61,0.4); }
   .bsc-search button {
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
-    color: rgba(255,255,255,0.5); font-family: 'Space Mono', monospace;
+    background: rgba(224,215,199,0.5); border: 1px solid #E0D7C7;
+    color: rgba(31,27,20,0.5); font-family: 'Space Mono', monospace;
     font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
     padding: 0.5rem 1rem; cursor: pointer; transition: background 0.15s;
   }
-  .bsc-search button:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .bsc-search button:hover { background: rgba(31,27,20,0.1); color: #1F1B14; }
 
   /* ── TABLE HEADER ── */
   .bsc-table-head {
     display: grid;
     grid-template-columns: 3rem 1fr 1fr 8rem 7rem 7rem 6rem;
     padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(31,27,20,0.08);
   }
   .bsc-th {
     font-family: 'Space Mono', monospace; font-size: 0.5rem;
     letter-spacing: 0.14em; text-transform: uppercase;
-    color: rgba(255,255,255,0.25); padding: 0 0.75rem;
+    color: rgba(31,27,20,0.22); padding: 0 0.75rem;
   }
   .bsc-th:first-child { padding-left: 0; }
 
@@ -114,27 +114,27 @@
     grid-template-columns: 3rem 1fr 1fr 8rem 7rem 7rem 6rem;
     align-items: center;
     padding: 1.2rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(224,215,199,0.5);
     cursor: pointer;
     transition: background 0.15s;
     position: relative;
   }
-  .bsc-contract-row:hover { background: rgba(255,255,255,0.025); }
+  .bsc-contract-row:hover { background: rgba(31,27,20,0.025); }
   .bsc-contract-idx {
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
-    color: rgba(255,255,255,0.22); letter-spacing: 0.05em;
+    color: rgba(31,27,20,0.2); letter-spacing: 0.05em;
   }
   .bsc-contract-cell { padding: 0 0.75rem; }
   .bsc-contract-name {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-family: 'Fraunces', serif; font-weight: 700;
     font-size: 1.25rem; text-transform: uppercase; letter-spacing: -0.01em;
-    color: #fff; line-height: 1.1;
+    color: #1F1B14; line-height: 1.1;
     overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1;
     transition: color 0.15s;
   }
-  .bsc-contract-row:hover .bsc-contract-name { color: #6bde2c; }
+  .bsc-contract-row:hover .bsc-contract-name { color: #FF6A3D; }
   .bsc-contract-signer {
-    font-size: 0.875rem; color: rgba(255,255,255,0.55);
+    font-size: 0.875rem; color: rgba(31,27,20,0.55);
     overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1;
   }
   .bsc-badge {
@@ -143,32 +143,32 @@
     letter-spacing: 0.12em; text-transform: uppercase;
     padding: 0.25rem 0.55rem; border: 1px solid;
   }
-  .bsc-badge-signed   { color: #6bde2c; border-color: rgba(107,222,44,0.5); background: rgba(107,222,44,0.06); }
+  .bsc-badge-signed   { color: #FF6A3D; border-color: rgba(255,106,61,0.5); background: rgba(255,106,61,0.06); }
   .bsc-badge-pending  { color: #f5c842; border-color: rgba(245,200,66,0.4); background: rgba(245,200,66,0.06); }
   .bsc-badge-declined { color: #e84444; border-color: rgba(232,68,68,0.4);  background: rgba(232,68,68,0.06); }
-  .bsc-badge-expired  { color: rgba(255,255,255,0.35); border-color: rgba(255,255,255,0.2); background: transparent; }
+  .bsc-badge-expired  { color: rgba(31,27,20,0.35); border-color: rgba(31,27,20,0.15); background: transparent; }
   .bsc-badge-sent     { color: #6bbfde; border-color: rgba(107,191,222,0.4); background: rgba(107,191,222,0.06); }
 
   .bsc-contract-date {
     font-family: 'Space Mono', monospace; font-size: 0.58rem;
-    color: rgba(255,255,255,0.28); letter-spacing: 0.04em;
+    color: rgba(31,27,20,0.25); letter-spacing: 0.04em;
   }
   .bsc-action-link {
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
     letter-spacing: 0.1em; text-transform: uppercase;
-    color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(31,27,20,0.4); border: 1px solid #E0D7C7;
     padding: 0.3rem 0.65rem; transition: color 0.15s, border-color 0.15s;
     position: relative; z-index: 1;
   }
-  .bsc-action-link:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+  .bsc-action-link:hover { color: #1F1B14; border-color: rgba(31,27,20,0.5); }
   .bsc-action-dl {
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
     letter-spacing: 0.1em; text-transform: uppercase;
-    color: #6bde2c; border: 1px solid rgba(107,222,44,0.35);
+    color: #FF6A3D; border: 1px solid rgba(255,106,61,0.35);
     padding: 0.3rem 0.65rem; transition: background 0.15s;
     position: relative; z-index: 1;
   }
-  .bsc-action-dl:hover { background: rgba(107,222,44,0.08); }
+  .bsc-action-dl:hover { background: rgba(255,106,61,0.08); }
   .bsc-actions { display: flex; gap: 0.4rem; align-items: center; position: relative; z-index: 1; }
   .bsc-row-link { position: absolute; inset: 0; z-index: 0; }
 
@@ -177,33 +177,33 @@
     padding: 5rem 0; text-align: center;
     font-family: 'Space Mono', monospace; font-size: 0.65rem;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(255,255,255,0.18); line-height: 2.2;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: #E0D7C7; line-height: 2.2;
+    border-bottom: 1px solid rgba(224,215,199,0.5);
   }
 
   /* ── PAGINATION ── */
   .bsc-pagination {
     display: flex; justify-content: space-between; align-items: center;
     padding: 1.75rem 0;
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid rgba(31,27,20,0.08);
     margin-top: 0;
   }
   .bsc-page-info {
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
     letter-spacing: 0.1em; text-transform: uppercase;
-    color: rgba(255,255,255,0.25);
+    color: rgba(31,27,20,0.22);
   }
   .bsc-page-links { display: flex; gap: 0; }
   .bsc-page-link {
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
     letter-spacing: 0.1em; text-transform: uppercase;
-    color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.14);
+    color: rgba(31,27,20,0.4); border: 1px solid #E0D7C7;
     border-right: none; padding: 0.4rem 0.85rem;
     transition: color 0.15s, background 0.15s;
   }
-  .bsc-page-link:last-child { border-right: 1px solid rgba(255,255,255,0.14); }
-  .bsc-page-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
-  .bsc-page-link.current { color: #6bde2c; background: rgba(107,222,44,0.05); border-color: rgba(107,222,44,0.3); }
+  .bsc-page-link:last-child { border-right: 1px solid #E0D7C7; }
+  .bsc-page-link:hover { color: #1F1B14; background: rgba(31,27,20,0.05); }
+  .bsc-page-link.current { color: #FF6A3D; background: rgba(255,106,61,0.05); border-color: rgba(255,106,61,0.3); }
   .bsc-page-link.disabled { opacity: 0.3; pointer-events: none; }
 
   /* ── RESPONSIVE ── */
@@ -298,7 +298,7 @@
       <% if @submissions.empty? %>
         <div class="bsc-empty">
           No contracts found<br>
-          <span style="color:rgba(255,255,255,0.1)">Send your first contract to get started</span>
+          <span style="color:rgba(31,27,20,0.1)">Send your first contract to get started</span>
         </div>
       <% else %>
         <% @submissions.each_with_index do |submission, idx| %>

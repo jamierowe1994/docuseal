@@ -6,15 +6,15 @@ module.exports = {
     themes: [
       {
         docuseal: {
-          'color-scheme': 'dark',
-          primary: '#8bc34a',
+          'color-scheme': 'light',
+          primary: '#FF6A3D',
           secondary: '#6b7280',
-          accent: '#8bc34a',
-          neutral: '#1f2937',
-          'base-100': '#111111',
-          'base-200': '#1a1a1a',
-          'base-300': '#2a2a2a',
-          'base-content': '#e5e7eb',
+          accent: '#FF6A3D',
+          neutral: '#E0D7C7',
+          'base-100': '#F4EFE6',
+          'base-200': '#FFFFFF',
+          'base-300': '#E0D7C7',
+          'base-content': '#1F1B14',
           '--rounded-btn': '0.25rem',
           '--tab-border': '2px',
           '--tab-radius': '.5rem'

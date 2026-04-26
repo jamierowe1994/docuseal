@@ -6,7 +6,7 @@
   <div class="flex justify-between items-center">
     <%= f.label :send_email, for: uuid = SecureRandom.uuid, class: 'flex items-center cursor-pointer' do %>
       <%= f.check_box :send_email, id: uuid, class: 'base-checkbox', disabled: !can_send_emails || local_assigns[:disable_email], checked: can_send_emails && !local_assigns.key?(:resend_email) && !local_assigns[:disable_email] && template&.preferences&.dig('request_email_enabled') != false %>
-      <span class="label" style="font-family:'Space Grotesk',sans-serif;color:rgba(255,255,255,0.7);"><%= local_assigns[:resend_email] ? t('re_send_email') : t('send_email') %></span>
+      <span class="label" style="font-family:'Space Grotesk',sans-serif;color:rgba(31,27,20,0.7);"><%= local_assigns[:resend_email] ? t('re_send_email') : t('send_email') %></span>
     <% end %>
     <div>
       <% if can_send_emails %>
@@ -15,7 +15,7 @@
           <toggle-visible data-element-ids="<%= [message_field_id].to_json %>" class="flex">
             <label>
               <%= f.check_box :is_custom_message, checked: false, class: 'hidden peer', data: { action: 'change:toggle-visible#trigger', type: 'checkbox' } %>
-              <span class="link peer-checked:hidden" style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:#6bde2c;"><%= t('edit_message') %></span>
+              <span class="link peer-checked:hidden" style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:#FF6A3D;"><%= t('edit_message') %></span>
             </label>
           </toggle-visible>
         <% end %>

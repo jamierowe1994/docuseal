@@ -2,8 +2,8 @@
   /* ── BSC PAGE BASE ── */
   .bsc {
     font-family: 'Space Grotesk', sans-serif;
-    background: #141414;
-    color: #fff;
+    background: #F4EFE6;
+    color: #1F1B14;
     margin: -2rem calc(50% - 50vw) 0;
     padding: 0;
     min-height: 100vh;
@@ -11,14 +11,14 @@
   .bsc ~ * { display: none !important; }
   .bsc *, .bsc *::before, .bsc *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .bsc a { text-decoration: none; }
-  .bsc-g { color: #6bde2c; }
+  .bsc-g { color: #FF6A3D; }
   .bsc-seclbl {
     font-family: 'Space Mono', monospace; font-size: 0.85rem;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(255,255,255,0.3); margin-bottom: 1.5rem;
+    color: rgba(31,27,20,0.3); margin-bottom: 1.5rem;
   }
   .bsc-sectitle {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-family: 'Fraunces', serif; font-weight: 900;
     font-size: clamp(2.5rem, 5vw, 5rem); line-height: 0.92;
     text-transform: uppercase; letter-spacing: -0.02em;
   }
@@ -33,26 +33,26 @@
   .bsc-sidebar {
     width: 220px;
     flex-shrink: 0;
-    border-right: 1px solid rgba(255,255,255,0.07);
+    border-right: 1px solid #E0D7C7;
     padding: 5rem 0 3rem;
   }
   .bsc-sidebar-label {
     font-family: 'Space Mono', monospace; font-size: 0.5rem;
     letter-spacing: 0.2em; text-transform: uppercase;
-    color: rgba(255,255,255,0.2); padding: 0 1.5rem 1rem;
+    color: rgba(31,27,20,0.15); padding: 0 1.5rem 1rem;
   }
   .bsc-sidebar-item {
     display: block;
     font-family: 'Space Mono', monospace; font-size: 0.65rem;
     letter-spacing: 0.1em; text-transform: uppercase;
-    color: rgba(255,255,255,0.45); padding: 0.7rem 1.5rem;
+    color: rgba(31,27,20,0.45); padding: 0.7rem 1.5rem;
     border-left: 2px solid transparent;
     transition: color 0.15s, background 0.15s, border-color 0.15s;
   }
-  .bsc-sidebar-item:hover { color: #fff; background: rgba(255,255,255,0.04); }
-  .bsc-sidebar-item.bsc-active { color: #6bde2c; border-left-color: #6bde2c; background: rgba(107,222,44,0.05); }
+  .bsc-sidebar-item:hover { color: #1F1B14; background: rgba(31,27,20,0.04); }
+  .bsc-sidebar-item.bsc-active { color: #FF6A3D; border-left-color: #FF6A3D; background: rgba(255,106,61,0.05); }
   .bsc-sidebar-sep {
-    border: none; border-top: 1px solid rgba(255,255,255,0.07); margin: 1rem 1.5rem;
+    border: none; border-top: 1px solid #E0D7C7; margin: 1rem 1.5rem;
   }
 
   /* ── MAIN CONTENT ── */
@@ -70,21 +70,21 @@
     flex-wrap: wrap;
   }
   .bsc-btn-green {
-    background: #6bde2c; color: #0a0a0a; font-family: 'Space Mono', monospace;
+    background: #FF6A3D; color: #FFFFFF; font-family: 'Space Mono', monospace;
     font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
     padding: 0.65rem 1.25rem; border: none; cursor: pointer; white-space: nowrap;
     transition: background 0.15s; display: inline-block;
   }
-  .bsc-btn-green:hover { background: #7fe83d; color: #0a0a0a; }
+  .bsc-btn-green:hover { background: #FF8060; color: #FFFFFF; }
   .bsc-btn-outline {
-    background: transparent; color: rgba(255,255,255,0.5);
+    background: transparent; color: rgba(31,27,20,0.5);
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
     letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 0.45rem 0.85rem; border: 1px solid rgba(255,255,255,0.2);
+    padding: 0.45rem 0.85rem; border: 1px solid rgba(31,27,20,0.15);
     cursor: pointer; white-space: nowrap; transition: color 0.15s, border-color 0.15s;
     display: inline-block;
   }
-  .bsc-btn-outline:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+  .bsc-btn-outline:hover { color: #1F1B14; border-color: rgba(31,27,20,0.5); }
   .bsc-btn-danger {
     background: transparent; color: rgba(232,68,68,0.7);
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
@@ -101,20 +101,20 @@
   .bsc-user-table th {
     font-family: 'Space Mono', monospace; font-size: 0.5rem;
     letter-spacing: 0.14em; text-transform: uppercase;
-    color: rgba(255,255,255,0.25); padding: 0.75rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: rgba(31,27,20,0.22); padding: 0.75rem;
+    border-bottom: 1px solid rgba(31,27,20,0.08);
     text-align: left; font-weight: 400;
   }
   .bsc-user-table th:last-child { text-align: right; }
   .bsc-user-table td {
     padding: 1.1rem 0.75rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    font-size: 0.875rem; color: rgba(255,255,255,0.7);
+    border-bottom: 1px solid rgba(224,215,199,0.5);
+    font-size: 0.875rem; color: rgba(31,27,20,0.7);
   }
-  .bsc-user-table tr:hover td { background: rgba(255,255,255,0.025); }
+  .bsc-user-table tr:hover td { background: rgba(31,27,20,0.025); }
   .bsc-user-table td:last-child { text-align: right; }
-  .bsc-user-name { color: #fff; font-weight: 500; }
-  .bsc-user-email { font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-top: 0.15rem; }
+  .bsc-user-name { color: #1F1B14; font-weight: 500; }
+  .bsc-user-email { font-size: 0.8rem; color: rgba(31,27,20,0.45); margin-top: 0.15rem; }
   .bsc-role-badge {
     font-family: 'Space Mono', monospace; font-size: 0.5rem;
     letter-spacing: 0.1em; text-transform: uppercase;
@@ -128,26 +128,26 @@
     padding: 4rem 0; text-align: center;
     font-family: 'Space Mono', monospace; font-size: 0.6rem;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(255,255,255,0.18); line-height: 2.2;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: #E0D7C7; line-height: 2.2;
+    border-bottom: 1px solid rgba(224,215,199,0.5);
   }
 
   /* ── PAGINATION ── */
   .bsc-pagination {
     display: flex; justify-content: flex-end; align-items: center;
-    padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 1.5rem 0; border-top: 1px solid rgba(31,27,20,0.08);
   }
   .bsc-page-links { display: flex; }
   .bsc-page-link {
     font-family: 'Space Mono', monospace; font-size: 0.55rem;
     letter-spacing: 0.1em; text-transform: uppercase;
-    color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.14);
+    color: rgba(31,27,20,0.4); border: 1px solid #E0D7C7;
     border-right: none; padding: 0.4rem 0.85rem;
     transition: color 0.15s, background 0.15s;
   }
-  .bsc-page-link:last-child { border-right: 1px solid rgba(255,255,255,0.14); }
-  .bsc-page-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
-  .bsc-page-link.current { color: #6bde2c; background: rgba(107,222,44,0.05); border-color: rgba(107,222,44,0.3); }
+  .bsc-page-link:last-child { border-right: 1px solid #E0D7C7; }
+  .bsc-page-link:hover { color: #1F1B14; background: rgba(31,27,20,0.05); }
+  .bsc-page-link.current { color: #FF6A3D; background: rgba(255,106,61,0.05); border-color: rgba(255,106,61,0.3); }
   .bsc-page-link.disabled { opacity: 0.3; pointer-events: none; }
 
   /* ── RESPONSIVE ── */
@@ -222,7 +222,7 @@
                 <td>
                   <% if user.try(:pending_reconfirmation?) %>
                     <div class="bsc-user-email"><%= user.unconfirmed_email %></div>
-                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.3)">(<%= t('unconfirmed') %>)</div>
+                    <div style="font-size:0.7rem;color:rgba(31,27,20,0.3)">(<%= t('unconfirmed') %>)</div>
                   <% else %>
                     <div class="bsc-user-email"><%= user.email %></div>
                   <% end %>
