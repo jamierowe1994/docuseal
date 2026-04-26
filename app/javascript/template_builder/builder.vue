@@ -74,6 +74,20 @@
           @update:model-value="updateName"
         />
       </div>
+      <div
+        v-if="template.submitters && template.submitters.length"
+        class="bld-submitter-tabs hidden md:flex flex-shrink-0"
+      >
+        <button
+          v-for="submitter in template.submitters"
+          :key="submitter.uuid"
+          class="bld-submitter-tab"
+          :class="{ 'bld-active': selectedSubmitter && selectedSubmitter.uuid === submitter.uuid }"
+          @click.prevent="selectedSubmitter = submitter"
+        >
+          {{ submitter.name }}
+        </button>
+      </div>
       <div class="space-x-3 flex items-center flex-shrink-0">
         <slot
           v-if="$slots.buttons"
@@ -251,6 +265,13 @@
           </a>
         </template>
       </div>
+    </div>
+    <div
+      v-if="withTitle"
+      class="bld-info-bar hidden md:flex"
+    >
+      <span>Document Canvas</span>
+      <span>{{ template.fields.length }} Field{{ template.fields.length === 1 ? '' : 's' }} Placed</span>
     </div>
     <div
       id="main_container"
@@ -492,6 +513,13 @@
           </div>
         </div>
         <div>
+          <div
+            v-if="selectedSubmitter"
+            class="bld-recipient-header"
+          >
+            <span class="bld-recipient-name">{{ selectedSubmitter.name }}</span>
+            <span class="bld-recipient-label">Active Recipient</span>
+          </div>
           <Fields
             ref="fields"
             :fields="template.fields"

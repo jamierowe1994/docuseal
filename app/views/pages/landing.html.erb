@@ -1,167 +1,734 @@
-<%# Scoped styles + font loading for the landing page only %>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<% content_for :hide_navbar, true %>
 
 <style>
-  .backed-landing {
-    font-family: 'Nunito', sans-serif;
-    color: #f5f7f2;
-    background:
-      radial-gradient(ellipse at 50% 30%, rgba(74, 158, 58, 0.18) 0%, rgba(10, 15, 8, 0) 55%),
-      #0a0f08;
+  /* ── BASE ── */
+  .bs {
+    font-family: 'Space Grotesk', sans-serif;
+    background: #141414;
+    color: #fff;
     margin: -2rem calc(50% - 50vw) 0;
-    padding: 4rem 1.5rem 6rem;
-    min-height: calc(100vh - 4rem);
+    padding: 0;
+    min-height: 100vh;
   }
-  .backed-landing .wordmark {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 2.25rem;
-    color: #ffffff;
-    letter-spacing: -0.02em;
+  /* hide any attribution widget below .bs */
+  .bs ~ * { display: none !important; }
+  .bs *, .bs *::before, .bs *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .bs a { text-decoration: none; }
+  .bs-g { color: #6bde2c; }
+
+  /* ── NAV ── */
+  .bs-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(20,20,20,0.97);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
   }
-  .backed-landing .wordmark .dot { color: #6dbf54; }
-  .backed-landing .wordmark .sign {
-    font-family: 'Caveat', cursive;
-    font-weight: 700;
-    font-size: 2.4rem;
-    margin-left: 0.15rem;
+  .bs-nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem 3rem;
   }
-  .backed-landing h1.hero {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    line-height: 1.05;
-    color: #ffffff;
-    letter-spacing: -0.03em;
+  .bs-wordmark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 1.2rem; color: #fff; letter-spacing: -0.03em;
   }
-  .backed-landing h1.hero .accent-dot { color: #6dbf54; }
-  .backed-landing .hero-sub {
-    color: #b8c2b0;
-    font-size: 1.125rem;
-    max-width: 36rem;
-    margin: 1.25rem auto 2.5rem;
-    line-height: 1.55;
+  .bs-nav-group {
+    display: flex; border: 1px solid rgba(255,255,255,0.18); border-radius: 0;
   }
-  .backed-landing .cta-primary {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: #4a9e3a; color: #ffffff;
-    padding: 0.9rem 1.75rem; border-radius: 9999px;
-    font-weight: 700; text-decoration: none;
-    transition: background 0.15s ease, transform 0.15s ease;
+  .bs-nav-group a {
+    color: rgba(255,255,255,0.6); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 0.55rem 1.25rem;
+    border-right: 1px solid rgba(255,255,255,0.18);
+    transition: color 0.15s, background 0.15s; white-space: nowrap;
   }
-  .backed-landing .cta-primary:hover { background: #56b544; transform: translateY(-1px); }
-  .backed-landing .cta-secondary {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: transparent; color: #ffffff;
-    padding: 0.9rem 1.75rem; border-radius: 9999px;
-    font-weight: 600; text-decoration: none;
-    border: 1px solid rgba(255,255,255,0.25);
+  .bs-nav-group a:last-child { border-right: none; }
+  .bs-nav-group a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .bs-btn-green {
+    background: #6bde2c; color: #0a0a0a; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 0.6rem 1.25rem;
+    border-radius: 0; transition: background 0.15s; white-space: nowrap;
   }
-  .backed-landing .cta-secondary:hover { border-color: #6dbf54; color: #6dbf54; }
-  .backed-landing .feature-card {
-    background: #131812;
-    border: 1px solid rgba(109, 191, 84, 0.12);
-    border-radius: 1rem;
-    padding: 2.5rem 1.5rem 2rem;
-    text-align: center;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+  .bs-btn-green:hover { background: #7fe83d; color: #0a0a0a; }
+
+  /* ── HERO ── */
+  .bs-hero { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 52px); }
+  .bs-hero-l {
+    background-color: #141414;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 88px 88px;
+    padding: 5rem 3rem 5rem 5rem;
+    display: flex; flex-direction: column; justify-content: center;
   }
-  .backed-landing .feature-card:hover {
-    border-color: rgba(109, 191, 84, 0.4);
-    transform: translateY(-2px);
+  .bs-hero-r {
+    background-color: #333333;
+    background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+    background-size: 22px 22px;
+    display: flex;
+    align-items: center; justify-content: center; padding: 3rem 3rem 3rem 2rem;
   }
-  .backed-landing .feature-icon {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 4rem; height: 4rem;
-    background: rgba(109, 191, 84, 0.12);
-    border: 1px solid rgba(109, 191, 84, 0.35);
-    border-radius: 9999px;
-    margin: -3.75rem auto 1.25rem;
+  .bs-mono-label {
+    font-family: 'Space Mono', monospace; font-size: 0.85rem;
+    letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 2rem;
   }
-  .backed-landing .feature-icon svg { color: #6dbf54; width: 2rem; height: 2rem; }
-  .backed-landing .feature-card h3 {
-    color: #ffffff; font-weight: 800; font-size: 1.25rem; margin-bottom: 0.75rem;
+  .bs-title {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(4rem, 7vw, 7rem); line-height: 0.92;
+    text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 1.75rem;
   }
-  .backed-landing .feature-card p { color: #a3ad9a; font-size: 0.975rem; line-height: 1.55; }
-  .backed-landing .feature-card a { color: #6dbf54; font-weight: 700; text-decoration: none; }
-  .backed-landing .feature-card a:hover { text-decoration: underline; }
-  .backed-landing .trust-strip {
-    margin-top: 5rem; padding: 2.5rem 1.5rem;
+  .bs-hero-sub {
+    color: rgba(255,255,255,0.55); font-size: 1.15rem;
+    line-height: 1.65; max-width: 26rem; margin-bottom: 2.5rem;
+  }
+  .bs-cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 3rem; }
+  .bs-btn-primary {
+    background: #6bde2c; color: #0a0a0a; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; padding: 0.875rem 1.75rem;
+    border-radius: 0; transition: background 0.15s;
+  }
+  .bs-btn-primary:hover { background: #7fe83d; color: #0a0a0a; }
+  .bs-btn-outline {
+    background: transparent; color: #fff; font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; padding: 0.875rem 1.75rem;
+    border-radius: 0; border: 1px solid rgba(255,255,255,0.28);
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .bs-btn-outline:hover { border-color: #6bde2c; color: #6bde2c; }
+  .bs-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .bs-stat {
+    padding: 1.75rem 1.5rem; border-right: 1px solid rgba(255,255,255,0.1);
+    display: flex; flex-direction: column; gap: 0.3rem;
+  }
+  .bs-stat:last-child { border-right: none; }
+  .bs-stat-n {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 1.8rem; line-height: 1; color: #fff;
+  }
+  .bs-stat-l {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+
+  /* ── DOCUMENT MOCK CARD ── */
+  .bs-doc {
+    width: 100%; max-width: 500px; background: #1f1f1f;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 2rem;
+  }
+  .bs-doc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .bs-doc-reflbl {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35);
+  }
+  .bs-doc-badge {
+    background: #6bde2c; color: #0a0a0a; font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.3rem 0.75rem; border-radius: 2px;
+  }
+  .bs-doc-refnum {
+    font-family: 'Space Mono', monospace; font-size: 1.15rem; color: #fff;
+    padding-bottom: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .bs-doc-typelbl {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.4rem;
+  }
+  .bs-doc-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.35rem; color: #fff; margin-bottom: 0.3rem; }
+  .bs-doc-co { font-size: 0.95rem; color: rgba(255,255,255,0.45); margin-bottom: 1.5rem; }
+  .bs-doc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .bs-doc-flbl {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 0.3rem;
+  }
+  .bs-doc-fval { font-size: 1rem; color: #fff; font-weight: 600; }
+  .bs-doc-signbtn {
+    display: inline-block; background: #6bde2c; color: #0a0a0a;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 0.4rem 0.85rem;
+    border-radius: 2px; white-space: nowrap;
+  }
+  .bs-doc-comp-row { display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap; }
+  .bs-doc-photo {
+    width: 100%; height: 185px; border-radius: 3px; margin-bottom: 1.5rem;
+    background: #252525; position: relative; overflow: hidden;
+  }
+  .bs-doc-photo img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    border-radius: 3px;
+  }
+  .bs-doc-sigline {
+    border-top: 2px solid #6bde2c; padding-top: 0.65rem;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3);
+  }
+
+  /* ── SHARED SECTION ── */
+  .bs-section { border-top: 1px solid rgba(255,255,255,0.08); }
+  .bs-section-inner { padding: 6rem 5rem; max-width: 1600px; margin: 0 auto; }
+  .bs-seclbl {
+    font-family: 'Space Mono', monospace; font-size: 0.85rem;
+    letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 1.5rem;
+  }
+  .bs-sectitle {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(3rem, 5.5vw, 5.5rem); line-height: 0.92;
+    text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 1.5rem;
+  }
+  .bs-secsub { color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.6; max-width: 28rem; }
+
+  /* ── INTEGRATIONS ── */
+  .bs-int-grid { display: grid; grid-template-columns: 3fr 2fr; padding-top: 4rem; align-items: stretch; }
+  .bs-crm-list { list-style: none; }
+  .bs-crm-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.08);
+    cursor: default; transition: background 0.2s, padding-left 0.2s;
+  }
+  .bs-crm-row:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+  .bs-crm-row:hover { background: rgba(255,255,255,0.02); padding-left: 1rem; }
+  .bs-crm-left { display: flex; align-items: center; gap: 1.5rem; }
+  .bs-crm-idx {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    color: rgba(255,255,255,0.25); letter-spacing: 0.05em; min-width: 1.5rem;
+  }
+  .bs-crm-name {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 2.5rem; text-transform: uppercase; letter-spacing: -0.01em;
+    color: #fff; line-height: 1; transition: color 0.15s;
+  }
+  .bs-crm-row:hover .bs-crm-name { color: #6bde2c; }
+  .bs-crm-arrow { color: rgba(255,255,255,0.3); font-size: 1.1rem; transition: color 0.15s, transform 0.15s; }
+  .bs-crm-row:hover .bs-crm-arrow { color: #6bde2c; transform: translateX(4px); }
+
+  /* ── LIVE FEED PANEL ── */
+  .bs-int-feed-wrap {
+    border-left: 1px solid rgba(255,255,255,0.08);
     border-top: 1px solid rgba(255,255,255,0.08);
     border-bottom: 1px solid rgba(255,255,255,0.08);
-    text-align: center; color: #7d8674;
-    font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 2rem 2.5rem;
+    min-height: 280px;
+    display: flex; flex-direction: column; justify-content: flex-start;
   }
-  .backed-landing .feature-grid {
-    display: grid; gap: 2rem;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+  .bs-int-feed-idle {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.18); text-align: center; line-height: 2.2;
   }
-  @media (min-width: 768px) {
-    .backed-landing .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  #bs-live-feed { width: 100%; }
+  .bs-lf-label {
+    font-family: 'Space Mono', monospace; font-size: 0.58rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.35); margin-bottom: 1rem;
   }
-  @media (min-width: 1024px) {
-    .backed-landing .feature-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .bs-lf-desc {
+    font-size: 0.875rem; color: rgba(255,255,255,0.5);
+    line-height: 1.6; margin-bottom: 1.75rem;
   }
-  .backed-landing .hero-block { text-align: center; margin-bottom: 4rem; }
-  .backed-landing .cta-row { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
-  .backed-landing .version-link {
-    display: inline-block; margin-top: 2rem;
-    color: #7d8674; font-size: 0.75rem; text-decoration: none;
+  .bs-lf-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.85rem 0; border-bottom: 1px solid rgba(255,255,255,0.07);
   }
-  .backed-landing .version-link:hover { color: #6dbf54; }
-  .backed-landing .container { max-width: 72rem; margin: 0 auto; }
+  .bs-lf-row:first-of-type { border-top: 1px solid rgba(255,255,255,0.07); }
+  .bs-lf-name { font-weight: 600; font-size: 0.9rem; color: #fff; display: block; }
+  .bs-lf-status {
+    font-family: 'Space Mono', monospace; font-size: 0.48rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.38); margin-top: 0.12rem; display: block;
+  }
+  .bs-lf-time {
+    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    color: rgba(255,255,255,0.28); white-space: nowrap;
+  }
+
+  /* ── TEMPLATES ── */
+  .bs-tpl-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    margin-top: 4rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-left: 1px solid rgba(255,255,255,0.1);
+  }
+  .bs-tpl-card {
+    border-right: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 1.5rem; display: flex; flex-direction: column; min-height: 460px;
+    position: relative; z-index: 0; cursor: default;
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+  }
+  .bs-tpl-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.7);
+    border-color: rgba(107,222,44,0.35);
+    z-index: 2;
+  }
+  .bs-tpl-preview { flex: 1; min-height: 200px; border-radius: 2px; margin-bottom: 1rem; transition: filter 0.24s ease; }
+  .bs-tpl-card:hover .bs-tpl-preview { filter: brightness(1.18) saturate(1.12); }
+  .bs-tpl-desc { font-size: 0.82rem; line-height: 1.55; margin-bottom: 0.75rem; flex: 1; }
+  .bs-tpl-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 1rem; }
+  .bs-tpl-tag {
+    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.22); border-radius: 2px;
+    padding: 0.18rem 0.4rem; color: rgba(255,255,255,0.45);
+  }
+  .bs-tpl-agency { font-weight: 700; font-size: 0.875rem; }
+  /* card variants */
+  .bs-tpl-minimal .bs-tpl-lbl  { color: rgba(255,255,255,0.35); }
+  .bs-tpl-minimal .bs-tpl-name { color: #fff; }
+  .bs-tpl-minimal .bs-tpl-preview { background: #1f1f1f; border: 1px solid rgba(255,255,255,0.08); }
+  .bs-tpl-minimal .bs-tpl-desc   { color: rgba(255,255,255,0.5); }
+  .bs-tpl-minimal .bs-tpl-agency { color: #fff; }
+  .bs-tpl-bold .bs-tpl-lbl  { color: rgba(255,255,255,0.35); }
+  .bs-tpl-bold .bs-tpl-name { color: #fff; }
+  .bs-tpl-bold .bs-tpl-preview { background: #e8391a; }
+  .bs-tpl-bold .bs-tpl-desc   { color: rgba(255,255,255,0.5); }
+  .bs-tpl-bold .bs-tpl-agency { color: #fff; }
+  .bs-tpl-classic .bs-tpl-lbl  { color: rgba(255,255,255,0.35); }
+  .bs-tpl-classic .bs-tpl-name { color: #fff; }
+  .bs-tpl-classic .bs-tpl-preview { background: #1a4de8; }
+  .bs-tpl-classic .bs-tpl-desc   { color: rgba(255,255,255,0.5); }
+  .bs-tpl-classic .bs-tpl-agency { color: #fff; }
+  .bs-tpl-tech .bs-tpl-lbl  { color: rgba(107,222,44,0.7); }
+  .bs-tpl-tech .bs-tpl-name { color: #6bde2c; }
+  .bs-tpl-tech .bs-tpl-preview { background: #0e1a2e; }
+  .bs-tpl-tech .bs-tpl-desc { color: #6bde2c; }
+  .bs-tpl-tech .bs-tpl-tag { border-color: rgba(107,222,44,0.4); color: #6bde2c; }
+  .bs-tpl-tech .bs-tpl-agency { color: #6bde2c; }
+
+  /* ── CAPABILITIES ── */
+  .bs-cap-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    margin-top: 4rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-left: 1px solid rgba(255,255,255,0.08);
+  }
+  .bs-cap-item {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .bs-cap-icon {
+    width: 2.75rem; height: 2.75rem;
+    background: rgba(107,222,44,0.08); border: 1px solid rgba(107,222,44,0.25);
+    border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem;
+  }
+  .bs-cap-icon svg { width: 1.25rem; height: 1.25rem; color: #6bde2c; }
+  .bs-cap-title {
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: #fff; margin-bottom: 0.75rem;
+  }
+  .bs-cap-desc { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  /* ── FOOTER CTA ── */
+  .bs-footer-cta {
+    background: #000;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .bs-footer-inner { padding: 8rem 5rem 5rem; }
+  .bs-footer-headline {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(5rem, 11vw, 11rem); line-height: 0.88;
+    text-transform: uppercase; letter-spacing: -0.03em;
+    color: #fff; margin-bottom: 5rem;
+  }
+  .bs-footer-formlbl {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 0.75rem;
+  }
+  .bs-footer-form {
+    display: flex; max-width: 490px; margin-bottom: 1.25rem;
+  }
+  .bs-footer-input {
+    flex: 1; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.18);
+    border-right: none; color: #fff; font-size: 0.875rem; padding: 0.9rem 1.25rem;
+    outline: none; font-family: 'Space Grotesk', sans-serif; border-radius: 0;
+  }
+  .bs-footer-input::placeholder { color: rgba(255,255,255,0.3); }
+  .bs-footer-input:focus { border-color: rgba(107,222,44,0.5); }
+  .bs-footer-btn {
+    background: #6bde2c; color: #0a0a0a;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.9rem 1.5rem; white-space: nowrap;
+    border: none; cursor: pointer; transition: background 0.15s; display: inline-block;
+  }
+  .bs-footer-btn:hover { background: #7fe83d; color: #0a0a0a; }
+  .bs-footer-signline {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 0.5rem; display: inline-block; min-width: 490px;
+  }
+  .bs-footer-nav {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 8rem;
+  }
+  .bs-footer-nav-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 5rem;
+  }
+  .bs-footer-copy {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.8rem; color: rgba(255,255,255,0.4);
+  }
+  .bs-footer-links { display: flex; gap: 2.5rem; }
+  .bs-footer-links a {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); transition: color 0.15s;
+  }
+  .bs-footer-links a:hover { color: #fff; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1200px) {
+    .bs-section-inner { padding: 5rem 3rem; }
+    .bs-hero-l { padding: 4rem 3rem; }
+    .bs-tpl-grid { grid-template-columns: repeat(2, 1fr); }
+    .bs-crm-name { font-size: 2rem; }
+  }
+  @media (max-width: 900px) {
+    .bs-hero { grid-template-columns: 1fr; min-height: auto; }
+    .bs-hero-r { display: none; }
+    .bs-hero-l { padding: 4rem 2rem; }
+    .bs-int-grid { grid-template-columns: 1fr; }
+    .bs-int-feed-wrap { display: none; }
+    .bs-cap-grid { grid-template-columns: 1fr; }
+    .bs-nav-inner { padding: 0.9rem 1.5rem; }
+    .bs-footer-inner { padding: 5rem 2rem 4rem; }
+    .bs-footer-nav-inner { padding: 1.5rem 2rem; }
+    .bs-footer-signline { min-width: 0; width: 100%; }
+    .bs-footer-form { max-width: 100%; }
+  }
+  @media (max-width: 640px) {
+    .bs-nav-group { display: none; }
+    .bs-tpl-grid { grid-template-columns: 1fr; }
+    .bs-stats { grid-template-columns: 1fr; }
+    .bs-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .bs-stat:last-child { border-bottom: none; }
+    .bs-section-inner { padding: 4rem 1.5rem; }
+    .bs-title { font-size: clamp(3.5rem, 12vw, 5rem); }
+    .bs-sectitle { font-size: clamp(2.5rem, 10vw, 4rem); }
+  }
 </style>
 
-<section class="backed-landing">
-  <div class="container">
-    <div class="hero-block">
-      <div class="wordmark">backed<span class="dot">.</span><span class="sign">sign</span></div>
-      <h1 class="hero" style="margin-top:2.5rem;">
-        Signing Made<br>For Recruiters<span class="accent-dot">.</span>
+<div class="bs">
+
+  <%# ── NAVIGATION ── %>
+  <nav class="bs-nav">
+    <div class="bs-nav-inner">
+      <a href="#" class="bs-wordmark">Backed<span class="bs-g">.</span>sign</a>
+      <div class="bs-nav-group">
+        <a href="#product">Product</a>
+        <a href="#integrations">Integrations</a>
+        <a href="#templates">Templates</a>
+        <a href="#capabilities">Pricing</a>
+      </div>
+      <a href="<%= new_user_session_path %>" class="bs-btn-green">Start Signing &#8594;</a>
+    </div>
+  </nav>
+
+  <%# ── HERO ── %>
+  <section class="bs-hero" id="product">
+    <div class="bs-hero-l">
+      <p class="bs-mono-label">V2.0 &mdash; E-SIGNATURE PLATFORM</p>
+      <h1 class="bs-title">
+        SIGNED<br>
+        BY<br>
+        <span class="bs-g">RECRUITERS.</span>
       </h1>
-      <p class="hero-sub">
-        Fast, secure digital document signing built for agencies. Every placement, contract, and offer &mdash; backed<span style="color:#6dbf54">.</span> by us.
-      </p>
-      <div class="cta-row">
-        <a href="/users/sign_up" class="cta-primary">Get Started</a>
-        <a href="/users/sign_in" class="cta-secondary">Sign In</a>
+      <p class="bs-hero-sub">E-signatures designed by recruiters, for recruiters. Branded templates, CRM integration, and a signing experience worthy of your next great hire.</p>
+      <div class="bs-cta-row">
+        <a href="<%= new_user_session_path %>" class="bs-btn-primary">Get Started &#8594;</a>
+        <a href="#templates" class="bs-btn-outline">View Templates</a>
       </div>
-      <% if Docuseal.version.present? %>
-        <a href="https://github.com/docusealco/docuseal/releases" target="_blank" class="version-link">
-          v<%= Docuseal.version %>
-        </a>
-      <% end %>
-    </div>
-
-    <div class="feature-grid" style="margin-top: 6rem;">
-      <div class="feature-card">
-        <div class="feature-icon"><%= svg_icon('brand_docker') %></div>
-        <h3>Easy to Start</h3>
-        <p>Run on your own host with Docker, or deploy to your favorite managed PaaS with a single <a href="https://www.docuseal.com/install">click</a>.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon"><%= svg_icon('devices') %></div>
-        <h3>Mobile Optimized</h3>
-        <p>Review and sign documents from any device. Every form is optimized for screens of all sizes.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon"><%= svg_icon('shield_check') %></div>
-        <h3>Secure</h3>
-        <p>Self-host behind your VPN so contracts and candidate details never leave your organization.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon"><%= svg_icon('users') %></div>
-        <h3>Built For Recruiters</h3>
-        <p>Placement contracts, offer letters, and compliance docs &mdash; templates ready for agency workflows.</p>
+      <div class="bs-stats">
+        <div class="bs-stat">
+          <span class="bs-stat-n">50K+</span>
+          <span class="bs-stat-l">Signatures Sent</span>
+        </div>
+        <div class="bs-stat">
+          <span class="bs-stat-n">99.8%</span>
+          <span class="bs-stat-l">Completion Rate</span>
+        </div>
+        <div class="bs-stat">
+          <span class="bs-stat-n">&lt;2m</span>
+          <span class="bs-stat-l">Avg Sign Time</span>
+        </div>
       </div>
     </div>
-
-    <div class="trust-strip">
-      Trusted by recruitment teams &middot; GDPR-ready &middot; Self-hosted
+    <div class="bs-hero-r">
+      <div class="bs-doc">
+        <div class="bs-doc-head">
+          <span class="bs-doc-reflbl">DOCUMENT REF</span>
+          <span class="bs-doc-badge">PENDING SIGNATURE</span>
+        </div>
+        <div class="bs-doc-refnum">BS-2026-04-0147</div>
+        <p class="bs-doc-typelbl">OFFER LETTER</p>
+        <h3 class="bs-doc-title">Senior Product Designer</h3>
+        <p class="bs-doc-co">Acme Recruitment Ltd.</p>
+        <div class="bs-doc-fields">
+          <div>
+            <p class="bs-doc-flbl">START DATE</p>
+            <p class="bs-doc-fval">2026-05-01</p>
+          </div>
+          <div>
+            <p class="bs-doc-flbl">COMPENSATION</p>
+            <div class="bs-doc-comp-row">
+              <p class="bs-doc-fval">&pound;85,000/yr</p>
+              <span class="bs-doc-signbtn">&#8594; Sign Here</span>
+            </div>
+          </div>
+        </div>
+        <div class="bs-doc-photo">
+          <img src="https://github.com/user-attachments/assets/c9e415fc-1603-400a-abda-f4e38cabd14d" alt="Fountain pen signing" loading="lazy">
+        </div>
+        <div class="bs-doc-sigline">CANDIDATE SIGNATURE &mdash; 2026-04-20</div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<%= render 'shared/attribution', with_counter: true %>
+  <%# ── INTEGRATIONS ── %>
+  <section class="bs-section" id="integrations">
+    <div class="bs-section-inner">
+      <p class="bs-seclbl"><span class="bs-g">002</span> &mdash; INTEGRATIONS</p>
+      <h2 class="bs-sectitle">PLUGS INTO<br>YOUR CRM.</h2>
+      <p class="bs-secsub">No migration. No disruption. Backed.sign connects directly to the tools your team already lives in.</p>
+      <div class="bs-int-grid">
+        <ul class="bs-crm-list">
+          <li class="bs-crm-row" data-crm="bullhorn">
+            <div class="bs-crm-left">
+              <span class="bs-crm-idx">01</span>
+              <span class="bs-crm-name">BULLHORN</span>
+            </div>
+            <span class="bs-crm-arrow">&#8594;</span>
+          </li>
+          <li class="bs-crm-row" data-crm="greenhouse">
+            <div class="bs-crm-left">
+              <span class="bs-crm-idx">02</span>
+              <span class="bs-crm-name">GREENHOUSE</span>
+            </div>
+            <span class="bs-crm-arrow">&#8594;</span>
+          </li>
+          <li class="bs-crm-row" data-crm="lever">
+            <div class="bs-crm-left">
+              <span class="bs-crm-idx">03</span>
+              <span class="bs-crm-name">LEVER</span>
+            </div>
+            <span class="bs-crm-arrow">&#8594;</span>
+          </li>
+          <li class="bs-crm-row" data-crm="jobadder">
+            <div class="bs-crm-left">
+              <span class="bs-crm-idx">04</span>
+              <span class="bs-crm-name">JOBADDER</span>
+            </div>
+            <span class="bs-crm-arrow">&#8594;</span>
+          </li>
+        </ul>
+        <div class="bs-int-feed-wrap">
+          <div id="bs-live-feed">
+            <p class="bs-int-feed-idle">&#8592; Hover a CRM<br>to see live feed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ── TEMPLATES ── %>
+  <section class="bs-section" id="templates">
+    <div class="bs-section-inner">
+      <p class="bs-seclbl"><span class="bs-g">003</span> &mdash; TEMPLATES</p>
+      <h2 class="bs-sectitle">YOUR BRAND.<br>NOT OURS.</h2>
+      <p class="bs-secsub">Every template is fully customizable. Your logo, your colors, your typography. Backed.sign disappears &mdash; your brand takes center stage.</p>
+      <div class="bs-tpl-grid">
+        <div class="bs-tpl-card bs-tpl-minimal">
+          <p class="bs-tpl-lbl">Template</p>
+          <p class="bs-tpl-name">MINIMAL</p>
+          <div class="bs-tpl-preview"></div>
+          <p class="bs-tpl-desc">Clean lines, generous whitespace, understated authority.</p>
+          <div class="bs-tpl-tags">
+            <span class="bs-tpl-tag">Cover</span>
+            <span class="bs-tpl-tag">Terms</span>
+            <span class="bs-tpl-tag">Compensation</span>
+          </div>
+          <p class="bs-tpl-agency">Apex Talent</p>
+        </div>
+        <div class="bs-tpl-card bs-tpl-bold">
+          <p class="bs-tpl-lbl">Template</p>
+          <p class="bs-tpl-name">BOLD</p>
+          <div class="bs-tpl-preview"></div>
+          <p class="bs-tpl-desc">High-impact, expressive, brand-forward design language.</p>
+          <div class="bs-tpl-tags">
+            <span class="bs-tpl-tag">Hero Cover</span>
+            <span class="bs-tpl-tag">Role Summary</span>
+            <span class="bs-tpl-tag">Package</span>
+          </div>
+          <p class="bs-tpl-agency">Nova Search</p>
+        </div>
+        <div class="bs-tpl-card bs-tpl-classic">
+          <p class="bs-tpl-lbl">Template</p>
+          <p class="bs-tpl-name">CLASSIC</p>
+          <div class="bs-tpl-preview"></div>
+          <p class="bs-tpl-desc">Traditional elegance, serif typography, timeless presence.</p>
+          <div class="bs-tpl-tags">
+            <span class="bs-tpl-tag">Letterhead</span>
+            <span class="bs-tpl-tag">Position Details</span>
+            <span class="bs-tpl-tag">Benefits</span>
+          </div>
+          <p class="bs-tpl-agency">Sterling Partners</p>
+        </div>
+        <div class="bs-tpl-card bs-tpl-tech">
+          <p class="bs-tpl-lbl">Template</p>
+          <p class="bs-tpl-name">TECH</p>
+          <div class="bs-tpl-preview"></div>
+          <p class="bs-tpl-desc">Developer-friendly, monospace-heavy, dark mode native.</p>
+          <div class="bs-tpl-tags">
+            <span class="bs-tpl-tag">Metadata</span>
+            <span class="bs-tpl-tag">Offer Spec</span>
+            <span class="bs-tpl-tag">Equity</span>
+          </div>
+          <p class="bs-tpl-agency">Circuit Recruit</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ── CAPABILITIES ── %>
+  <section class="bs-section" id="capabilities">
+    <div class="bs-section-inner">
+      <p class="bs-seclbl"><span class="bs-g">004</span> &mdash; CAPABILITIES</p>
+      <h2 class="bs-sectitle">BUILT FOR<br>RECRUITMENT.</h2>
+      <div class="bs-cap-grid">
+        <div class="bs-cap-item">
+          <div class="bs-cap-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z" />
+            </svg>
+          </div>
+          <p class="bs-cap-title">White-Label Branding</p>
+          <p class="bs-cap-desc">Your logo, colors, and domain. Candidates never see us &mdash; only your premium brand experience.</p>
+        </div>
+        <div class="bs-cap-item">
+          <div class="bs-cap-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <p class="bs-cap-title">Instant Send</p>
+          <p class="bs-cap-desc">Generate and send branded offer letters in under 2 seconds directly from your CRM pipeline.</p>
+        </div>
+        <div class="bs-cap-item">
+          <div class="bs-cap-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <p class="bs-cap-title">Smart Templates</p>
+          <p class="bs-cap-desc">Pre-built, legally compliant templates that auto-populate with candidate and role data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ── FOOTER CTA ── %>
+  <section class="bs-footer-cta">
+    <div class="bs-footer-inner">
+      <h2 class="bs-footer-headline">START<br>SIGNING</h2>
+      <p class="bs-footer-formlbl">ENTER YOUR EMAIL TO GET STARTED</p>
+      <div class="bs-footer-form">
+        <input type="email" class="bs-footer-input" placeholder="you@agency.com">
+        <a href="<%= new_user_session_path %>" class="bs-footer-btn">SIGN UP &#8594;</a>
+      </div>
+      <p class="bs-footer-signline">&#215; SIGN HERE</p>
+    </div>
+    <div class="bs-footer-nav">
+      <div class="bs-footer-nav-inner">
+        <span class="bs-footer-copy">
+          <span class="bs-wordmark">Backed<span class="bs-g">.</span>sign</span>
+          &copy; 2026
+        </span>
+        <nav class="bs-footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Security</a>
+          <a href="#">Status</a>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var feeds = {
+    bullhorn: {
+      label: 'LIVE FEED \u2014 BULLHORN',
+      desc: 'Push offer letters directly from Bullhorn placements. Auto-populate candidate data, track signing status in real-time.',
+      items: [
+        { name: 'Sarah Chen',   status: 'OFFER SENT', time: '2m ago'  },
+        { name: 'James Okafor', status: 'SIGNED',     time: '8m ago'  },
+        { name: 'Priya Patel',  status: 'VIEWED',     time: '14m ago' }
+      ]
+    },
+    greenhouse: {
+      label: 'LIVE FEED \u2014 GREENHOUSE',
+      desc: 'Sync offer letters with Greenhouse stages. Trigger signing workflows automatically when candidates reach the offer stage.',
+      items: [
+        { name: 'Marcus Webb',   status: 'SIGNED',     time: '1m ago'  },
+        { name: 'Lena Fischer',  status: 'OFFER SENT', time: '11m ago' },
+        { name: 'Tom Bradley',   status: 'VIEWED',     time: '22m ago' }
+      ]
+    },
+    lever: {
+      label: 'LIVE FEED \u2014 LEVER',
+      desc: 'Connect Lever opportunities to signed documents. Close faster with one-click offer sending from your Lever pipeline.',
+      items: [
+        { name: 'Amy Liu',     status: 'SIGNED',     time: '5m ago'  },
+        { name: 'Raj Sharma',  status: 'OFFER SENT', time: '18m ago' },
+        { name: 'Clara Watts', status: 'VIEWED',     time: '31m ago' }
+      ]
+    },
+    jobadder: {
+      label: 'LIVE FEED \u2014 JOBADDER',
+      desc: 'Integrate with Jobadder placements for seamless e-signing. Candidate records update automatically on signature.',
+      items: [
+        { name: 'Noah Brown',    status: 'OFFER SENT', time: '3m ago'  },
+        { name: 'Sophia Evans',  status: 'SIGNED',     time: '9m ago'  },
+        { name: 'Ethan Cole',    status: 'VIEWED',     time: '27m ago' }
+      ]
+    }
+  };
+
+  var panel = document.getElementById('bs-live-feed');
+  if (!panel) return;
+
+  var idleHTML = '<p class="bs-int-feed-idle">&#8592; Hover a CRM<br>to see live feed</p>';
+
+  document.querySelectorAll('.bs-crm-row[data-crm]').forEach(function (row) {
+    row.addEventListener('mouseenter', function () {
+      var key  = this.dataset.crm;
+      var feed = feeds[key];
+      if (!feed) return;
+      var rows = feed.items.map(function (item) {
+        return '<div class="bs-lf-row">' +
+          '<div><span class="bs-lf-name">' + item.name + '</span>' +
+          '<span class="bs-lf-status">' + item.status + '</span></div>' +
+          '<span class="bs-lf-time">' + item.time + '</span>' +
+          '</div>';
+      }).join('');
+      panel.innerHTML =
+        '<p class="bs-lf-label">' + feed.label + '</p>' +
+        '<p class="bs-lf-desc">'  + feed.desc  + '</p>' +
+        rows;
+    });
+  });
+
+  document.querySelector('.bs-int-grid').addEventListener('mouseleave', function () {
+    panel.innerHTML = idleHTML;
+  });
+}());
+</script>

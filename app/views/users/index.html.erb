@@ -1,110 +1,293 @@
-<div class="flex-wrap space-y-4 md:flex md:flex-nowrap md:space-y-0 md:space-x-10">
-  <%= render 'shared/settings_nav' %>
-  <div class="md:flex-grow">
-    <div class="flex flex-col md:flex-row md:flex-wrap gap-2 md:justify-between md:items-end mb-4 min-h-12">
-      <h1 class="text-4xl font-bold">
-        <% if params[:status] == 'archived' %>
-          <%= t('archived_users') %>
-        <% elsif params[:status] == 'integration' %>
-          <%= t('embedding_users') %>
-        <% else %>
-          <%= t('users') %>
-        <% end %>
-      </h1>
-      <div class="flex flex-col md:flex-row gap-y-2 gap-x-4 md:items-center">
-        <% if params[:status].blank? %>
-          <% if can?(:create, User.new(account: current_account)) %>
-            <%= render 'users/extra_buttons' %>
-            <% if content_for(:add_user_button) %>
-              <%= content_for(:add_user_button) %>
+<style>
+  /* ── BSC PAGE BASE ── */
+  .bsc {
+    font-family: 'Space Grotesk', sans-serif;
+    background: #141414;
+    color: #fff;
+    margin: -2rem calc(50% - 50vw) 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+  .bsc ~ * { display: none !important; }
+  .bsc *, .bsc *::before, .bsc *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .bsc a { text-decoration: none; }
+  .bsc-g { color: #6bde2c; }
+  .bsc-seclbl {
+    font-family: 'Space Mono', monospace; font-size: 0.85rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin-bottom: 1.5rem;
+  }
+  .bsc-sectitle {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(2.5rem, 5vw, 5rem); line-height: 0.92;
+    text-transform: uppercase; letter-spacing: -0.02em;
+  }
+
+  /* ── ADMIN LAYOUT ── */
+  .bsc-admin-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .bsc-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(255,255,255,0.07);
+    padding: 5rem 0 3rem;
+  }
+  .bsc-sidebar-label {
+    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.2); padding: 0 1.5rem 1rem;
+  }
+  .bsc-sidebar-item {
+    display: block;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); padding: 0.7rem 1.5rem;
+    border-left: 2px solid transparent;
+    transition: color 0.15s, background 0.15s, border-color 0.15s;
+  }
+  .bsc-sidebar-item:hover { color: #fff; background: rgba(255,255,255,0.04); }
+  .bsc-sidebar-item.bsc-active { color: #6bde2c; border-left-color: #6bde2c; background: rgba(107,222,44,0.05); }
+  .bsc-sidebar-sep {
+    border: none; border-top: 1px solid rgba(255,255,255,0.07); margin: 1rem 1.5rem;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .bsc-admin-main {
+    flex: 1;
+    padding: 5rem 4rem 6rem;
+    overflow: hidden;
+  }
+  .bsc-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .bsc-btn-green {
+    background: #6bde2c; color: #0a0a0a; font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.65rem 1.25rem; border: none; cursor: pointer; white-space: nowrap;
+    transition: background 0.15s; display: inline-block;
+  }
+  .bsc-btn-green:hover { background: #7fe83d; color: #0a0a0a; }
+  .bsc-btn-outline {
+    background: transparent; color: rgba(255,255,255,0.5);
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.45rem 0.85rem; border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer; white-space: nowrap; transition: color 0.15s, border-color 0.15s;
+    display: inline-block;
+  }
+  .bsc-btn-outline:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+  .bsc-btn-danger {
+    background: transparent; color: rgba(232,68,68,0.7);
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.45rem 0.85rem; border: 1px solid rgba(232,68,68,0.3);
+    cursor: pointer; white-space: nowrap; transition: color 0.15s, border-color 0.15s;
+    display: inline-block;
+  }
+  .bsc-btn-danger:hover { color: #e84444; border-color: rgba(232,68,68,0.6); }
+
+  /* ── TABLE ── */
+  .bsc-table-wrap { overflow-x: auto; }
+  .bsc-user-table { width: 100%; border-collapse: collapse; }
+  .bsc-user-table th {
+    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.25); padding: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    text-align: left; font-weight: 400;
+  }
+  .bsc-user-table th:last-child { text-align: right; }
+  .bsc-user-table td {
+    padding: 1.1rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.875rem; color: rgba(255,255,255,0.7);
+  }
+  .bsc-user-table tr:hover td { background: rgba(255,255,255,0.025); }
+  .bsc-user-table td:last-child { text-align: right; }
+  .bsc-user-name { color: #fff; font-weight: 500; }
+  .bsc-user-email { font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-top: 0.15rem; }
+  .bsc-role-badge {
+    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.2rem 0.55rem; border: 1px solid rgba(107,191,222,0.4);
+    color: #6bbfde; background: rgba(107,191,222,0.06);
+  }
+  .bsc-td-actions { display: flex; gap: 0.4rem; justify-content: flex-end; align-items: center; }
+
+  /* ── EMPTY ── */
+  .bsc-empty {
+    padding: 4rem 0; text-align: center;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.18); line-height: 2.2;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* ── PAGINATION ── */
+  .bsc-pagination {
+    display: flex; justify-content: flex-end; align-items: center;
+    padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .bsc-page-links { display: flex; }
+  .bsc-page-link {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.14);
+    border-right: none; padding: 0.4rem 0.85rem;
+    transition: color 0.15s, background 0.15s;
+  }
+  .bsc-page-link:last-child { border-right: 1px solid rgba(255,255,255,0.14); }
+  .bsc-page-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .bsc-page-link.current { color: #6bde2c; background: rgba(107,222,44,0.05); border-color: rgba(107,222,44,0.3); }
+  .bsc-page-link.disabled { opacity: 0.3; pointer-events: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .bsc-sidebar { display: none; }
+    .bsc-admin-main { padding: 3rem 1.5rem 4rem; }
+  }
+</style>
+
+<div class="bsc">
+  <div class="bsc-admin-layout">
+
+    <%# ── SIDEBAR ── %>
+    <aside class="bsc-sidebar">
+      <p class="bsc-sidebar-label">Admin Centre</p>
+      <%= link_to 'Users', settings_users_path, class: "bsc-sidebar-item #{'bsc-active' if request.path == settings_users_path && params[:status].blank?}" %>
+      <% if can?(:read, User) %>
+        <%= link_to 'Profile', "#{settings_profile_index_path}#profile", class: "bsc-sidebar-item #{'bsc-active' if request.path.start_with?(settings_profile_index_path) && !request.path.start_with?(settings_account_path)}" %>
+        <%= link_to 'Account', "#{settings_profile_index_path}#business", class: "bsc-sidebar-item #{'bsc-active' if request.path == settings_account_path}" %>
+      <% end %>
+      <% if can?(:read, AccountConfig) %>
+        <%= link_to 'Notifications', settings_notifications_path, class: "bsc-sidebar-item #{'bsc-active' if request.path == settings_notifications_path}" %>
+        <%= link_to 'Personalization', settings_personalization_path, class: "bsc-sidebar-item #{'bsc-active' if request.path == settings_personalization_path}" %>
+      <% end %>
+      <% if can?(:read, EncryptedConfig.new(key: EncryptedConfig::ESIGN_CERTS_KEY, account: current_account)) %>
+        <%= link_to 'E-Signature', settings_esign_path, class: "bsc-sidebar-item #{'bsc-active' if request.path == settings_esign_path}" %>
+      <% end %>
+      <% if can?(:read, WebhookUrl) && (Docuseal.demo? || !Docuseal.multitenant? || (current_user != true_user && !current_account.testing?)) %>
+        <hr class="bsc-sidebar-sep">
+        <%= link_to 'Webhooks', settings_webhooks_path, class: "bsc-sidebar-item #{'bsc-active' if request.path.start_with?(settings_webhooks_path)}" %>
+      <% end %>
+    </aside>
+
+    <%# ── MAIN ── %>
+    <main class="bsc-admin-main">
+
+      <%# ── HEADER ── %>
+      <div class="bsc-admin-header">
+        <div>
+          <p class="bsc-seclbl"><span class="bsc-g">004</span> &mdash; ADMIN</p>
+          <h1 class="bsc-sectitle">
+            <% if params[:status] == 'archived' %>
+              <%= t('archived_users').upcase %>
+            <% elsif params[:status] == 'integration' %>
+              <%= t('embedding_users').upcase %>
             <% else %>
-              <%= link_to new_user_path, class: 'btn btn-primary btn-md gap-2 w-full md:w-fit', data: { turbo_frame: 'modal' } do %>
-                <%= svg_icon('plus', class: 'w-6 h-6') %>
-                <span><%= t('new_user') %></span>
+              USERS.
+            <% end %>
+          </h1>
+        </div>
+
+      </div>
+
+      <%# ── USERS TABLE ── %>
+      <div class="bsc-table-wrap">
+        <table class="bsc-user-table">
+          <thead>
+            <tr>
+              <th><%= t('name') %></th>
+              <th><%= t('email') %></th>
+              <th><%= t('role') %></th>
+              <th><%= t('last_session') %></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td>
+                  <div class="bsc-user-name"><%= user.full_name.presence || '&mdash;'.html_safe %></div>
+                </td>
+                <td>
+                  <% if user.try(:pending_reconfirmation?) %>
+                    <div class="bsc-user-email"><%= user.unconfirmed_email %></div>
+                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.3)">(<%= t('unconfirmed') %>)</div>
+                  <% else %>
+                    <div class="bsc-user-email"><%= user.email %></div>
+                  <% end %>
+                </td>
+                <td>
+                  <span class="bsc-role-badge"><%= t(user.role) %></span>
+                </td>
+                <td>
+                  <%= user.current_sign_in_at ? l(user.current_sign_in_at.in_time_zone(current_account.timezone), format: :short, locale: current_account.locale) : '&mdash;'.html_safe %>
+                </td>
+                <td>
+                  <div class="bsc-td-actions">
+                    <% if params[:status].blank? && can?(:update, user) && user.archived_at.blank? %>
+                      <%= link_to t('edit'), edit_user_path(user), class: 'bsc-btn-outline', data: { turbo_frame: 'modal' } %>
+                    <% end %>
+                    <% if params[:status] != 'archived' && can?(:destroy, user) && user != current_user %>
+                      <%= button_to t('remove'), user_path(user), method: :delete, class: 'bsc-btn-danger', data: { turbo_confirm: t('are_you_sure_') } %>
+                    <% end %>
+                    <% if params[:status] == 'archived' && can?(:create, user) && user != current_user && user.archived_at? %>
+                      <%= button_to t('unarchive'), user_path(user), method: :put, params: { user: { archived_at: nil } }, class: 'bsc-btn-outline', data: { turbo_confirm: t('are_you_sure_') } %>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+            <% if @users.empty? %>
+              <tr>
+                <td colspan="5">
+                  <div class="bsc-empty">No users found</div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <%# ── PAGINATION ── %>
+      <% if @pagy.pages > 1 %>
+        <div class="bsc-pagination">
+          <div class="bsc-page-links">
+            <% if @pagy.prev %>
+              <a href="<%= settings_users_path(page: @pagy.prev) %>" class="bsc-page-link">&#8592; Prev</a>
+            <% else %>
+              <span class="bsc-page-link disabled">&#8592; Prev</span>
+            <% end %>
+            <% (@pagy.series rescue []).each do |item| %>
+              <% if item.is_a?(Integer) %>
+                <a href="<%= settings_users_path(page: item) %>" class="bsc-page-link <%= 'current' if item == @pagy.page %>"><%= item %></a>
+              <% elsif item == :gap %>
+                <span class="bsc-page-link disabled">&hellip;</span>
               <% end %>
             <% end %>
-          <% else %>
-            <div class="tooltip" data-tip="<%= t('contact_your_administrator_to_add_new_users') %>">
-              <%= link_to '#', class: 'btn btn-primary btn-md gap-2 w-full md:w-fit btn-disabled', data: { turbo_frame: 'modal' } do %>
-                <%= svg_icon('plus', class: 'w-6 h-6') %>
-                <span><%= t('new_user') %></span>
-              <% end %>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="table w-full table-lg rounded-b-none overflow-hidden">
-        <thead class="bg-base-200">
-          <tr class="text-neutral uppercase">
-            <th>
-              <%= t('name') %>
-            </th>
-            <th>
-              <%= t('email') %>
-            </th>
-            <th>
-              <%= t('role') %>
-            </th>
-            <th>
-              <%= t('last_session') %>
-            </th>
-            <th class="text-right" width="1px">
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @users.each do |user| %>
-            <tr scope="row">
-              <td>
-                <%= user.full_name %>
-              </td>
-              <td>
-                <% if user.try(:pending_reconfirmation?) %>
-                  <%= user.unconfirmed_email %>
-                  <br>
-                  <span class="label-text-alt">(<%= t('unconfirmed') %>)</span>
-                <% else %>
-                  <%= user.email %>
-                <% end %>
-              </td>
-              <td>
-                <span class="badge badge-info badge-outline whitespace-nowrap">
-                  <%= t(user.role) %>
-                </span>
-              </td>
-              <td>
-                <%= user.current_sign_in_at ? l(user.current_sign_in_at.in_time_zone(current_account.timezone), format: :short, locale: current_account.locale) : '-' %>
-              </td>
-              <td class="flex items-center space-x-2 justify-end">
-                <% if params[:status].blank? && can?(:update, user) && user.archived_at.blank? %>
-                  <%= link_to edit_user_path(user), class: 'btn btn-outline btn-xs', title: t('edit'), data: { turbo_frame: 'modal' } do %>
-                    <%= t('edit') %>
-                  <% end %>
-                <% end %>
-                <% if params[:status] != 'archived' && can?(:destroy, user) && user != current_user %>
-                  <%= button_to user_path(user), method: :delete, class: 'btn btn-outline btn-error btn-xs', title: t('remove'), data: { turbo_confirm: t('are_you_sure_') } do %>
-                    <%= t('remove') %>
-                  <% end %>
-                <% end %>
-                <% if params[:status] == 'archived' && can?(:create, user) && user != current_user && user.archived_at? %>
-                  <%= button_to user_path(user), method: :put, params: { user: { archived_at: nil } }, class: 'btn btn-outline btn-xs', title: t('unarchive'), data: { turbo_confirm: t('are_you_sure_') } do %>
-                    <%= t('unarchive') %>
-                  <% end %>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    <% if @pagy.pages > 1 %>
-      <%= render 'shared/pagination', pagy: @pagy, items_name: 'users', left_additional_html: render('bottom_links') %>
-    <% else %>
-      <div class="mt-2">
-        <%= render 'bottom_links' %>
-      </div>
-    <% end %>
+            <% if @pagy.next %>
+              <a href="<%= settings_users_path(page: @pagy.next) %>" class="bsc-page-link">Next &#8594;</a>
+            <% else %>
+              <span class="bsc-page-link disabled">Next &#8594;</span>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <div style="margin-top:1rem">
+          <%= render 'bottom_links' %>
+        </div>
+      <% end %>
+
+    </main>
   </div>
 </div>

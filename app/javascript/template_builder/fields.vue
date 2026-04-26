@@ -5,6 +5,7 @@
     class="flex items-center gap-1"
   >
     <FieldSubmitter
+      ref="submitterDropdown"
       :model-value="selectedSubmitter.uuid"
       class="roles-dropdown w-full rounded-lg roles-dropdown"
       :submitters="submitters"
@@ -15,6 +16,18 @@
       @name-change="save"
       @update:model-value="[$emit('change-submitter', submitters.find((s) => s.uuid === $event)), isShowVariables = false]"
     />
+    <button
+      v-if="editable && !defaultSubmitters.length"
+      class="add-signer-btn flex-shrink-0 flex items-center justify-center"
+      :title="t('add') + ' signer'"
+      @click.prevent="$refs.submitterDropdown.addSubmitter()"
+    >
+      <IconCirclePlus
+        :width="20"
+        :height="20"
+        :stroke-width="1.6"
+      />
+    </button>
     <button
       v-if="hasDynamicDocuments"
       class="flex-shrink-0 rounded-md border hover:border-content flex items-center justify-center self-stretch"
@@ -219,9 +232,12 @@
   </div>
   <div
     v-if="!isShowVariables && editable && !onlyDefinedFields && (!showCustomTab || (!customFields.length && !newCustomField))"
-    id="field-types-grid"
-    class="grid grid-cols-3 gap-1 pb-2 fields-grid"
+    id="field-types-list"
+    class="fields-grid"
   >
+    <p class="bld-field-types-header">
+      Field Types
+    </p>
     <template
       v-for="(icon, type) in fieldIconsSorted"
       :key="type"
@@ -230,25 +246,24 @@
         v-if="fieldTypes.includes(type) || ((withPhone || type != 'phone') && (withPayment || type != 'payment') && (withVerification || type != 'verification') && (withKba || type != 'kba'))"
         :id="`${type}_type_field_button`"
         draggable="true"
-        class="field-type-button group flex items-center justify-center border border-dashed w-full rounded relative fields-grid-item"
+        class="field-type-button fields-grid-item"
         :style="{ backgroundColor }"
-        :class="drawFieldType === type ? 'border-base-content/40' : 'border-base-300 hover:border-base-content/20'"
+        :class="drawFieldType === type ? 'bld-type-active' : ''"
         @dragstart="onDragstart($event, { type: type })"
         @dragend="$emit('drag-end')"
         @click="['file', 'payment', 'verification', 'kba'].includes(type) ? $emit('add-field', type) : $emit('set-draw-type', type)"
       >
-        <div
-          class="flex items-console transition-all cursor-grab h-full absolute left-0"
-          :class="drawFieldType === type ? 'bg-base-200/50' : 'group-hover:bg-base-200/50'"
-        >
-          <IconDrag class="my-auto" />
-        </div>
-        <div class="flex items-center flex-col px-2 py-2">
-          <component :is="icon" />
-          <span class="text-xs mt-1">
-            {{ fieldNames[type] }}
-          </span>
-        </div>
+        <span class="bld-type-icon">
+          <component
+            :is="icon"
+            :width="18"
+            :stroke-width="1.6"
+          />
+        </span>
+        <span class="bld-type-info">
+          <span class="bld-type-name">{{ fieldNames[type] }}</span>
+          <span class="bld-type-desc">{{ fieldDescriptions[type] }}</span>
+        </span>
       </button>
       <div
         v-else-if="type == 'phone' && (fieldTypes.length === 0 || fieldTypes.includes(type))"
@@ -259,22 +274,19 @@
         <a
           href="https://www.docuseal.com/pricing"
           target="_blank"
-          class="opacity-50 flex items-center justify-center border border-dashed border-base-300 w-full rounded relative fields-grid-item"
+          class="opacity-50 field-type-button fields-grid-item"
           :style="{ backgroundColor }"
         >
-          <div class="w-0 absolute left-0">
+          <span class="bld-type-icon">
             <IconLock
-              width="18"
-              height="18"
+              :width="18"
               stroke-width="1.5"
             />
-          </div>
-          <div class="flex items-center flex-col px-2 py-2">
-            <component :is="icon" />
-            <span class="text-xs mt-1">
-              {{ fieldNames[type] }}
-            </span>
-          </div>
+          </span>
+          <span class="bld-type-info">
+            <span class="bld-type-name">{{ fieldNames[type] }}</span>
+            <span class="bld-type-desc">{{ fieldDescriptions[type] }}</span>
+          </span>
         </a>
       </div>
       <div
@@ -285,48 +297,46 @@
         <a
           href="https://www.docuseal.com/qualified-electronic-signature"
           target="_blank"
-          class="opacity-50 flex items-center justify-center border border-dashed border-base-300 w-full rounded relative fields-grid-item"
+          class="opacity-50 field-type-button fields-grid-item"
           :style="{ backgroundColor }"
         >
-          <div class="w-0 absolute left-0">
+          <span class="bld-type-icon">
             <IconLock
-              width="18"
-              height="18"
+              :width="18"
               stroke-width="1.5"
             />
-          </div>
-          <div class="flex items-center flex-col px-2 py-2">
-            <component :is="icon" />
-            <span class="text-xs mt-1">
-              {{ fieldNames[type] }}
-            </span>
-          </div>
+          </span>
+          <span class="bld-type-info">
+            <span class="bld-type-name">{{ fieldNames[type] }}</span>
+            <span class="bld-type-desc">{{ fieldDescriptions[type] }}</span>
+          </span>
         </a>
       </div>
     </template>
   </div>
   <div
     v-if="!isShowVariables && fields.length < 4 && editable && withHelp && !showTourStartForm"
-    class="text-xs p-2 border border-base-200 rounded"
+    class="bld-howto"
   >
-    <ul class="list-disc list-outside ml-3">
-      <li>
-        {{ t('draw_a_text_field_on_the_page_with_a_mouse') }}
-      </li>
-      <li>
-        {{ t('drag_and_drop_any_other_field_type_on_the_page') }}
-      </li>
-      <li>
-        {{ t('click_on_the_field_type_above_to_start_drawing_it') }}
-      </li>
-    </ul>
+    <p class="bld-howto-header">
+      How to use
+    </p>
+    <p class="bld-howto-item">
+      {{ t('click_on_the_field_type_above_to_start_drawing_it') }}
+    </p>
+    <p class="bld-howto-item">
+      {{ t('drag_and_drop_any_other_field_type_on_the_page') }}
+    </p>
+    <p class="bld-howto-item">
+      {{ t('draw_a_text_field_on_the_page_with_a_mouse') }}
+    </p>
   </div>
   <div
     v-if="!isShowVariables && withFieldsDetection && editable && fields.length < 2 && !template.schema.some((item) => item.dynamic)"
-    class="my-2"
+    class="px-0.5 pb-1"
   >
     <button
-      class="btn w-full"
+      class="bld-autodetect-btn btn"
       :class="{ 'bg-base-300': fieldPagesLoaded !== null }"
       @click="fieldPagesLoaded !== null ? null : detectFields()"
     >
@@ -337,23 +347,19 @@
         />
         <span
           v-if="analyzingProgress"
-          class="hidden md:inline"
         >
           {{ Math.round(analyzingProgress * 100) }}% {{ t('analyzing_') }}
         </span>
         <span
           v-else
-          class="hidden md:inline"
         >
           {{ fieldPagesLoaded }} / {{ numberOfPages }} {{ t('processing_') }}
         </span>
       </template>
       <template v-else>
-        <IconSparkles width="22" />
-        <span
-          class="hidden md:inline"
-        >
-          {{ t('autodetect_fields') }}
+        <IconSparkles width="16" />
+        <span>
+          ⚡ {{ t('autodetect_fields') }}
         </span>
       </template>
     </button>
@@ -516,6 +522,33 @@ export default {
   computed: {
     fieldNames: FieldType.computed.fieldNames,
     fieldIcons: FieldType.computed.fieldIcons,
+    fieldDescriptions () {
+      return {
+        text: 'Single line text',
+        signature: 'Signature capture',
+        initials: 'Initials field',
+        date: 'Date picker',
+        datenow: 'Auto-filled date',
+        number: 'Numeric input',
+        image: 'Image upload',
+        file: 'File upload',
+        select: 'Dropdown select',
+        checkbox: 'Tick box',
+        multiple: 'Multi-select',
+        radio: 'Radio choice',
+        cells: 'Cell grid',
+        stamp: 'Stamp / seal',
+        payment: 'Payment field',
+        phone: 'Phone number',
+        verification: 'ID verification',
+        kba: 'Knowledge-based auth',
+        name: 'Full name',
+        email: 'Email address',
+        paragraph: 'Multi-line text',
+        heading: 'Section heading',
+        strikethrough: 'Strikeout text'
+      }
+    },
     hasDynamicDocuments () {
       return this.template.schema.some((item) => item.dynamic)
     },

@@ -23,6 +23,14 @@ en: &en
   add_from_google_drive: Add from Google Drive
   or_add_from: Or add from
   upload_a_new_document: Upload a New Document
+  template_builder: Template Builder
+  create_manage_html: "Create &amp;<br>Manage."
+  build_and_customize_your_contract_templates_to_streamline_your_workflow: Build and customize your contract templates to streamline your workflow.
+  drop_templates_here: Drop templates here
+  select_file: Select File
+  search_templates: Search templates...
+  created: Created
+  modified: Modified
   billing: Billing
   hi_there: Hi there
   templates_that_require_email_or_phone_2fa_cannot_be_used_via_a_shared_link: Templates that require email or phone 2FA cannot be used via a shared link.
@@ -561,6 +569,7 @@ en: &en
   you_are_already_signed_in: You are already signed in.
   please_sign_in: Please sign in.
   not_found: Not found
+  this_signing_link_is_no_longer_valid: This signing link is no longer valid or has expired.
   new_recipients_have_been_added: New recipients have been added.
   submission_has_been_removed: Submission has been removed.
   submission_has_been_archived: Submission has been archived.

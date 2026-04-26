@@ -4,22 +4,39 @@
       <input name="<%= key %>" value="<%= params[key] %>" class="hidden">
     <% end %>
   <% end %>
-  <% if params[:q].present? %>
-    <div class="relative">
-      <a href="<%= url_for(params: request.query_parameters.except('q')) %>" title="<%= t('clear') %>" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-auto text-neutral text-2xl font-extralight">
-        &times;
-      </a>
+  <% if local_assigns[:boxed] %>
+    <div class="relative flex items-center w-full border border-base-300 rounded-lg bg-base-200">
+      <span class="absolute left-3 pointer-events-none text-base-content/50">
+        <%= svg_icon('search', class: 'w-4 h-4') %>
+      </span>
+      <% if params[:q].present? %>
+        <a href="<%= url_for(params: request.query_parameters.except('q')) %>" title="<%= t('clear') %>" class="absolute right-3 flex items-center text-base-content/50 text-xl font-extralight leading-none">
+          &times;
+        </a>
+      <% end %>
+      <search-input data-title="<%= local_assigns[:title_selector] || 'h1' %>" class="flex flex-1">
+        <input id="search" name="q" value="<%= params[:q] %>" class="input bg-transparent border-none focus:outline-none text-sm pl-9 pr-8 w-full" placeholder="<%= local_assigns[:placeholder] %>">
+        <button type="submit" class="hidden"></button>
+      </search-input>
     </div>
+  <% else %>
+    <% if params[:q].present? %>
+      <div class="relative">
+        <a href="<%= url_for(params: request.query_parameters.except('q')) %>" title="<%= t('clear') %>" class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-auto text-neutral text-2xl font-extralight">
+          &times;
+        </a>
+      </div>
+    <% end %>
+    <search-input data-title="<%= local_assigns[:title_selector] || 'h1' %>" class="flex items-center">
+      <input id="search" name="q" value="<%= params[:q] %>" class="input text-lg pr-10 -mr-12 w-0 md:w-60 <%= 'pl-8 input-outlined w-60' if params[:q].present? %>" placeholder="<%= local_assigns[:placeholder] %>">
+      <button type="submit" title="<%= t('search') %>" class="btn btn-ghost btn-circle">
+        <span class="enabled">
+          <%= svg_icon('search', class: 'w-6 h-6 stroke-2') %>
+        </span>
+        <span class="disabled">
+          <%= svg_icon('loader', class: 'w-5 h-5 animate-spin') %>
+        </span>
+      </button>
+    </search-input>
   <% end %>
-  <search-input data-title="<%= local_assigns[:title_selector] || 'h1' %>" class="flex items-center">
-    <input id="search" name="q" value="<%= params[:q] %>" class="input text-lg pr-10 -mr-12 w-0 md:w-60 <%= 'pl-8 input-outlined w-60' if params[:q].present? %>" placeholder="<%= local_assigns[:placeholder] %>">
-    <button type="submit" title="<%= t('search') %>" class="btn btn-ghost btn-circle">
-      <span class="enabled">
-        <%= svg_icon('search', class: 'w-6 h-6 stroke-2') %>
-      </span>
-      <span class="disabled">
-        <%= svg_icon('loader', class: 'w-5 h-5 animate-spin') %>
-      </span>
-    </button>
-  </search-input>
 </form>

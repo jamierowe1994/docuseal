@@ -1,82 +1,289 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login - Backed.sign</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(#0a0a0a, #1a1a1a);
-        }
-        .login-card {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            padding: 2rem;
-            width: 300px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
-        h1 {
-            color: white;
-            text-align: center;
-            margin: 0 0 1rem;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 0.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #333;
-            color: white;
-        }
-        input[type="text"]:focus, input[type="password"]:focus {
-            border-color: #6bac36;
-            outline: none;
-        }
-        .submit-button {
-            background: linear-gradient(#6bac36, #8ac754);
-            color: white;
-            padding: 0.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-        .oauth-button {
-            background-color: #333;
-            color: white;
-            padding: 0.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 1rem;
-        }
-        .oauth-button:hover {
-            background-color: #444;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In &mdash; backed.sign</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #141414;
+      color: #fff;
+    }
+
+    /* ── LEFT PANEL ── */
+    .bsc-login-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3.5rem 4rem;
+      background: #0e0e0e;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bsc-login-left::before {
+      content: '';
+      position: absolute;
+      bottom: -120px;
+      left: -120px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(107,222,44,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .bsc-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #fff;
+      position: absolute;
+      top: 3.5rem;
+      left: 4rem;
+    }
+
+    .bsc-logo span { color: #6bde2c; }
+
+    .bsc-login-hero { position: relative; z-index: 1; text-align: center; }
+
+    .bsc-login-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 1.25rem;
+    }
+
+    .bsc-login-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    .bsc-login-title span { color: #6bde2c; }
+
+    .bsc-login-sub {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.65;
+      max-width: 26rem;
+      text-align: center;
+    }
+
+    .bsc-login-footer-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.18);
+      position: absolute;
+      bottom: 3.5rem;
+      left: 4rem;
+    }
+
+    /* ── RIGHT PANEL ── */
+    .bsc-login-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3.5rem 4rem;
+    }
+
+    .bsc-login-form-wrap {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .bsc-login-form-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.75rem;
+    }
+
+    .bsc-login-form-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .bsc-login-form-sub {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 2.5rem;
+    }
+
+    /* flash / alert */
+    .bsc-alert {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.875rem;
+      color: #e84444;
+      border: 1px solid rgba(232,68,68,0.5);
+      background: rgba(232,68,68,0.1);
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.5rem;
+      border-left: 3px solid #e84444;
+    }
+
+    /* back link */
+    .bsc-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color 0.15s;
+    }
+    .bsc-back:hover { color: rgba(255,255,255,0.7); }
+
+    .bsc-field { margin-bottom: 1.25rem; }
+
+    .bsc-label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.52rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 0.5rem;
+    }
+
+    .bsc-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.8rem 1rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .bsc-input::placeholder { color: rgba(255,255,255,0.2); }
+    .bsc-input:focus { border-color: rgba(107,222,44,0.5); }
+
+    .bsc-forgot {
+      display: block;
+      text-align: right;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6bde2c;
+      text-decoration: none;
+      margin-top: -0.75rem;
+      margin-bottom: 2rem;
+      transition: opacity 0.15s;
+    }
+    .bsc-forgot:hover { opacity: 0.7; }
+
+    .bsc-submit {
+      width: 100%;
+      background: #6bde2c;
+      color: #0a0a0a;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border: none;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .bsc-submit:hover { background: #7fe83d; }
+    .bsc-submit:active { transform: scale(0.99); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      body { grid-template-columns: 1fr; }
+      .bsc-login-left { display: none; }
+      .bsc-login-right { padding: 3rem 2rem; align-items: center; }
+      .bsc-login-form-wrap { max-width: 100%; }
+    }
+  </style>
 </head>
 <body>
-    <div class="login-card">
-        <h1>Backed.sign</h1>
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-            <%= f.text_field :email, autofocus: true,autocomplete:"email", placeholder:"Email" %>
-            <%= f.password_field :password, autocomplete:"current-password", placeholder:"Password" %>
-            <%= f.submit "Log in", class: "submit-button" %>
-        <% end %>
-        <div>
-            <%= link_to "Forgot your password?", new_password_path(resource_name), class: "oauth-button" %>
-        </div>
-        <div>
-            <%= link_to "Sign in with Google", "#", class: "oauth-button" %>
-            <%= link_to "Sign in with Facebook", "#", class: "oauth-button" %>
-        </div>
+
+  <%# ── LEFT PANEL ── %>
+  <div class="bsc-login-left">
+    <div class="bsc-logo">backed<span>.</span>sign</div>
+
+    <div class="bsc-login-hero">
+      <p class="bsc-login-eyebrow"><span style="color:#6bde2c">001</span> &mdash; Portal</p>
+      <h1 class="bsc-login-title">Built for<br>recruiters,<br><span>by</span><br>recruiters.</h1>
+      <p class="bsc-login-sub">Send, sign, and track every contract in real time. Your complete document workflow, in one place.</p>
     </div>
+
+    <p class="bsc-login-footer-label">&copy; <%= Date.current.year %> backed.sign &mdash; All rights reserved</p>
+  </div>
+
+  <%# ── RIGHT PANEL ── %>
+  <div class="bsc-login-right">
+    <div class="bsc-login-form-wrap">
+      <a href="/" class="bsc-back">&#8592; Back to home</a>
+      <p class="bsc-login-form-eyebrow">Secure access</p>
+      <h2 class="bsc-login-form-title">Welcome<br>back.</h2>
+      <p class="bsc-login-form-sub">Sign in to your account to continue</p>
+
+      <% if flash[:alert].present? %>
+        <div class="bsc-alert">⚠ <%= flash[:alert] %></div>
+      <% end %>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
+        <%= render 'hidden_fields' %>
+
+        <div class="bsc-field">
+          <label class="bsc-label" for="user_email">Email address</label>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email",
+                placeholder: "you@example.com", id: "user_email", class: "bsc-input" %>
+        </div>
+
+        <div class="bsc-field">
+          <label class="bsc-label" for="user_password">Password</label>
+          <%= f.password_field :password, autocomplete: "current-password",
+                placeholder: "••••••••", id: "user_password", class: "bsc-input" %>
+        </div>
+
+        <%= link_to "Forgot password?", new_password_path(resource_name), class: "bsc-forgot" %>
+
+        <%= f.submit "Sign in →", class: "bsc-submit" %>
+      <% end %>
+    </div>
+  </div>
+
 </body>
 </html>

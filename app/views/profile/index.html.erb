@@ -1,110 +1,412 @@
-<div class="flex flex-wrap space-y-4 md:flex-nowrap md:space-y-0">
-  <%= render 'shared/settings_nav' %>
-  <div class="flex-grow max-w-xl mx-auto">
-    <h1 class="text-4xl font-bold mb-4">
-      <%= t('profile') %>
-    </h1>
-    <%= form_for current_user, url: update_contact_settings_profile_index_path, method: :patch, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
-      <div class="grid md:grid-cols-2 gap-4">
-        <div class="form-control">
-          <%= f.label :first_name, t('first_name'), class: 'label' %>
-          <%= f.text_field :first_name, required: true, class: 'base-input', dir: 'auto' %>
-        </div>
-        <div class="form-control">
-          <%= f.label :last_name, t('last_name'), class: 'label' %>
-          <%= f.text_field :last_name, required: false, class: 'base-input', dir: 'auto' %>
-        </div>
-      </div>
-      <div class="form-control">
-        <%= f.label :email, t('email'), class: 'label' %>
-        <%= f.email_field :email, autocomplete: 'off', class: 'base-input' %>
-        <% if current_user.try(:pending_reconfirmation?) %>
-          <label class="label">
-            <span class="label-text-alt"><%= t('email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm', email: f.object.unconfirmed_email) %></span>
-          </label>
-        <% end %>
-      </div>
-      <div class="form-control pt-2">
-        <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button' %>
-      </div>
-    <% end %>
-    <%= render 'email_configs' %>
-    <p class="text-2xl font-bold mt-8 mb-4">
-      <%= t('signature') %>
-    </p>
-    <% signature = UserConfigs.load_signature(current_user) %>
-    <% if signature %>
-      <div class="flex justify-center mb-4 relative">
-        <%= button_to button_title(title: t('remove'), disabled_with: t('removing')), user_signature_path, method: :delete, class: 'right-0 top-0 absolute link' %>
-        <img src="<%= signature.url %>" style="max-height: 200px; width: auto" width="<%= signature.metadata['width'] %>" height="<%= signature.metadata['height'] %>">
-      </div>
-    <% end %>
-    <a href="<%= edit_user_signature_path %>" data-turbo-frame="modal" class="base-button w-full">
-      <%= t('update_signature') %>
-    </a>
-    <p class="text-2xl font-bold mt-8 mb-4">
-      <%= t('initials') %>
-    </p>
-    <% initials = UserConfigs.load_initials(current_user) %>
-    <% if initials %>
-      <div class="flex justify-center mb-4 relative">
-        <%= button_to button_title(title: t('remove'), disabled_with: t('removing')), user_initials_path, method: :delete, class: 'right-0 top-0 absolute link' %>
-        <img src="<%= initials.url %>" style="max-height: 200px; width: auto" width="<%= initials.metadata['width'] %>" height="<%= initials.metadata['height'] %>">
-      </div>
-    <% end %>
-    <a href="<%= edit_user_initials_path %>" data-turbo-frame="modal" class="base-button w-full">
-      <%= t('update_initials') %>
-    </a>
-    <% if true_user == current_user && !current_account.testing? %>
-      <p class="text-2xl font-bold mt-8 mb-4">
-        <%= t('change_password') %>
-      </p>
-      <%= form_for current_user, url: update_password_settings_profile_index_path, method: :patch, html: { autocomplete: 'off' } do |f| %>
-        <%= f.label :password, t('new_password'), class: 'label' %>
-        <%= f.password_field :password, autocomplete: 'off', class: 'base-input peer w-full', required: true %>
-        <div class="<%= 'peer-invalid:hidden' if current_user.errors.blank? %> space-y-4 mt-4">
-          <div class="form-control">
-            <%= f.label :password_confirmation, t('confirm_password'), class: 'label' %>
-            <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'base-input' %>
+<style>
+  /* ── BSC ADMIN SETTINGS ── */
+  .bsc-settings {
+    font-family: 'Space Grotesk', sans-serif;
+    background: #141414;
+    color: #fff;
+    margin: -2rem calc(50% - 50vw) 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+  .bsc-settings ~ * { display: none !important; }
+  .bsc-settings *, .bsc-settings *::before, .bsc-settings *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .bsc-settings a { text-decoration: none; }
+
+  .bsc-settings-header {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.85rem 3rem;
+    background: rgba(20,20,20,0.97); backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .bsc-settings-header-title {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5);
+  }
+  .bsc-settings-save-btn {
+    background: #6bde2c; color: #0a0a0a; font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.6rem 1.4rem; border: none; cursor: pointer; transition: background 0.15s;
+  }
+  .bsc-settings-save-btn:hover { background: #7fe83d; }
+
+  .bsc-settings-layout { display: flex; min-height: calc(100vh - 49px); }
+
+  .bsc-settings-sidebar {
+    width: 200px; flex-shrink: 0;
+    border-right: 1px solid rgba(255,255,255,0.07);
+    padding: 2.5rem 0 3rem;
+  }
+  .bsc-settings-nav-item {
+    display: block; font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+    padding: 0.7rem 1.5rem; border-left: 2px solid transparent; cursor: pointer;
+    transition: color 0.15s, background 0.15s, border-color 0.15s;
+  }
+  .bsc-settings-nav-item:hover { color: #fff; background: rgba(255,255,255,0.04); }
+  .bsc-settings-nav-item.bsc-s-active {
+    color: #6bde2c; border-left-color: #6bde2c; background: rgba(107,222,44,0.05);
+  }
+
+  .bsc-settings-main { flex: 1; padding: 3rem 4rem 6rem; max-width: 760px; }
+
+  .bsc-settings-section { display: none; }
+  .bsc-settings-section.bsc-s-visible { display: block; }
+
+  .bsc-settings-section-title {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 2.5rem;
+    line-height: 1; text-transform: uppercase; letter-spacing: -0.01em; color: #fff;
+    margin-bottom: 0.4rem;
+  }
+  .bsc-settings-section-sub {
+    font-size: 0.85rem; color: rgba(255,255,255,0.4); margin-bottom: 2rem;
+  }
+
+  .bsc-settings-field { margin-bottom: 1.5rem; }
+  .bsc-settings-label {
+    display: block; font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35);
+    margin-bottom: 0.6rem;
+  }
+  .bsc-settings-input {
+    width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12);
+    color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem;
+    padding: 0.75rem 1rem; outline: none; transition: border-color 0.15s;
+  }
+  .bsc-settings-input:focus { border-color: rgba(107,222,44,0.5); }
+  .bsc-settings-textarea {
+    width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12);
+    color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem;
+    padding: 0.75rem 1rem; outline: none; resize: vertical; min-height: 100px;
+    transition: border-color 0.15s;
+  }
+  .bsc-settings-textarea:focus { border-color: rgba(107,222,44,0.5); }
+
+  .bsc-logo-dropzone {
+    border: 1px dashed rgba(255,255,255,0.18); padding: 2rem 1.5rem; text-align: center;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+  }
+  .bsc-logo-dropzone:hover { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.02); }
+  .bsc-logo-dropzone img { max-height: 80px; width: auto; margin: 0 auto 1rem; display: block; }
+  .bsc-logo-upload-btn {
+    display: inline-block; background: transparent; border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.6); font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase; padding: 0.55rem 1.25rem;
+    cursor: pointer; transition: color 0.15s, border-color 0.15s; margin-top: 0.5rem;
+  }
+  .bsc-logo-upload-btn:hover { color: #fff; border-color: rgba(255,255,255,0.45); }
+
+  .bsc-sig-box {
+    border: 1px dashed rgba(255,255,255,0.18); min-height: 130px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem; position: relative;
+  }
+  .bsc-sig-box img { max-height: 120px; width: auto; }
+  .bsc-sig-placeholder {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.1em; color: rgba(255,255,255,0.25); text-transform: uppercase;
+  }
+  .bsc-sig-remove {
+    position: absolute; top: 0.5rem; right: 0.75rem;
+    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    letter-spacing: 0.08em; text-transform: uppercase; color: rgba(232,68,68,0.6);
+    cursor: pointer; background: none; border: none; transition: color 0.15s;
+  }
+  .bsc-sig-remove:hover { color: #e84444; }
+  .bsc-sig-btn {
+    display: block; width: 100%; background: transparent;
+    border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7);
+    font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 0.75rem 1rem; cursor: pointer; text-align: center;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    text-decoration: none; margin-bottom: 0.75rem;
+  }
+  .bsc-sig-btn:hover { color: #fff; border-color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.03); }
+
+  .bsc-settings-divider { border: none; border-top: 1px solid rgba(255,255,255,0.07); margin: 2.5rem 0; }
+  .bsc-settings-subsection-title {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.35);
+    margin-bottom: 1.25rem;
+  }
+
+  .bsc-support-item { padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .bsc-support-item:last-child { border-bottom: none; }
+  .bsc-support-label {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3);
+    margin-bottom: 0.4rem;
+  }
+  .bsc-support-value { font-size: 0.9rem; color: rgba(255,255,255,0.8); }
+  .bsc-support-link { color: #6bde2c; transition: color 0.15s; }
+  .bsc-support-link:hover { color: #7fe83d; }
+
+  .bsc-settings-footer {
+    text-align: center; padding: 2.5rem 3rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-family: 'Space Mono', monospace; font-size: 0.5rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.2);
+  }
+
+  .bsc-2fa-status {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.875rem; color: rgba(255,255,255,0.6); margin-bottom: 1rem;
+  }
+  .bsc-flash {
+    margin-bottom: 1.5rem; padding: 0.85rem 1rem; font-size: 0.8rem;
+    border-left: 2px solid #6bde2c; background: rgba(107,222,44,0.06);
+    color: rgba(255,255,255,0.75);
+  }
+
+  @media (max-width: 860px) {
+    .bsc-settings-sidebar { display: none; }
+    .bsc-settings-main { padding: 2rem 1.5rem 4rem; }
+    .bsc-settings-header { padding: 0.85rem 1.5rem; }
+  }
+</style>
+
+<div class="bsc-settings">
+  <header class="bsc-settings-header">
+    <span class="bsc-settings-header-title">Admin Settings</span>
+    <button type="button" class="bsc-settings-save-btn" onclick="document.querySelector('.bsc-settings-section.bsc-s-visible [type=submit]')?.click()">
+      Save
+    </button>
+  </header>
+
+  <div class="bsc-settings-layout">
+    <aside class="bsc-settings-sidebar">
+      <a class="bsc-settings-nav-item bsc-s-active" data-tab="profile" onclick="bscSwitchTab('profile',this)">Profile</a>
+      <a class="bsc-settings-nav-item" data-tab="business" onclick="bscSwitchTab('business',this)">Business</a>
+      <a class="bsc-settings-nav-item" data-tab="emails" onclick="bscSwitchTab('emails',this)">Emails</a>
+      <a class="bsc-settings-nav-item" data-tab="signature" onclick="bscSwitchTab('signature',this)">Signature</a>
+      <a class="bsc-settings-nav-item" data-tab="support" onclick="bscSwitchTab('support',this)">Support</a>
+    </aside>
+
+    <main class="bsc-settings-main">
+      <% if flash[:notice].present? %>
+        <div class="bsc-flash"><%= flash[:notice] %></div>
+      <% end %>
+      <% if flash[:alert].present? %>
+        <div class="bsc-flash" style="border-left-color:#e84444;background:rgba(232,68,68,0.06)"><%= flash[:alert] %></div>
+      <% end %>
+
+      <%# ── PROFILE TAB ── %>
+      <section id="bsc-tab-profile" class="bsc-settings-section bsc-s-visible">
+        <h2 class="bsc-settings-section-title">Profile</h2>
+        <p class="bsc-settings-section-sub">Manage your personal information</p>
+
+        <%= form_for current_user, url: update_contact_settings_profile_index_path, method: :patch, html: { autocomplete: 'off' } do |f| %>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+            <div class="bsc-settings-field" style="margin-bottom:0">
+              <label class="bsc-settings-label"><%= t('first_name') %></label>
+              <%= f.text_field :first_name, required: true, class: 'bsc-settings-input', dir: 'auto' %>
+            </div>
+            <div class="bsc-settings-field" style="margin-bottom:0">
+              <label class="bsc-settings-label"><%= t('last_name') %></label>
+              <%= f.text_field :last_name, required: false, class: 'bsc-settings-input', dir: 'auto' %>
+            </div>
           </div>
-          <div class="form-control">
-            <%= f.label :current_password, t('current_password'), class: 'label' %>
-            <%= f.password_field :current_password, autocomplete: 'current-password', class: 'base-input' %>
-            <% if Accounts.can_send_emails?(current_account) %>
-              <span class="label-text-alt mt-1">
-                <%= t('dont_remember_your_current_password_click_here_to_reset_it_html') %>
-              </span>
+          <div class="bsc-settings-field">
+            <label class="bsc-settings-label"><%= t('email') %></label>
+            <%= f.email_field :email, autocomplete: 'off', class: 'bsc-settings-input' %>
+            <% if current_user.try(:pending_reconfirmation?) %>
+              <p style="font-size:0.75rem;color:rgba(255,255,255,0.35);margin-top:0.4rem">
+                <%= t('email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm', email: f.object.unconfirmed_email) %>
+              </p>
             <% end %>
           </div>
-          <div class="form-control">
-            <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button' %>
-          </div>
-        </div>
-      <% end %>
-      <%= button_to nil, user_send_reset_password_path(current_user), id: 'resend_password_button', method: :put, class: 'hidden', data: { turbo_confirm: t('are_you_sure_') } %>
-      <p class="text-2xl font-bold mt-8 mb-4">
-        <%= t('two_factor_authentication') %>
-      </p>
-      <div class="space-y-4">
-        <% if current_user.otp_required_for_login %>
-          <p class="flex items-center space-x-1">
-            <%= svg_icon('circle_check', class: 'stroke-success inline flex-none w-5 h-5') %>
-            <span>
-              <%= t('2fa_has_been_configured') %>
-            </span>
-          </p>
-          <a href="<%= edit_mfa_setup_path %>" data-turbo-frame="modal" class="white-button w-full !px-8">🔓 <%= t('remove_2fa') %></a>
-        <% else %>
-          <p class="flex items-center space-x-1">
-            <%= svg_icon('info_circle', class: 'stroke-warning inline flex-none w-5 h-5') %>
-            <span>
-              <%= t('2fa_is_not_configured') %>
-            </span>
-          </p>
-          <a href="<%= new_mfa_setup_path %>" data-turbo-frame="modal" class="base-button w-full !px-8">🔒 <%= t('set_up_2fa') %></a>
+          <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button' %>
         <% end %>
-      </div>
-    <% end %>
+
+        <% if true_user == current_user && !current_account.testing? %>
+          <hr class="bsc-settings-divider">
+          <p class="bsc-settings-subsection-title"><%= t('change_password') %></p>
+          <%= form_for current_user, url: update_password_settings_profile_index_path, method: :patch, html: { autocomplete: 'off' } do |f| %>
+            <div class="bsc-settings-field">
+              <label class="bsc-settings-label"><%= t('new_password') %></label>
+              <%= f.password_field :password, autocomplete: 'off', class: 'bsc-settings-input peer', required: true %>
+            </div>
+            <div class="<%= 'peer-invalid:hidden' if current_user.errors.blank? %>">
+              <div class="bsc-settings-field">
+                <label class="bsc-settings-label"><%= t('confirm_password') %></label>
+                <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'bsc-settings-input' %>
+              </div>
+              <div class="bsc-settings-field">
+                <label class="bsc-settings-label"><%= t('current_password') %></label>
+                <%= f.password_field :current_password, autocomplete: 'current-password', class: 'bsc-settings-input' %>
+                <% if Accounts.can_send_emails?(current_account) %>
+                  <p style="font-size:0.75rem;color:rgba(255,255,255,0.35);margin-top:0.4rem">
+                    <%= t('dont_remember_your_current_password_click_here_to_reset_it_html') %>
+                  </p>
+                <% end %>
+              </div>
+              <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button' %>
+            </div>
+          <% end %>
+          <%= button_to nil, user_send_reset_password_path(current_user), id: 'resend_password_button', method: :put, class: 'hidden', data: { turbo_confirm: t('are_you_sure_') } %>
+
+          <hr class="bsc-settings-divider">
+          <p class="bsc-settings-subsection-title"><%= t('two_factor_authentication') %></p>
+          <% if current_user.otp_required_for_login %>
+            <div class="bsc-2fa-status">
+              <%= svg_icon('circle_check', class: 'stroke-success w-5 h-5') %>
+              <span><%= t('2fa_has_been_configured') %></span>
+            </div>
+            <a href="<%= edit_mfa_setup_path %>" data-turbo-frame="modal" class="bsc-sig-btn" style="display:inline-block;width:auto;padding:0.65rem 1.4rem">🔓 <%= t('remove_2fa') %></a>
+          <% else %>
+            <div class="bsc-2fa-status">
+              <%= svg_icon('info_circle', class: 'stroke-warning w-5 h-5') %>
+              <span><%= t('2fa_is_not_configured') %></span>
+            </div>
+            <a href="<%= new_mfa_setup_path %>" data-turbo-frame="modal" class="bsc-sig-btn" style="display:inline-block;width:auto;padding:0.65rem 1.4rem">🔒 <%= t('set_up_2fa') %></a>
+          <% end %>
+        <% end %>
+      </section>
+
+      <%# ── BUSINESS TAB ── %>
+      <section id="bsc-tab-business" class="bsc-settings-section">
+        <h2 class="bsc-settings-section-title">Business</h2>
+        <p class="bsc-settings-section-sub">Manage your business information and branding</p>
+
+        <% business_address = current_account.account_configs.find_by(key: AccountConfig::BUSINESS_ADDRESS_KEY)&.value %>
+        <%= form_for '', url: settings_account_path, method: :patch, html: { autocomplete: 'off' } do |f| %>
+          <%= fields_for current_account do |ff| %>
+            <div class="bsc-settings-field">
+              <label class="bsc-settings-label">Business Name</label>
+              <%= ff.text_field :name, required: true, class: 'bsc-settings-input', dir: 'auto' %>
+            </div>
+            <%= ff.hidden_field :timezone, value: current_account.timezone %>
+            <%= ff.hidden_field :locale, value: current_account.locale %>
+          <% end %>
+          <div class="bsc-settings-field">
+            <label class="bsc-settings-label">Address</label>
+            <textarea name="account_config[business_address]" class="bsc-settings-textarea"><%= business_address %></textarea>
+          </div>
+          <div class="bsc-settings-field">
+            <label class="bsc-settings-label">Business Logo</label>
+            <div class="bsc-logo-dropzone">
+              <% if defined?(current_account.logo) && current_account.respond_to?(:logo) && current_account.logo.attached? %>
+                <%= image_tag url_for(current_account.logo), alt: 'Business Logo' %>
+              <% end %>
+              <a href="<%= settings_personalization_path %>" class="bsc-logo-upload-btn">&#8593; Upload Logo</a>
+            </div>
+            <p style="font-size:0.7rem;color:rgba(255,255,255,0.25);margin-top:0.5rem;font-family:'Space Mono',monospace;letter-spacing:0.05em">Max 5MB. PNG or SVG recommended.</p>
+          </div>
+          <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button' %>
+        <% end %>
+      </section>
+
+      <%# ── EMAILS TAB ── %>
+      <section id="bsc-tab-emails" class="bsc-settings-section">
+        <h2 class="bsc-settings-section-title">Emails</h2>
+        <p class="bsc-settings-section-sub">Manage your email addresses</p>
+
+        <% support_email_val = current_account.account_configs.find_by(key: AccountConfig::SUPPORT_EMAIL_KEY)&.value %>
+        <%= form_for '', url: settings_account_path, method: :patch, html: { autocomplete: 'off' } do |f| %>
+          <%= fields_for current_account do |ff| %>
+            <%= ff.hidden_field :name, value: current_account.name %>
+            <%= ff.hidden_field :timezone, value: current_account.timezone %>
+            <%= ff.hidden_field :locale, value: current_account.locale %>
+          <% end %>
+          <div class="bsc-settings-field">
+            <label class="bsc-settings-label">Primary Email</label>
+            <input type="email" value="<%= current_user.email %>" class="bsc-settings-input" disabled style="opacity:0.5;cursor:not-allowed">
+            <p style="font-size:0.7rem;color:rgba(255,255,255,0.25);margin-top:0.4rem;font-family:'Space Mono',monospace;letter-spacing:0.05em">To update your email address, use the Profile tab.</p>
+          </div>
+          <div class="bsc-settings-field">
+            <label class="bsc-settings-label">Support Email</label>
+            <input type="email" name="account_config[support_email]" value="<%= support_email_val %>" class="bsc-settings-input" placeholder="e.g. support@yourcompany.com">
+          </div>
+          <%= f.button button_title(title: t('update'), disabled_with: t('updating')), class: 'base-button' %>
+        <% end %>
+      </section>
+
+      <%# ── SIGNATURE TAB ── %>
+      <section id="bsc-tab-signature" class="bsc-settings-section">
+        <h2 class="bsc-settings-section-title">E-Signature</h2>
+        <p class="bsc-settings-section-sub">Set up your digital signature</p>
+
+        <div class="bsc-settings-field">
+          <label class="bsc-settings-label">Your Signature</label>
+          <div class="bsc-sig-box">
+            <% signature = UserConfigs.load_signature(current_user) %>
+            <% if signature %>
+              <%= button_to button_title(title: t('remove'), disabled_with: t('removing')), user_signature_path, method: :delete, class: 'bsc-sig-remove' %>
+              <img src="<%= signature.url %>" style="max-height:120px;width:auto" width="<%= signature.metadata['width'] %>" height="<%= signature.metadata['height'] %>">
+            <% else %>
+              <span class="bsc-sig-placeholder">Your signature will appear here</span>
+            <% end %>
+          </div>
+          <a href="<%= edit_user_signature_path %>" data-turbo-frame="modal" class="bsc-sig-btn">&#8593; Upload Signature</a>
+          <p style="font-size:0.7rem;color:rgba(255,255,255,0.25);margin-top:0.25rem;font-family:'Space Mono',monospace;letter-spacing:0.05em">Upload a PNG or JPG of your signature</p>
+        </div>
+
+        <hr class="bsc-settings-divider">
+        <p class="bsc-settings-subsection-title"><%= t('initials') %></p>
+        <div class="bsc-settings-field">
+          <div class="bsc-sig-box">
+            <% initials = UserConfigs.load_initials(current_user) %>
+            <% if initials %>
+              <%= button_to button_title(title: t('remove'), disabled_with: t('removing')), user_initials_path, method: :delete, class: 'bsc-sig-remove' %>
+              <img src="<%= initials.url %>" style="max-height:120px;width:auto" width="<%= initials.metadata['width'] %>" height="<%= initials.metadata['height'] %>">
+            <% else %>
+              <span class="bsc-sig-placeholder">Your initials will appear here</span>
+            <% end %>
+          </div>
+          <a href="<%= edit_user_initials_path %>" data-turbo-frame="modal" class="bsc-sig-btn">&#8593; Upload Initials</a>
+        </div>
+      </section>
+
+      <%# ── SUPPORT TAB ── %>
+      <section id="bsc-tab-support" class="bsc-settings-section">
+        <h2 class="bsc-settings-section-title">Support</h2>
+        <p class="bsc-settings-section-sub">Get help when you need it</p>
+
+        <div class="bsc-support-item">
+          <p class="bsc-support-label">Email Support</p>
+          <p class="bsc-support-value">
+            <a href="mailto:Sign@backed.com" class="bsc-support-link">Sign@backed.com</a>
+          </p>
+        </div>
+        <div class="bsc-support-item">
+          <p class="bsc-support-label">Documentation</p>
+          <p class="bsc-support-value">
+            <a href="https://www.docuseal.com/docs" target="_blank" class="bsc-support-link">www.docuseal.com/docs</a>
+          </p>
+        </div>
+        <div class="bsc-support-item">
+          <p class="bsc-support-label">Need Help?</p>
+          <p class="bsc-support-value" style="color:rgba(255,255,255,0.5)">
+            Contact our support team at <a href="mailto:Sign@backed.com" class="bsc-support-link">Sign@backed.com</a>
+          </p>
+        </div>
+      </section>
+
+    </main>
   </div>
-  <div class="w-0 md:w-52"></div>
+
+  <footer class="bsc-settings-footer">
+    &copy; <%= Date.current.year %> Backed.sign. All changes are saved automatically.
+  </footer>
 </div>
+
+<script>
+  function bscSwitchTab(tab, el) {
+    document.querySelectorAll('.bsc-settings-section').forEach(function(s) {
+      s.classList.remove('bsc-s-visible');
+    });
+    document.querySelectorAll('.bsc-settings-nav-item').forEach(function(a) {
+      a.classList.remove('bsc-s-active');
+    });
+    var section = document.getElementById('bsc-tab-' + tab);
+    if (section) section.classList.add('bsc-s-visible');
+    if (el) el.classList.add('bsc-s-active');
+  }
+  (function() {
+    var hash = window.location.hash.replace('#', '');
+    if (hash) {
+      var navItem = document.querySelector('[data-tab="' + hash + '"]');
+      if (navItem) bscSwitchTab(hash, navItem);
+    }
+  })();
+</script>
