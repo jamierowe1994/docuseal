@@ -51,7 +51,7 @@
 <div class="docs-page px-4 pb-12">
   <%# ─── Cover ─────────────────────────────────────────────────── %>
   <div style="text-align:center; padding: 2rem 0 1rem;">
-    <h1 style="font-size:2.4rem; font-weight:800; margin-bottom:0.4rem;">DocuSeal API Reference</h1>
+    <h1 style="font-size:2.4rem; font-weight:800; margin-bottom:0.4rem;"><%= current_account.name %> API Reference</h1>
     <p style="color:#6b7280; font-size:1rem;">CRM Integration &amp; Document Signing API</p>
     <p style="color:#9ca3af; font-size:0.85rem; margin-top:0.3rem;">Generated <%= Date.current.strftime('%B %-d, %Y') %> &bull; Base URL: <code class="inline"><%= root_url(Docuseal.default_url_options).chomp('/') %>/api</code></p>
   </div>
@@ -287,7 +287,7 @@
             <tr><td><code class="inline">limit</code></td><td>Integer</td><td>Results per page (max 100)</td></tr>
           </tbody>
         </table>
-        <pre class="code-block"># Find all DocuSeal records for a specific CRM contact
+        <pre class="code-block"># Find all signing records for a specific CRM contact
 curl '<%= api_submitters_url %>?external_id=crm_contact_123' \
   --header 'X-Auth-Token: API_TOKEN'</pre>
       </div>
@@ -329,7 +329,7 @@ curl '<%= api_submitters_url %>?external_id=crm_contact_123' \
   <%# ─── CONTACTS ────────────────────────────────────────────────── %>
   <div class="section-divider">
     <h2>Contacts <span class="new-badge">New</span></h2>
-    <p style="margin-bottom:1rem; color:#6b7280; font-size:0.9rem;">Sync a CRM contact into DocuSeal and optionally trigger document signing in a single call.</p>
+    <p style="margin-bottom:1rem; color:#6b7280; font-size:0.9rem;">Sync a CRM contact into <%= current_account.name %> and optionally trigger document signing in a single call.</p>
 
     <div class="endpoint-block">
       <div class="endpoint-header">
@@ -406,7 +406,7 @@ curl '<%= api_submitters_url %>?external_id=crm_contact_123' \
   <div class="section-divider">
     <h2>Webhooks</h2>
     <p style="margin-bottom:1rem; color:#6b7280; font-size:0.9rem;">
-      DocuSeal fires webhook events to your configured URL in real time. No additional endpoint is needed — configure your CRM's inbound webhook URL at
+      <%= current_account.name %> fires webhook events to your configured URL in real time. No additional endpoint is needed — configure your CRM's inbound webhook URL at
       <strong>Settings → Webhooks</strong>.
     </p>
     <table>
@@ -485,6 +485,6 @@ curl '<%= api_submitters_url %>?external_id=crm_contact_123' \
   </div>
 
   <div style="text-align:center; margin-top:2rem; padding-top:1rem; border-top:1px solid #e5e7eb; color:#9ca3af; font-size:0.8rem;">
-    DocuSeal API Documentation &bull; <%= root_url(Docuseal.default_url_options).chomp('/') %>
+    <%= current_account.name %> API Documentation &bull; <%= root_url(Docuseal.default_url_options).chomp('/') %>
   </div>
 </div>
