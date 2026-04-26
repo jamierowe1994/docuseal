@@ -242,9 +242,15 @@
       </div>
     </details>
 
-    <a href="<%= "#{Docuseal::PRODUCT_URL}/docs/api" %>" class="bsc-docs-link" target="_blank" rel="noopener">
-      Open Full API Reference &#8594;
-    </a>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem;">
+      <%= link_to settings_api_docs_path, class: 'bsc-token-btn', style: 'margin-top:0;padding:0.85rem 2rem;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-decoration:none' do %>
+        <%= svg_icon('file_text', class: 'w-4 h-4') %>
+        API Documentation
+      <% end %>
+      <a href="<%= "#{Docuseal::PRODUCT_URL}/docs/api" %>" class="bsc-docs-link" target="_blank" rel="noopener" style="margin-top:0">
+        Open Full API Reference &#8594;
+      </a>
+    </div>
 
   </div>
 </div>
