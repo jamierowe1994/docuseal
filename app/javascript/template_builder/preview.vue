@@ -259,7 +259,12 @@ export default {
     fieldNames: FieldType.computed.fieldNames,
     fieldLabels: FieldType.computed.fieldLabels,
     previewImage () {
-      return [...this.document.preview_images].sort((a, b) => parseInt(a.filename) - parseInt(b.filename))[0]
+      const sorted = [...this.document.preview_images].sort((a, b) => parseInt(a.filename) - parseInt(b.filename))
+
+      return sorted[0] || {
+        url: `/preview/${this.document.signed_key || this.document.signed_uuid || this.document.uuid}/0.jpg`,
+        metadata: { width: 1400, height: 1812 }
+      }
     },
     modalContainerEl () {
       return this.$el.getRootNode().querySelector('#docuseal_modal_container')

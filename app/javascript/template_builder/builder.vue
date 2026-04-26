@@ -166,6 +166,15 @@
               {{ t('send') }}
             </span>
           </a>
+          <a
+            v-if="withTitle && editable"
+            :href="`/templates/${template.id}`"
+            class="base-button hidden md:flex"
+          >
+            <span>
+              {{ t('back') }}
+            </span>
+          </a>
           <span
             v-if="editable"
             id="save_button_container"
