@@ -569,6 +569,7 @@ en: &en
   you_are_already_signed_in: You are already signed in.
   please_sign_in: Please sign in.
   not_found: Not found
+  this_signing_link_is_no_longer_valid: This signing link is no longer valid or has expired.
   new_recipients_have_been_added: New recipients have been added.
   submission_has_been_removed: Submission has been removed.
   submission_has_been_archived: Submission has been archived.
