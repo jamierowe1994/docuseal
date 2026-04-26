@@ -14,6 +14,10 @@ class SubmitFormController < ApplicationController
 
   CONFIG_KEYS = [].freeze
 
+  rescue_from ActiveRecord::RecordNotFound do
+    render :not_found, status: :not_found
+  end
+
   def show
     submission = @submitter.submission
 

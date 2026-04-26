@@ -6,15 +6,17 @@
 <% only_detailed = require_phone_2fa || require_email_2fa || prefillable_fields.present? || recipient_form_fields.present? %>
 <% with_list = @template.variables_schema.blank? %>
 <% variables_form = render 'variables_form', schema: @template.variables_schema if @template.variables_schema.present? && @template.variables_schema.any? { |_, v| !v['disabled'] } %>
-<%= render 'shared/turbo_modal_large', title: params[:selfsign] ? t('add_recipients') : t('add_new_recipients') do %>
+<%= render 'shared/turbo_modal_brand', title: params[:selfsign] ? t('add_recipients') : t('add_new_recipients') do %>
   <% options = [only_detailed ? nil : [t('via_email'), 'email'], only_detailed ? nil : [t('via_phone'), 'phone'], [t('detailed'), 'detailed'], with_list ? [t('upload_list'), 'list'] : nil].compact %>
   <% if options.size > 1 %>
-    <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="relative text-center px-2 mt-4 block">
-      <div class="flex justify-center">
+    <toggle-visible data-element-ids="<%= options.map(&:last).to_json %>" class="relative px-5 pt-5 block">
+      <div class="flex">
         <% options.each_with_index do |(label, value), index| %>
           <%= content_tag(value == 'list' ? 'span' : 'toggle-cookies', data: { value:, key: 'add_recipients_tab' }) do %>
             <%= radio_button_tag 'option', value, value == (only_detailed ? 'detailed' : default_tab), class: 'peer hidden', data: { action: 'change:toggle-visible#trigger' } %>
-            <label for="option_<%= value %>" class="block bg-base-200 md:min-w-[112px] text-sm font-semibold whitespace-nowrap py-1.5 px-4 peer-checked:bg-base-300 <%= 'hidden sm:inline-block' if value == 'list' %> <%= 'rounded-l-3xl' if index.zero? %> <%= 'rounded-r-3xl sm:rounded-r-none' if value == 'detailed' && index != options.size - 1 %> <%= 'rounded-r-3xl' if index == options.size - 1 %>">
+            <label for="option_<%= value %>"
+                   class="block whitespace-nowrap cursor-pointer peer-checked:!text-[#6bde2c] peer-checked:!border-[rgba(107,222,44,0.4)] peer-checked:bg-[rgba(107,222,44,0.05)] <%= 'hidden sm:inline-block' if value == 'list' %>"
+                   style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);padding:0.5rem 1.1rem;border:1px solid rgba(255,255,255,0.14);<%= 'border-right:none;' unless index == options.size - 1 %>transition:color 0.15s,background 0.15s,border-color 0.15s;">
               <%= label %>
             </label>
           <% end %>

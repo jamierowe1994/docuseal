@@ -186,7 +186,9 @@ module Submitters
   def current_submitter_order?(submitter)
     submission = submitter.submission
 
-    submitter_items = submission.template_submitters || submission.template.submitters
+    submitter_items = submission.template_submitters || submission.template&.submitters
+
+    return true if submitter_items.blank?
 
     before_items =
       if submitter_items.any? { |s| s['order'] }
