@@ -13,8 +13,8 @@ class ContractsController < ApplicationController
     @total_count = base.count
 
     pending_ids = Submitter.where(completed_at: nil).select(:submission_id)
-    @completed_count = base.joins(:submitters).where.not(id: pending_ids).distinct.count
     @pending_count   = base.where(id: pending_ids).distinct.count
+    @completed_count = @total_count - @pending_count
 
     @submissions = base.preload(:created_by_user, template: :author)
     @submissions = Submissions.search(current_user, @submissions, params[:q], search_template: true)

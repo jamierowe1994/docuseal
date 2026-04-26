@@ -17,6 +17,7 @@
       <link href="<%= canonical_url %>" rel="canonical">
     <% end %>
     <%= stylesheet_pack_tag 'application', media: 'all' %>
+    <%= yield :head %>
   </head>
   <body>
     <% if params[:modal].present? %>
