@@ -23,7 +23,21 @@ Rails.application.routes.draw do
     end
   end
 
+  # Browser-facing OAuth 2.0 authorize endpoint for backed.crm integration.
+  # Must live outside namespace :api so that Devise session auth + redirects work.
+  scope '/api/integrations', module: 'integrations' do
+    get  'crm/authorize', to: 'crm_authorize#show', as: :crm_authorize
+  end
+
   namespace :api, defaults: { format: :json } do
+    # backed.crm integration – token exchange and template access
+    namespace :integrations do
+      post 'crm/token',         to: 'crm#token',    as: :crm_token
+      get  'crm/templates',     to: 'crm#templates', as: :crm_templates
+      get  'crm/templates/:id', to: 'crm#template',  as: :crm_template
+      match 'crm/*path', to: 'crm#preflight', via: :options
+    end
+
     resource :user, only: %i[show]
     resources :attachments, only: %i[create]
     resources :submitter_email_clicks, only: %i[create]
