@@ -99,12 +99,14 @@ module Api
       end
 
       def user_from_jwt
-        token = request.headers['Authorization'].to_s[/\ABearer\s+(.+)\z/, 1]
-        return unless token
+        auth = request.headers['Authorization'].to_s
+        # Extract token after literal "Bearer " prefix to avoid ReDoS with greedy \s+
+        token = auth.start_with?('Bearer ') ? auth[7..] : nil
+        return if token.blank?
 
+        # JWT.decode raises JWT::DecodeError (including JWT::ExpiredSignature) for
+        # invalid or expired tokens, so no separate expiry check is needed.
         payload = JsonWebToken.decode(token)
-        return if payload['exp'].to_i < Time.current.to_i
-
         User.active.find_by(id: payload['user_id'])
       rescue JWT::DecodeError
         nil

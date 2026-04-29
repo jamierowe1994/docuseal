@@ -48,7 +48,7 @@ class OauthApplication < ApplicationRecord
   def redirect_uri_allowed?(requested_uri)
     return false if requested_uri.blank?
 
-    allowed = redirect_uri.to_s.split.map(&:strip).compact_blank
+    allowed = redirect_uri.to_s.split.compact_blank
     return allowed.any? { |uri| requested_uri.start_with?(uri) } if allowed.any?
 
     uri = URI.parse(requested_uri)
