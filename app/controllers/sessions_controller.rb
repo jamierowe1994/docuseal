@@ -24,14 +24,14 @@ class SessionsController < Devise::SessionsController
 
   private
 
-  def after_sign_in_path_for(...)
+  def after_sign_in_path_for(resource_or_scope)
     if params[:redir].present?
       return console_redirect_index_path(redir: params[:redir]) if params[:redir].starts_with?(Docuseal::CONSOLE_URL)
 
       return params[:redir]
     end
 
-    contracts_path
+    stored_location_for(resource_or_scope) || contracts_path
   end
 
   def configure_permitted_parameters

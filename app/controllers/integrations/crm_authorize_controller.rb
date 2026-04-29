@@ -22,9 +22,10 @@ module Integrations
       redirect_uri = params[:redirect_uri].to_s.strip
       state        = params[:state].to_s.strip
 
-      application = OauthApplication.find_by(uid: client_id)
+      application = OauthApplication.crm_application
 
-      return render plain: 'Invalid client_id.', status: :bad_request unless application
+      return render plain: 'Invalid client_id.', status: :bad_request if
+        application.nil? || application.uid != client_id
       return render plain: 'Invalid redirect_uri.', status: :bad_request unless
         application.redirect_uri_allowed?(redirect_uri)
 
