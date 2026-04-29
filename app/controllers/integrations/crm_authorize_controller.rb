@@ -18,20 +18,24 @@ module Integrations
     skip_authorization_check
 
     def show
-      application = OauthApplication.find_by(uid: params[:client_id])
+      client_id    = params[:client_id].to_s.strip
+      redirect_uri = params[:redirect_uri].to_s.strip
+      state        = params[:state].to_s.strip
+
+      application = OauthApplication.find_by(uid: client_id)
 
       return render plain: 'Invalid client_id.', status: :bad_request unless application
       return render plain: 'Invalid redirect_uri.', status: :bad_request unless
-        application.redirect_uri_allowed?(params[:redirect_uri])
+        application.redirect_uri_allowed?(redirect_uri)
 
       grant = OauthAccessGrant.create!(
         application:,
         resource_owner: current_user,
-        redirect_uri: params[:redirect_uri],
+        redirect_uri:,
         scopes: 'read'
       )
 
-      redirect_to build_callback_url(params[:redirect_uri], grant.token, params[:state]),
+      redirect_to build_callback_url(redirect_uri, grant.token, state),
                   allow_other_host: true
     end
 

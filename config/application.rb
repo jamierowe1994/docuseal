@@ -12,6 +12,7 @@ require 'rails/health_controller'
 
 require_relative '../lib/api_path_consider_json_middleware'
 require_relative '../lib/normalize_client_ip_middleware'
+require_relative '../lib/normalize_crm_url_middleware'
 
 Bundler.require(*Rails.groups)
 
@@ -38,6 +39,7 @@ module DocuSeal
 
     config.middleware.insert_before ActionDispatch::Static, Rack::Deflater
     config.middleware.insert_before ActionDispatch::Static, NormalizeClientIpMiddleware
+    config.middleware.insert_before ActionDispatch::Static, NormalizeCrmUrlMiddleware
     config.middleware.insert_before ActionDispatch::Static, ApiPathConsiderJsonMiddleware
 
     config.generators.system_tests = nil
